@@ -27,7 +27,7 @@ User.find_or_create_by!(email: "bluemystic48@gmail.com") do |user|
   user.password = "password"
   user.password_confirmation = "password"
   user.role = "admin"
-  user
+  user.client_id = client.id
 end
 
 # create a seed for the user "manager"
@@ -37,7 +37,7 @@ User.find_or_create_by!(email: "florian.sitte@live.de") do |user|
   user.password = "password"
   user.password_confirmation = "password"
   user.role = "manager"
-  user
+  user.client_id = client.id
 end
 
 # create a seed for the user "employee"
@@ -47,7 +47,7 @@ User.find_or_create_by!(email: "bluemystic48@gmail.com") do |user|
   user.password = "password"
   user.password_confirmation = "password"
   user.role = "employee"
-  user
+  user.client_id = client.id
 end
 
 # terminal message: Seeding completed
