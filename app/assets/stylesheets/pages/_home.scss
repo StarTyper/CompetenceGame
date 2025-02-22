@@ -1,18 +1,37 @@
 // Specific CSS for your home-page
+body {
+  font-family: 'Roboto', sans-serif; /* Ändern Sie die Schriftart hier */
+}
 
 .page {
   display: flex;
   justify-content: center;
   align-items: flex-end; /* Align items to the bottom */
   height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
   margin: 0; /* Remove default margin */
+  overflow: hidden; /* Ensure content does not overflow */
+  position: relative; /* Necessary for absolute positioning of child elements */
+}
+
+.text-home {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 4; /* Ensure it is above all circles */
+  color: black; /* Adjust text color as needed */
 }
 
 .circle-container {
   position: relative; /* Necessary for absolute positioning of child elements */
   width: 100%; /* Full width of the container */
   height: 100%; /* Full height of the container */
+  max-width: 100vw; /* Ensure the container does not exceed the viewport width */
+  max-height: 100vh; /* Ensure the container does not exceed the viewport height */
   margin-bottom: 0; /* Align to the bottom */
+  overflow: hidden; /* Ensure content does not overflow */
 }
 
 /* Styles for individual circles */
@@ -22,41 +41,39 @@
 }
 
 .circle.yellow {
-  width: 700px;
-  height: 700px;
+  width: 500px; /* Adjust size relative to the container */
+  height: 500px; /* Adjust size relative to the container */
   clip-path: inset(0 50% 0 0); /* Clip the right half of the circle */
   background-color: #ecc56d; /* Yellow */
   left: 50%; /* Position on the left */
   top: 50%; /* Position at the bottom of the div */
-  transform: translateX(-50%); /* Position in the middle of left and right */
+  transform: translate(-50%, -50%); /* Center the circle */
   z-index: 2; /* Ensure it is above the purple circle */
 }
 
 .circle.blue {
-  width: 700px;
-  height: 700px;
+  width: 500px; /* Adjust size relative to the container */
+  height: 500px; /* Adjust size relative to the container */
   clip-path: inset(0 0 0 50%); /* Clip the left half of the circle */
   background-color: #2f9dce; /* Blue */
   left: 50%; /* Position on the right */
   top: 50%; /* Position at the bottom of the div */
-  transform: translateX(-50%); /* Position in the middle of left and right */
+  transform: translate(-50%, -50%); /* Center the circle */
   z-index: 2; /* Ensure it is above the purple circle */
 }
 
 .circle.red {
-  width: 150px;
-  height: 150px;
-  background-color: 	#cf6650; /* Red */
-  top: 125px; /* Adjust top and left positions as needed */
-  left: 175px; /* Adjust top and left positions as needed */
+  width: 300px; /* Adjust size relative to the container */
+  height: 300px; /* Adjust size relative to the container */
+  background-color: #cf6650; /* Red */
+  top: 20%; /* Adjust top and left positions as needed */
+  left: 20%; /* Adjust top and left positions as needed */
   z-index: 3; /* Ensure it is above the purple circle */
 }
 
 .circle.green {
-  width: 933px; /* 1/3rd bigger than 700px */
-  height: 933px; /* 1/3rd bigger than 700px */
-  // change to red
-  // rgb: 84, 161, 122
+  width: 700px; /* 1/3rd bigger than 50% */
+  height: 700px; /* 1/3rd bigger than 50% */
   background-color: #54A17A; /* Green */
   top: 50%; /* Position at the bottom of the div */
   left: 75%; /* Position a quarter from the right */
@@ -65,11 +82,11 @@
 }
 
 .circle.purple {
-  width: 933px; /* 1/3rd bigger than 700px */
-  height: 933px; /* 1/3rd bigger than 700px */
+  width: 700px; /* 1/3rd bigger than 50% */
+  height: 700px; /* 1/3rd bigger than 50% */
   background-color: #8b5a88; /* Purple */
-  top: 50%; /* Position at the bottom of the div */
-  left: 75%; /* Position a quarter from the right */
+  top: 75%; /* Position at the bottom of the div */
+  left: 25%; /* Position a quarter from the right */
   transform: translate(-50%, -50%); /* Center the circle */
   z-index: 1; /* Ensure it is behind all other circles */
 }
