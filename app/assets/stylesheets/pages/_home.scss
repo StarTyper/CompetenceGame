@@ -41,23 +41,23 @@ body {
 }
 
 .circle.yellow {
-  width: 500px; /* Adjust size relative to the container */
-  height: 500px; /* Adjust size relative to the container */
+  width: 750px; /* Adjust size relative to the container */
+  height: 750px; /* Adjust size relative to the container */
   clip-path: inset(0 50% 0 0); /* Clip the right half of the circle */
   background-color: #ecc56d; /* Yellow */
   left: 50%; /* Position on the left */
-  top: 50%; /* Position at the bottom of the div */
+  top: 60%; /* Position at the bottom of the div */
   transform: translate(-50%, -50%); /* Center the circle */
   z-index: 2; /* Ensure it is above the purple circle */
 }
 
 .circle.blue {
-  width: 500px; /* Adjust size relative to the container */
-  height: 500px; /* Adjust size relative to the container */
+  width: 750px; /* Adjust size relative to the container */
+  height: 750px; /* Adjust size relative to the container */
   clip-path: inset(0 0 0 50%); /* Clip the left half of the circle */
   background-color: #2f9dce; /* Blue */
   left: 50%; /* Position on the right */
-  top: 50%; /* Position at the bottom of the div */
+  top: 60%; /* Position at the bottom of the div */
   transform: translate(-50%, -50%); /* Center the circle */
   z-index: 2; /* Ensure it is above the purple circle */
 }
@@ -72,20 +72,20 @@ body {
 }
 
 .circle.green {
-  width: 700px; /* 1/3rd bigger than 50% */
-  height: 700px; /* 1/3rd bigger than 50% */
+  width: 900px; /* 1/3rd bigger than 50% */
+  height: 900px; /* 1/3rd bigger than 50% */
   background-color: #54A17A; /* Green */
-  top: 50%; /* Position at the bottom of the div */
+  top: 65%; /* Position at the bottom of the div */
   left: 75%; /* Position a quarter from the right */
   transform: translate(-50%, -50%); /* Center the circle */
   z-index: 1; /* Ensure it is behind all other circles */
 }
 
 .circle.purple {
-  width: 700px; /* 1/3rd bigger than 50% */
-  height: 700px; /* 1/3rd bigger than 50% */
+  width: 900px; /* 1/3rd bigger than 50% */
+  height: 900px; /* 1/3rd bigger than 50% */
   background-color: #8b5a88; /* Purple */
-  top: 75%; /* Position at the bottom of the div */
+  top: 85%; /* Position at the bottom of the div */
   left: 25%; /* Position a quarter from the right */
   transform: translate(-50%, -50%); /* Center the circle */
   z-index: 1; /* Ensure it is behind all other circles */
