@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_24_095731) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_24_171622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cards", force: :cascade do |t|
-    t.string "category", null: false
+    t.string "categorygerman", null: false
     t.boolean "positive", null: false
     t.string "namegerman", null: false
     t.string "nameenglish"
@@ -24,6 +24,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_24_095731) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "client_id", null: false
+    t.string "groupgerman", null: false
+    t.string "groupenglish", null: false
+    t.string "categoryenglish", null: false
+    t.index ["client_id"], name: "index_cards_on_client_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -36,7 +41,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_24_095731) do
     t.bigint "game_id", null: false
     t.bigint "card_id", null: false
     t.integer "pile", null: false
-    t.integer "group", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_game_cards_on_card_id"
@@ -67,11 +71,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_24_095731) do
     t.string "last_name"
     t.string "role", default: "guest"
     t.bigint "client_id"
+    t.string "language", default: "english", null: false
     t.index ["client_id"], name: "index_users_on_client_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cards", "clients"
   add_foreign_key "game_cards", "cards"
   add_foreign_key "game_cards", "games"
   add_foreign_key "games", "clients"
