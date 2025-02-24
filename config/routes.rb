@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   # get home as home
   get "home" => "pages#home", as: :home
 
+  # Add routes for games
+  resources :games
+  # resource for game play
+  get "play" => "games#play", as: :play
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
