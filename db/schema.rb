@@ -10,14 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_21_181413) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_24_095731) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "clients", force: :cascade do |t|
-    t.string "name"
+  create_table "cards", force: :cascade do |t|
+    t.string "category", null: false
+    t.boolean "positive", null: false
+    t.string "namegerman", null: false
+    t.string "nameenglish"
+    t.text "explanationgerman"
+    t.text "explanationenglish"
+    t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "game_cards", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.bigint "card_id", null: false
+    t.integer "pile", null: false
+    t.integer "group", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_game_cards_on_card_id"
+    t.index ["game_id"], name: "index_game_cards_on_game_id"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.bigint "client_id", null: false
+    t.bigint "user_id"
+    t.string "name", null: false
+    t.string "status", null: false
+    t.text "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_games_on_client_id"
+    t.index ["user_id"], name: "index_games_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -37,5 +72,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_21_181413) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "game_cards", "cards"
+  add_foreign_key "game_cards", "games"
+  add_foreign_key "games", "clients"
+  add_foreign_key "games", "users"
   add_foreign_key "users", "clients"
 end
