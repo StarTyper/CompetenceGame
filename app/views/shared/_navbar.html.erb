@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon fixed-top">
   <div class="container-fluid">
     <%= link_to :home, class: "navbar-brand" do %>
-      <%= image_tag "crea_kompetenzmodell.jpeg" %>
+      <h1 class="lato-black">CREA</h1>
     <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
+            <%= link_to "Login", new_user_session_path, class: "btn btn-primary lato-regular" %>
           </li>
         <% end %>
       </ul>
