@@ -6,6 +6,8 @@ class GamesController < ApplicationController
   end
 
   def play
+    # current user
+    @user = current_user
     # find the current game for the user
     @game = Game.where(user: current_user, status: "running").first
     # if there is no current game, create one
@@ -27,6 +29,8 @@ class GamesController < ApplicationController
     end
     # find the game cards for the game
     @game_cards = GameCard.where(game: @game)
+    @count_positive = @game.count_positive
+    @count_negative = @game.count_negative
   end
 
   def show

@@ -11,21 +11,30 @@
 # message: Seeding started
 puts "Seeding started"
 
-# --------------------------------------------
+# destroy all gamecards
+GameCard.destroy_all
+
+# destroy all cards
+Card.destroy_all
+
+# destroy all games
+Game.destroy_all
+
+# destroy all users
+User.destroy_all
 
 # destroy all clients
 Client.destroy_all
+
+# --------------------------------------------
 
 # create a seed for the client "default"
 client = Client.find_or_create_by!(name: "default")
 
 # create a seed for the client "HS Ansbach"
-Client.find_or_create_by!(name: "HS Ansbach")
+ansbach = Client.find_or_create_by!(name: "HS Ansbach")
 
 # --------------------------------------------
-
-# destroy all users
-User.destroy_all
 
 # create a seed for the user "admin"
 User.find_or_create_by!(email: "bluemystic48@gmail.com") do |user|
@@ -38,29 +47,26 @@ User.find_or_create_by!(email: "bluemystic48@gmail.com") do |user|
 end
 
 # create a seed for the user "manager"
-User.find_or_create_by!(email: "florian.sitte@live.de") do |user|
-  user.first_name = "Florian"
-  user.last_name = "Sitte"
+User.find_or_create_by!(email: "Peter.Olgemoeller@vetter-pharma.com") do |user|
+  user.first_name = "Peter"
+  user.last_name = "Olgemoeller"
   user.password = "password"
   user.password_confirmation = "password"
   user.role = "manager"
-  user.client_id = client.id
+  user.client_id = ansbach.id
 end
 
 # create a seed for the user "employee"
-User.find_or_create_by!(email: "bluemystic48@gmail.com") do |user|
+User.find_or_create_by!(email: "knapp.sitte@gmail.com") do |user|
   user.first_name = "Em"
   user.last_name = "Ployee"
   user.password = "password"
   user.password_confirmation = "password"
   user.role = "employee"
-  user.client_id = client.id
+  user.client_id = ansbach.id
 end
 
 # --------------------------------------------
-
-# destroy all cards
-Card.destroy_all
 
 # create seeds for the cards
 

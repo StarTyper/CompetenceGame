@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   # resource for game play
   get "play" => "games#play", as: :play
 
+  # resource for pages rules
+  get "rules" => "pages#rules", as: :rules
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
