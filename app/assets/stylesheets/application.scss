@@ -15,11 +15,11 @@ body {
   font-family: 'Lato', serif; /* Ändern Sie die Schriftart hier */
 }
 
-i {
-  font-size: 1em; /* Adjust the size as necessary */
-  font-weight: bold; /* This might have limited effect on icons */
-}
-
 .container {
   margin-top: 82px;
+}
+
+.btn {
+  // roundeed-5 of bootstrap
+  border-radius: 16px;
 }

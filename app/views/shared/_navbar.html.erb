@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-sm navbar-light navbar-lewagon bg-transparent fixed-top">
   <div class="container-fluid">
+    <!-- "CREA" link to home -->
     <%= link_to :home, class: "navbar-brand" do %>
       <h1 class="lato-black">CREA</h1>
     <% end %>
@@ -9,20 +10,18 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav me-auto d-flex align-items-center">
         <% if user_signed_in? %>
-          <!-- <li class="nav-item active"> -->
-            <%# = link_to "Home", "#", class: "nav-link" %>
           <!-- </li> -->
           <li class="nav-item">
             <!-- link to games play -->
-
-            <%= link_to "Play", play_path, class: "nav-link" %>
+            <%= link_to "Play", play_path, class: "nav-link", style: "font-size: 1.5rem; color: black;" %>
           </li>
           <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
-          </a>
+            <a href="#" class="avatar ms-3" style="font-size: 3rem; color: black;" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%# = image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
+              <i class="bi bi-person-circle"></i>
+            </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <%= link_to "Action", "#", class: "dropdown-item" %>
               <%= link_to "Another action", "#", class: "dropdown-item" %>

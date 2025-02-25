@@ -28,9 +28,53 @@ class GamesController < ApplicationController
       end
     end
     # find the game cards for the game
-    @game_cards = GameCard.where(game: @game)
+    @game_cards = GameCard.joins(:card).where(game: @game)
     @count_positive = @game.count_positive
     @count_negative = @game.count_negative
+    @count_remaining_positive = @game_cards.where(pile: 0, cards: { positive: true }).count
+    @count_choosen_positive = @game_cards.where(pile: 1, cards: { positive: true }).count
+    @count_rejected_positive = @game_cards.where(pile: 2, cards: { positive: true }).count
+    @count_remaining_negative = @game_cards.where(pile: 0, cards: { positive: false }).count
+    @count_choosen_negative = @game_cards.where(pile: 1, cards: { positive: false }).count
+    @count_rejected_negative = @game_cards.where(pile: 2, cards: { positive: false }).count
+  end
+
+  def remaining
+    @game = Game.where(user: current_user, status: "running").first
+    @game_cards = GameCard.where(game: @game, pile: 0)
+  end
+
+  def choosen
+    @game = Game.where(user: current_user, status: "running").first
+    @game_cards = GameCard.where(game: @game, pile: 1)
+  end
+
+  def rejected
+    @game = Game.where(user: current_user, status: "running").first
+    @game_cards = GameCard.where(game: @game, pile: 2)
+  end
+
+  def plus
+    @game = Game.where(user: current_user, status: "running").first
+    @game_cards = GameCard.joins(:card).where(game: @game)
+    @count_remaining_positive = @game_cards.where(pile: 0, cards: { positive: true }).count
+    @count_choosen_positive = @game_cards.where(pile: 1, cards: { positive: true }).count
+    @count_rejected_positive = @game_cards.where(pile: 2, cards: { positive: true }).count
+  end
+
+  def minus
+    @game = Game.where(user: current_user, status: "running").first
+    @game_cards = GameCard.joins(:card).where(game: @game)
+    @count_remaining_negative = @game_cards.where(pile: 0, cards: { positive: false }).count
+    @count_choosen_negative = @game_cards.where(pile: 1, cards: { positive: false }).count
+    @count_rejected_negative = @game_cards.where(pile: 2, cards: { positive: false }).count
+  end
+
+  def finish
+    @game = Game.where(user: current_user, status: "running").first
+    @game.status = "finished"
+    @game.save
+    redirect_to games_url
   end
 
   def show

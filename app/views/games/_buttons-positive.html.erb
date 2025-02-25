@@ -1,0 +1,40 @@
+<%= turbo_frame_tag :buttons_frame do%>
+  <div class="buttons-play">
+    <%= link_to remaining_path, data: { turbo_frame: :board_frame } do %>
+      <button type="button" class="btn btn-primary position-relative me-3">
+        Remaining
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <!-- count of positive game_cards on pile "0" -->
+          <%= @count_remaining_positive %>
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </button>
+    <% end %>
+    <%= link_to choosen_path, data: { turbo_frame: :board_frame } do %>
+      <button type="button" class="btn btn-primary position-relative me-3">
+        Choosen
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <!-- count of positive game_cards on pile "0" -->
+          <%= @count_choosen_positive %>
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </button>
+    <% end %>
+    <%= link_to rejected_path, data: { turbo_frame: :board_frame } do %>
+      <button type="button" class="btn btn-primary position-relative me-3">
+        Rejected
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <!-- count of positive game_cards on pile "0" -->
+          <%= @count_rejected_positive %>
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </button>
+    <% end %>
+    <%= link_to plus_path, class: "me-3", style: "font-size: 2rem;", data: { turbo_frame: :buttons_frame } do %>
+      <i class="bi bi-plus-circle-fill"></i>
+    <% end %>
+    <%= link_to minus_path, class: "me-3", style: "font-size: 2rem;", data: { turbo_frame: :buttons_frame } do %>
+      <i class="bi bi-dash-circle"></i>
+    <% end %>
+  </div>
+<% end %>
