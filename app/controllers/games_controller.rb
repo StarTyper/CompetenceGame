@@ -28,176 +28,47 @@ class GamesController < ApplicationController
       end
     end
 
-    @game_cards = GameCard.joins(:card).where(game: @game)
-    set_counts
+    load_game_cards
   end
 
   def remaining
     # sets the pile to 0 "remaining"
     @game.update(pile: 0)
-    set_game
-    @game_cards = GameCard.joins(:card).where(game: @game)
-    set_counts
-    if @game.positive
-      @game_cards = GameCard.joins(:card).where(game: @game, pile: 0, cards: { positive: true })
-    else
-      @game_cards = GameCard.joins(:card).where(game: @game, pile: 0, cards: { positive: false })
-    end
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace("buttons_frame",
-                               partial: "buttons",
-                               locals: { game: @game,
-                                         game_cards: @game_cards,
-                                         count_remaining_positive: @count_remaining_positive,
-                                         count_choosen_positive: @count_choosen_positive,
-                                         count_rejected_positive: @count_rejected_positive,
-                                         count_remaining_negative: @count_remaining_negative,
-                                         count_choosen_negative: @count_choosen_negative,
-                                         count_rejected_negative: @count_rejected_negative }),
-          turbo_stream.replace("board_frame",
-                               partial: "board",
-                               locals: { game: @game,
-                                         game_cards: @game_cards })
-        ]
-      end
-      format.html do
-        redirect_to play_path, notice: 'You updated this item successfully.'
-      end
-    end
+    set_game_and_counts
+    load_game_cards
+    set_buttons_and_board
   end
 
   def choosen
     # sets the pile to 1 "choosen"
     @game.update(pile: 1)
-    set_game
-    @game_cards = GameCard.joins(:card).where(game: @game)
-    set_counts
-    if @game.positive
-      @game_cards = GameCard.joins(:card).where(game: @game, pile: 1, cards: { positive: true })
-    else
-      @game_cards = GameCard.joins(:card).where(game: @game, pile: 1, cards: { positive: false })
-    end
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace("buttons_frame",
-                               partial: "buttons",
-                               locals: { game: @game,
-                                         game_cards: @game_cards,
-                                         count_remaining_positive: @count_remaining_positive,
-                                         count_choosen_positive: @count_choosen_positive,
-                                         count_rejected_positive: @count_rejected_positive,
-                                         count_remaining_negative: @count_remaining_negative,
-                                         count_choosen_negative: @count_choosen_negative,
-                                         count_rejected_negative: @count_rejected_negative }),
-          turbo_stream.replace("board_frame",
-                              partial: "board",
-                              locals: { game: @game,
-                                        game_cards: @game_cards })
-        ]
-      end
-      format.html do
-        redirect_to play_path, notice: 'You updated this item successfully.'
-      end
-    end
+    set_game_and_counts
+    set_four_first_cards
+    set_buttons_and_board
   end
 
   def rejected
     # sets the pile to 2 "rejected"
     @game.update(pile: 2)
-    set_game
-    @game_cards = GameCard.joins(:card).where(game: @game)
-    set_counts
-    if @game.positive
-      @game_cards = GameCard.joins(:card).where(game: @game, pile: 2, cards: { positive: true })
-    else
-      @game_cards = GameCard.joins(:card).where(game: @game, pile: 2, cards: { positive: false })
-    end
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace("buttons_frame",
-                               partial: "buttons",
-                               locals: { game: @game,
-                                         game_cards: @game_cards,
-                                         count_remaining_positive: @count_remaining_positive,
-                                         count_choosen_positive: @count_choosen_positive,
-                                         count_rejected_positive: @count_rejected_positive,
-                                         count_remaining_negative: @count_remaining_negative,
-                                         count_choosen_negative: @count_choosen_negative,
-                                         count_rejected_negative: @count_rejected_negative }),
-          turbo_stream.replace("board_frame",
-                              partial: "board",
-                              locals: { game: @game,
-                                        game_cards: @game_cards })
-        ]
-      end
-      format.html do
-        redirect_to play_path, notice: 'You updated this item successfully.'
-      end
-    end
+    set_game_and_counts
+    set_four_first_cards
+    set_buttons_and_board
   end
 
   def plus
+    # sets the positive to true
     @game.update(positive: true)
-    set_game
-    @game_cards = GameCard.joins(:card).where(game: @game)
-    set_counts
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace("buttons_frame",
-                               partial: "buttons",
-                               locals: { game: @game,
-                                         game_cards: @game_cards,
-                                         count_remaining_positive: @count_remaining_positive,
-                                         count_choosen_positive: @count_choosen_positive,
-                                         count_rejected_positive: @count_rejected_positive,
-                                         count_remaining_negative: @count_remaining_negative,
-                                         count_choosen_negative: @count_choosen_negative,
-                                         count_rejected_negative: @count_rejected_negative }),
-          turbo_stream.replace("board_frame",
-                              partial: "board",
-                              locals: { game: @game,
-                              game_cards: @game_cards })
-        ]
-      end
-      format.html do
-        redirect_to play_path, notice: 'You updated this item successfully.'
-      end
-    end
+    set_game_and_counts
+    set_four_first_cards
+    set_buttons_and_board
   end
 
   def minus
+    # sets the positive to false
     @game.update(positive: false)
-    set_game
-    @game_cards = GameCard.joins(:card).where(game: @game)
-    set_counts
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace("buttons_frame",
-                               partial: "buttons",
-                               locals: { game: @game,
-                                         game_cards: @game_cards,
-                                         count_remaining_positive: @count_remaining_positive,
-                                         count_choosen_positive: @count_choosen_positive,
-                                         count_rejected_positive: @count_rejected_positive,
-                                         count_remaining_negative: @count_remaining_negative,
-                                         count_choosen_negative: @count_choosen_negative,
-                                         count_rejected_negative: @count_rejected_negative }),
-          turbo_stream.replace("board_frame",
-                              partial: "board",
-                              locals: { game: @game,
-                              game_cards: @game_cards })
-        ]
-      end
-      format.html do
-        redirect_to play_path, notice: 'You updated this item successfully.'
-      end
-    end
+    set_game_and_counts
+    set_four_first_cards
+    set_buttons_and_board
   end
 
   def finish
@@ -260,5 +131,80 @@ class GamesController < ApplicationController
     @count_remaining_negative = @game_cards.where(pile: 0, cards: { positive: false }).count
     @count_choosen_negative = @game_cards.where(pile: 1, cards: { positive: false }).count
     @count_rejected_negative = @game_cards.where(pile: 2, cards: { positive: false }).count
+  end
+
+  def set_buttons_and_board
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace("buttons_frame",
+                               partial: "buttons",
+                               locals: { game: @game,
+                                         game_cards: @game_cards,
+                                         count_remaining_positive: @count_remaining_positive,
+                                         count_choosen_positive: @count_choosen_positive,
+                                         count_rejected_positive: @count_rejected_positive,
+                                         count_remaining_negative: @count_remaining_negative,
+                                         count_choosen_negative: @count_choosen_negative,
+                                         count_rejected_negative: @count_rejected_negative }),
+          turbo_stream.replace("board_frame",
+                               partial: "board",
+                               locals: { game: @game,
+                                         game_cards: @game_cards })
+        ]
+      end
+      format.html do
+        redirect_to play_path, notice: 'You updated this item successfully.'
+      end
+    end
+  end
+
+  def set_game_and_counts
+    set_game
+    @game_cards = GameCard.joins(:card).where(game: @game)
+    set_counts
+  end
+
+  def set_four_first_cards
+    @game_cards = GameCard.joins(:card).where(game: @game, pile: @game.pile,
+                                              cards: { positive: @game.positive }).first(4)
+  end
+
+
+  def load_game_cards
+    @game_cards = fetch_game_cards
+    set_counts
+
+    @game_cards = filtered_game_cards
+    @game_cards = sort_by_groupgerman(@game_cards)
+    select_first_group_cards
+    update_selected_cards(@game_cards)
+
+    @game_cards = selected_game_cards(@game_cards)
+  end
+
+  def fetch_game_cards
+    GameCard.joins(:card).where(game: @game)
+  end
+
+  def filtered_game_cards
+    GameCard.joins(:card).where(game: @game, pile: @game.pile, cards: { positive: @game.positive })
+  end
+
+  def sort_by_groupgerman(game_cards)
+    game_cards.sort_by { |game_card| game_card.card.groupgerman }
+  end
+
+  def select_first_group_cards
+    first_group = @game_cards.first.card.groupgerman
+    @game_cards.select! { |game_card| game_card.card.groupgerman == first_group }
+  end
+
+  def update_selected_cards(game_cards)
+    game_cards.each { |game_card| game_card.update(selected: true) }
+  end
+
+  def selected_game_cards(game_cards)
+    game_cards.select { |game_card| game_card.selected }
   end
 end

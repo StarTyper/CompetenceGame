@@ -26,6 +26,11 @@ Rails.application.routes.draw do
   # resource for game finish
   get "finish" => "games#finish", as: :finish
 
+  # resource for game cards choose
+  patch "choose" => "game_cards#choose", as: :choose
+  # resource for game reject
+  patch "reject" => "game_cards#reject", as: :reject
+
   # resource for pages rules
   get "rules" => "pages#rules", as: :rules
 
