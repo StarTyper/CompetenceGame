@@ -1,11 +1,23 @@
 <%= turbo_frame_tag :board_frame do%>
-  <h1>Remaining</h1>
+  <h1>
+    <% if @game.pile == 0 %>
+      Remaining
+    <% elsif @game.pile == 1 %>
+      Choosen
+    <% elsif @game.pile == 2 %>
+      Rejected
+    <% end %>
+  </h1>
   <% @game_cards.each do |game_card| %>
     <div class="card text-center mb-3 rounded-5 shadow" style="width: 18rem;">
       <div class="card-body d-flex flex-column">
         <div class="card-buttons-top d-flex justify-content-between">
           <i class="bi bi-info-circle"></i>
-          <i class="bi bi-plus-circle"></i>
+          <% if game_card.card.positive == true %>
+            <i class="bi bi-plus-circle"></i>
+          <% else %>
+            <i class="bi bi-dash-circle"></i>
+          <% end %>
         </div>
         <div class="trait py-4">
           <h5 class="card-title">

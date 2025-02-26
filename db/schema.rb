@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_25_100729) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_26_112826) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_25_100729) do
     t.datetime "updated_at", null: false
     t.integer "count_positive", default: 10, null: false
     t.integer "count_negative", default: 5, null: false
+    t.integer "pile", default: 0, null: false
+    t.boolean "positive", default: true, null: false
     t.index ["client_id"], name: "index_games_on_client_id"
     t.index ["user_id"], name: "index_games_on_user_id"
   end

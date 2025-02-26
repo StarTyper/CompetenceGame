@@ -14,15 +14,15 @@ Rails.application.routes.draw do
   # resource for game play
   get "play" => "games#play", as: :play
   # resource for game remaining cards
-  get "remaining" => "games#remaining", as: :remaining
+  patch "remaining" => "games#remaining", as: :remaining
   # resource for game choosen cards
-  get "choosen" => "games#choosen", as: :choosen
+  patch "choosen" => "games#choosen", as: :choosen
   # resource for game rejected cards
-  get "rejected" => "games#rejected", as: :rejected
-  # resource for game plus
-  get "plus" => "games#plus", as: :plus
+  patch "rejected" => "games#rejected", as: :rejected
+  # patch route for game plus
+  patch "plus" => "games#plus", as: :plus
   # resource for game minus
-  get "minus" => "games#minus", as: :minus
+  patch "minus" => "games#minus", as: :minus
   # resource for game finish
   get "finish" => "games#finish", as: :finish
 

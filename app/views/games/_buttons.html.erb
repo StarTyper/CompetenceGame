@@ -1,0 +1,69 @@
+<%= turbo_frame_tag :buttons_frame do%>
+  <div class="buttons-play">
+    <!-- Button Remaining -->
+    <%= link_to remaining_path, data: { turbo_method: :patch } do %>
+      <button type="button" class="btn btn-primary rounded-pill position-relative me-3">
+        Remaining
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <% if @game.positive == true %>
+            <!-- count of positive game_cards on pile "0" -->
+            <%= @count_remaining_positive %>
+          <% else %>
+            <!-- count of positive game_cards on pile "0" -->
+            <%= @count_remaining_negative %>
+          <% end %>
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </button>
+    <% end %>
+    <!-- Button Choosen -->
+    <%= link_to choosen_path, data: { turbo_method: :patch } do %>
+      <button type="button" class="btn btn-primary rounded-pill position-relative me-3">
+        Choosen
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <% if @game.positive == true %>
+            <!-- count of positive game_cards on pile "1" -->
+            <%= @count_choosen_positive %>
+          <% else %>
+            <!-- count of positive game_cards on pile "1" -->
+            <%= @count_choosen_negative %>
+          <% end %>
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </button>
+    <% end %>
+    <!-- Button Rejected -->
+    <%= link_to rejected_path, data: { turbo_method: :patch } do %>
+      <button type="button" class="btn btn-primary rounded-pill position-relative me-3">
+        Rejected
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <!-- count of positive game_cards on pile "2" -->
+          <% if @game.positive == true %>
+            <!-- count of positive game_cards on pile "2" -->
+            <%= @count_rejected_positive %>
+          <% else %>
+            <!-- count of positive game_cards on pile "2" -->
+            <%= @count_rejected_negative %>
+          <% end %>
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </button>
+    <% end %>
+    <!-- Button "+" -->
+    <%= link_to plus_path, class: "me-3", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+      <% if @game.positive == true %>
+        <i class="bi bi-plus-circle-fill"></i>
+      <% else %>
+        <i class="bi bi-plus-circle"></i>
+      <% end %>
+    <% end %>
+    <!-- Button "-" -->
+    <%= link_to minus_path, class: "me-3", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+      <% if @game.positive == true %>
+        <i class="bi bi-dash-circle"></i>
+      <% else %>
+        <i class="bi bi-dash-circle-fill"></i>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

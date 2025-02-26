@@ -30,13 +30,13 @@
       </div>
       <!-- Button-Row -->
       <%= turbo_frame_tag :buttons_frame do%>
-        <%= render 'games/buttons-positive' %>
+        <%= render 'games/buttons' %>
       <% end %>
     </div>
     <div class="board-play">
       <!-- render game/remaining -->
-      <%= turbo_frame_tag :remaining_frame do%>
-        <%= render 'games/remaining' %>
+      <%= turbo_frame_tag :board_frame do%>
+        <%= render 'games/board' %>
       <% end %>
     </div>
   </div>
