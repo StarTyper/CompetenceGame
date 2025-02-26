@@ -1,7 +1,7 @@
 <%= turbo_frame_tag :buttons_frame do%>
   <div class="buttons-play">
     <%= link_to remaining_path, data: { turbo_frame: :board_frame } do %>
-      <button type="button" class="btn btn-primary position-relative me-3">
+      <button type="button" class="btn btn-primary rounded-pill position-relative me-3">
         Remaining
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           <!-- count of positive game_cards on pile "0" -->
@@ -11,7 +11,7 @@
       </button>
     <% end %>
     <%= link_to choosen_path, data: { turbo_frame: :board_frame } do %>
-      <button type="button" class="btn btn-primary position-relative me-3">
+      <button type="button" class="btn btn-primary rounded-pill position-relative me-3">
         Choosen
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           <!-- count of positive game_cards on pile "0" -->
@@ -21,7 +21,7 @@
       </button>
     <% end %>
     <%= link_to rejected_path, data: { turbo_frame: :board_frame } do %>
-      <button type="button" class="btn btn-primary position-relative me-3">
+      <button type="button" class="btn btn-primary rounded-pill position-relative me-3">
         Rejected
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           <!-- count of positive game_cards on pile "0" -->
