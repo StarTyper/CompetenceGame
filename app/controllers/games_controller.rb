@@ -28,7 +28,13 @@ class GamesController < ApplicationController
       end
     end
 
-    load_game_cards
+    set_counts
+
+    if @game.pile.zero?
+      load_game_cards
+    else
+      set_all_cards
+    end
   end
 
   def remaining
@@ -59,7 +65,7 @@ class GamesController < ApplicationController
     # sets the positive to true
     @game.update(positive: true)
     set_game_and_counts
-    if @game.pile == 0
+    if @game.pile.zero?
       load_game_cards
     else
       set_all_cards
@@ -71,11 +77,46 @@ class GamesController < ApplicationController
     # sets the positive to false
     @game.update(positive: false)
     set_game_and_counts
-    if @game.pile == 0
+    if @game.pile.zero?
       load_game_cards
     else
       set_all_cards
     end
+    set_buttons_and_board
+  end
+
+  def choose
+    @game_card = GameCard.find(params[:game_card_id])
+    @game_card.update(pile: 1)
+    set_game_and_counts
+    if @game.pile.zero?
+      load_game_cards
+    else
+      set_all_cards
+    end
+    set_buttons_and_board
+  end
+
+  def reject
+    @game_card = GameCard.find(params[:game_card_id])
+    @game_card.update(pile: 2)
+    set_game_and_counts
+    if @game.pile.zero?
+      load_game_cards
+    else
+      set_all_cards
+    end
+    set_buttons_and_board
+  end
+
+  def next_group
+    if @game.positive
+      @game.update(group_positive: @game.group_positive + 1)
+    else
+      @game.update(group_negative: @game.group_negative + 1)
+    end
+    set_game_and_counts
+    load_game_cards
     set_buttons_and_board
   end
 
@@ -118,9 +159,9 @@ class GamesController < ApplicationController
 
   private
 
-    def game_params
-      params.require(:game).permit(:name, :status, :score, :client_id, :user_id)
-    end
+  def game_params
+    params.require(:game).permit(:name, :status, :score, :client_id, :user_id)
+  end
 
   def set_user
     @user = current_user
@@ -142,10 +183,10 @@ class GamesController < ApplicationController
     @count_rejected_negative = @game_cards.where(pile: 2, cards: { positive: false }).count
   end
 
-    def set_game_and_counts
-      set_game
-      set_counts
-    end
+  def set_game_and_counts
+    set_game
+    set_counts
+  end
 
   def set_buttons_and_board
     respond_to do |format|
@@ -178,25 +219,19 @@ class GamesController < ApplicationController
                                               cards: { positive: @game.positive })
   end
 
-
   def load_game_cards
     set_counts
-    unique_groupsgerman(@game.positive)
-    raise
-    @game_cards = @game_cards.sort_by { |game_card| game_card.card.groupgerman }
-    first_group = @game_cards.first.card.groupgerman
-    @game_cards.select! { |game_card| game_card.card.groupgerman == first_group }
-    @game_cards.each { |game_card| game_card.update(selected: true) }
-
-    @game_cards = @game_cards.select { |game_card| game_card.selected }
+    @groups = Card.where(positive: @game.positive).pluck(:groupgerman).uniq.sort
+    @group = @groups[@game.public_send(@game.positive ? 'group_positive' : 'group_negative')]
+    @game_cards = GameCard.joins(:card).where(cards: { groupgerman: @group }).where(game_id: @game.id).order(:id)
+    if none_on_pile_zero?(@game_cards)
+      @next_group = true
+    else
+      @next_group = false
+    end
   end
 
-  def unique_groupsgerman(positive)
-    @groupsgerman = Card.where(positive: positive)           # Filter cards where positive is true
-                         .pluck(:groupgerman)            # Get the groupgerman values
-                         .uniq                            # Get unique entries
-                         .sort                            # Sort them alphabetically
-
-    # You can now use @groupsgerman in your view or further processing in this action
+  def none_on_pile_zero?(game_cards)
+    game_cards.none? { |game_card| game_card.pile.zero? }
   end
 end

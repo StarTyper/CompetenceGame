@@ -23,13 +23,14 @@ Rails.application.routes.draw do
   patch "plus" => "games#plus", as: :plus
   # resource for game minus
   patch "minus" => "games#minus", as: :minus
+  # resource for game cards choose
+  patch "choose" => "games#choose", as: :choose
+  # resource for game cards reject
+  patch "reject" => "games#reject", as: :reject
+  # resource for game next group
+  patch "next_group" => "games#next_group", as: :next_group
   # resource for game finish
   get "finish" => "games#finish", as: :finish
-
-  # resource for game cards choose
-  patch "choose" => "game_cards#choose", as: :choose
-  # resource for game reject
-  patch "reject" => "game_cards#reject", as: :reject
 
   # resource for pages rules
   get "rules" => "pages#rules", as: :rules

@@ -1,5 +1,4 @@
 class GameCardsController < ApplicationController
-
   def choose
     @game_card = GameCard.find(params[:game_card_id])
     @game_card.update(pile: 1)
