@@ -43,7 +43,7 @@ class GamesController < ApplicationController
     # sets the pile to 1 "choosen"
     @game.update(pile: 1)
     set_game_and_counts
-    set_four_first_cards
+    set_all_cards
     set_buttons_and_board
   end
 
@@ -51,7 +51,7 @@ class GamesController < ApplicationController
     # sets the pile to 2 "rejected"
     @game.update(pile: 2)
     set_game_and_counts
-    set_four_first_cards
+    set_all_cards
     set_buttons_and_board
   end
 
@@ -59,7 +59,11 @@ class GamesController < ApplicationController
     # sets the positive to true
     @game.update(positive: true)
     set_game_and_counts
-    set_four_first_cards
+    if @game.pile == 0
+      load_game_cards
+    else
+      set_all_cards
+    end
     set_buttons_and_board
   end
 
@@ -67,7 +71,11 @@ class GamesController < ApplicationController
     # sets the positive to false
     @game.update(positive: false)
     set_game_and_counts
-    set_four_first_cards
+    if @game.pile == 0
+      load_game_cards
+    else
+      set_all_cards
+    end
     set_buttons_and_board
   end
 
@@ -110,6 +118,10 @@ class GamesController < ApplicationController
 
   private
 
+    def game_params
+      params.require(:game).permit(:name, :status, :score, :client_id, :user_id)
+    end
+
   def set_user
     @user = current_user
   end
@@ -118,11 +130,8 @@ class GamesController < ApplicationController
     @game = Game.where(user: @user, status: "running").first
   end
 
-  def game_params
-    params.require(:game).permit(:name, :status, :score, :client_id, :user_id)
-  end
-
   def set_counts
+    @game_cards = GameCard.joins(:card).where(game: @game)
     @count_positive = @game.count_positive
     @count_negative = @game.count_negative
     @count_remaining_positive = @game_cards.where(pile: 0, cards: { positive: true }).count
@@ -132,6 +141,11 @@ class GamesController < ApplicationController
     @count_choosen_negative = @game_cards.where(pile: 1, cards: { positive: false }).count
     @count_rejected_negative = @game_cards.where(pile: 2, cards: { positive: false }).count
   end
+
+    def set_game_and_counts
+      set_game
+      set_counts
+    end
 
   def set_buttons_and_board
     respond_to do |format|
@@ -159,52 +173,30 @@ class GamesController < ApplicationController
     end
   end
 
-  def set_game_and_counts
-    set_game
-    @game_cards = GameCard.joins(:card).where(game: @game)
-    set_counts
-  end
-
-  def set_four_first_cards
+  def set_all_cards
     @game_cards = GameCard.joins(:card).where(game: @game, pile: @game.pile,
-                                              cards: { positive: @game.positive }).first(4)
+                                              cards: { positive: @game.positive })
   end
 
 
   def load_game_cards
-    @game_cards = fetch_game_cards
     set_counts
-
-    @game_cards = filtered_game_cards
-    @game_cards = sort_by_groupgerman(@game_cards)
-    select_first_group_cards
-    update_selected_cards(@game_cards)
-
-    @game_cards = selected_game_cards(@game_cards)
-  end
-
-  def fetch_game_cards
-    GameCard.joins(:card).where(game: @game)
-  end
-
-  def filtered_game_cards
-    GameCard.joins(:card).where(game: @game, pile: @game.pile, cards: { positive: @game.positive })
-  end
-
-  def sort_by_groupgerman(game_cards)
-    game_cards.sort_by { |game_card| game_card.card.groupgerman }
-  end
-
-  def select_first_group_cards
+    unique_groupsgerman(@game.positive)
+    raise
+    @game_cards = @game_cards.sort_by { |game_card| game_card.card.groupgerman }
     first_group = @game_cards.first.card.groupgerman
     @game_cards.select! { |game_card| game_card.card.groupgerman == first_group }
+    @game_cards.each { |game_card| game_card.update(selected: true) }
+
+    @game_cards = @game_cards.select { |game_card| game_card.selected }
   end
 
-  def update_selected_cards(game_cards)
-    game_cards.each { |game_card| game_card.update(selected: true) }
-  end
+  def unique_groupsgerman(positive)
+    @groupsgerman = Card.where(positive: positive)           # Filter cards where positive is true
+                         .pluck(:groupgerman)            # Get the groupgerman values
+                         .uniq                            # Get unique entries
+                         .sort                            # Sort them alphabetically
 
-  def selected_game_cards(game_cards)
-    game_cards.select { |game_card| game_card.selected }
+    # You can now use @groupsgerman in your view or further processing in this action
   end
 end
