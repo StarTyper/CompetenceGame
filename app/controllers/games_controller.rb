@@ -31,7 +31,7 @@ class GamesController < ApplicationController
     set_counts
 
     if @game.pile.zero?
-      load_game_cards
+      load_remaining_cards
     else
       set_all_cards
     end
@@ -41,7 +41,7 @@ class GamesController < ApplicationController
     # sets the pile to 0 "remaining"
     @game.update(pile: 0)
     set_game_and_counts
-    load_game_cards
+    load_remaining_cards
     set_buttons_and_board
   end
 
@@ -66,7 +66,7 @@ class GamesController < ApplicationController
     @game.update(positive: true)
     set_game_and_counts
     if @game.pile.zero?
-      load_game_cards
+      load_remaining_cards
     else
       set_all_cards
     end
@@ -78,7 +78,7 @@ class GamesController < ApplicationController
     @game.update(positive: false)
     set_game_and_counts
     if @game.pile.zero?
-      load_game_cards
+      load_remaining_cards
     else
       set_all_cards
     end
@@ -90,7 +90,7 @@ class GamesController < ApplicationController
     @game_card.update(pile: 1)
     set_game_and_counts
     if @game.pile.zero?
-      load_game_cards
+      load_remaining_cards
     else
       set_all_cards
     end
@@ -102,7 +102,7 @@ class GamesController < ApplicationController
     @game_card.update(pile: 2)
     set_game_and_counts
     if @game.pile.zero?
-      load_game_cards
+      load_remaining_cards
     else
       set_all_cards
     end
@@ -116,7 +116,7 @@ class GamesController < ApplicationController
       @game.update(group_negative: @game.group_negative + 1)
     end
     set_game_and_counts
-    load_game_cards
+    load_remaining_cards
     set_buttons_and_board
   end
 
@@ -219,12 +219,13 @@ class GamesController < ApplicationController
                                               cards: { positive: @game.positive })
   end
 
-  def load_game_cards
+  def load_remaining_cards
     set_counts
     @groups = Card.where(positive: @game.positive).pluck(:groupgerman).uniq.sort
     @group = @groups[@game.public_send(@game.positive ? 'group_positive' : 'group_negative')]
     @game_cards = GameCard.joins(:card).where(cards: { groupgerman: @group }).where(game_id: @game.id).order(:id)
-    if none_on_pile_zero?(@game_cards)
+    @cards_empty = @game.public_send(@game.positive ? 'group_positive' : 'group_negative') >= @groups.count
+    if none_on_pile_zero?(@game_cards) && !@cards_empty
       @next_group = true
     else
       @next_group = false

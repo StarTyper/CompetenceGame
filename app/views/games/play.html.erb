@@ -7,26 +7,10 @@
             <h1 class="lato-bold"><%= @game.name %></h1>
           <% end %>
         </div>
-        <div class="count-play d-flex">
-          <div class="count-plus d-flex me-3">
-            <h2 class="lato-bold"><%= @count_positive %></h2>
-            <i class="bi bi-plus-circle"></i>
-          </div>
-          <div class="count-minus d-flex">
-            <h2 class="lato-bold"><%= @count_negative %></h2>
-            <div class="minus-icon" style="font-size: 1rem;">
-              <i class="bi bi-dash-circle"></i>
-            </div>
-          </div>
-        </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rules">
-          <% if @user.language == "english" %>
-            Rules
-          <% elsif @user.language == "german" %>
-            Regeln
-          <% end %>
-        </button>
+        <!-- Button trigger modal Rulebook -->
+        <a href="#" style="font-size: 2rem;" class="text-decoration-none text-black" data-bs-toggle="modal" data-bs-target="#rules">
+            <i class="bi bi-book"></i>
+        </a>
       </div>
       <!-- Button-Row -->
       <%= turbo_frame_tag :buttons_frame do%>
@@ -37,7 +21,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal for Rulebook -->
 <div class="modal fade" id="rules" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

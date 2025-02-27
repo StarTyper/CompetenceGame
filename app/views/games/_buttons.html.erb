@@ -1,4 +1,33 @@
 <%= turbo_frame_tag :buttons_frame do%>
+    <!-- Game Card Target Counter -->
+    <div class="count-play d-flex">
+      <div class="count-plus d-flex me-3
+        <% if @count_choosen_positive > @count_positive %>
+        text-danger
+        <% elsif @count_choosen_positive == @count_positive %>
+        text-success
+        <% else %>
+        text-warning
+        <% end %>
+      ">
+        <h2 class="lato-bold"><%= @count_positive %></h2>
+        <i class="bi bi-plus-circle"></i>
+      </div>
+      <div class="count-minus d-flex
+        <% if @count_choosen_negative > @count_negative %>
+        text-danger
+        <% elsif @count_choosen_negative == @count_negative %>
+        text-success
+        <% else %>
+        text-warning
+        <% end %>
+      ">
+        <h2 class="lato-bold"><%= @count_negative %></h2>
+        <div class="minus-icon" style="font-size: 1rem;">
+          <i class="bi bi-dash-circle"></i>
+        </div>
+      </div>
+    </div>
     <!-- Button Remaining -->
     <%= link_to remaining_path, class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
       <i class="bi
@@ -83,5 +112,15 @@
           <i class="bi bi-arrow-right-circle text-secondary"></i>
         </span>
       <% end %>
+    <% end %>
+    <!-- Button Finish -->
+    <% if @count_choosen_positive == @count_positive && @count_choosen_negative == @count_negative %> <!-- if all cards are choosen -->
+      <%= link_to finish_path, class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;" do %>
+        <i class="bi bi-play-circle-fill text-success"></i>
+      <% end %>
+    <% else %> <!-- if not all cards are choosen -->
+      <span class="me-3 link-underline link-underline-opacity-0" style="font-size: 2rem; pointer-events: none; color: gray;">
+        <i class="bi bi-play-circle"></i>
+      </span>
     <% end %>
 <% end %>
