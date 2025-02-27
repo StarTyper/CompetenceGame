@@ -153,8 +153,9 @@
         </div>
       </div>
     </div>
-    <div class="game-graphics">
-
+    <div class="game-graphics d-flex">
+      <%= pie_chart [["methodical", @methodical_positive.count], ["social", @social_positive.count], ["professional", @professional_positive.count], ["intuitive", @intuitive_positive.count], ["personal", @personal_positive.count]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"] %>
+      <%= pie_chart [["methodical", @methodical_negative.count], ["social", @social_negative.count], ["professional", @professional_negative.count], ["intuitive", @intuitive_negative.count], ["personal", @personal_negative.count]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"] %>
     </div>
   </div>
 </div>
