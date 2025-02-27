@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="game-page">
+    <div class="heading-game mb-5">
+      <div class="top-row-play d-flex justify-content-between">
+        <div class="title-game">
+          <h1 class="lato-bold"><%= @game.name %></h1>
+        </div>
+      </div>
+    </div>
+    <div class="content-game">
+      <div class="game-stats">
+        <p class="card-date-time"><%= @game.created_at.strftime("%d.%m.%Y") %> at <%= @game.created_at.strftime("%H:%M") %>
+          Duration:
+          <!-- add game duration by calculating the difference between created_at and updated_at in minutes, if below an hour and in hh:mm if above -->
+            <% if ((@game.updated_at - @game.created_at) / 60).round < 60 %>
+            <%= ((@game.updated_at - @game.created_at) / 60).round %> min
+          <% else %>
+            <%= ((@game.updated_at - @game.created_at) / 60).divmod(60).map { |t| t.to_i.to_s.rjust(2, '0') }.join(':') %>
+          <% end %>
+        </p>
+        <!-- count of cards positive of the game -->
+        <p class="card-text">Positive: <%= @game.count_positive %></p>
+        <!-- count of cards negative of the game -->
+        <p class="card-text">Negative: <%= @game.count_negative %></p>
+      </div>
+      <div class="game-board">
+        <!-- Board Cards -->
+        <div class="card-container row">
+          <% GameCard.all.first(12).each do |game_card| %>
+            <div class="card text-center rounded-5 shadow m-3" style="width: 18rem;">
+              <div class="card-body d-flex flex-column">
+                <!-- Buttons Top -->
+                <div class="card-buttons-top d-flex justify-content-between">
+                  <i class="bi bi-info-circle" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#game_card_<%= game_card.id %>"></i>
+                  <% if game_card.card.positive == true %>
+                    <i class="bi bi-plus-circle" style="font-size: 2rem;"></i>
+                  <% else %>
+                    <i class="bi bi-dash-circle" style="font-size: 2rem;"></i>
+                  <% end %>
+                </div>
+                <!-- Trait -->
+                <div class="trait py-4 d-flex justify-content-center flex-fill">
+                  <h5 class="card-title align-self-center lato-bold">
+                    <% if @user.language == "german" %>
+                      <%= game_card.card.namegerman %>
+                    <% elsif @user.language == "english" %>
+                      <%= game_card.card.nameenglish %>
+                    <% end %>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="game-graphics"></div>
+    </div>
+  </div>
+</div>
+<!-- Modals -->
+<% GameCard.all.first(12).each do |game_card| %>
+  <div class="modal" id="game_card_<%= game_card.id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-5">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            <% if @user.language == "english" %>
+              <%= game_card.card.nameenglish %>
+            <% elsif @user.language == "german" %>
+              <%= game_card.card.namegerman %>
+            <% end %>
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <% if @user.language == "english" %>
+              <%= game_card.card.explanationenglish %>
+            <% elsif @user.language == "german" %>
+              <%= game_card.card.explanationgerman %>
+            <% end %>
+        </div>
+        <!-- <div class="modal-footer"> -->
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+<% end %>

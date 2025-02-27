@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="games-page">
+    <div class="heading-games mb-5">
+      <div class="top-row-play d-flex justify-content-between">
+        <div class="title-games">
+          <% if @user.language == "english" %>
+            <h1 class="lato-bold">My Games</h1>
+          <% elsif @user.language == "german" %>
+            <h1 class="lato-bold">Meine Spiele</h1>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="content-games">
+      <div class="d-flex flex-column justify-content-center align-items-center">
+        <% @games.each do |game| %>
+          <div class="card col-xl-6 col-lg-7 col-md-9 col-sm-12 m-3">
+            <h5 class="card-header"><%= game.name %></h5>
+            <div class="card-body">
+              <p class="card-date-time"><%= game.created_at.strftime("%d.%m.%Y") %> at <%= game.created_at.strftime("%H:%M") %>
+                <% if game.status == "finished" %>
+                  Duration:
+                  <!-- add game duration by calculating the difference between created_at and updated_at in minutes, if below an hour and in hh:mm if above -->
+                  <% if (game.updated_at - game.created_at).round / 60 < 60 %>
+                    <%= (game.updated_at - game.created_at).round / 60 %> min
+                  <% else %>
+                    <%= ((game.updated_at - game.created_at) / 60).divmod(60).map { |t| t.to_i.to_s.rjust(2, '0') }.join(':') %> h
+                  <% end %>
+                <% end %>
+              </p>
+            <!-- count of cards positive of the game -->
+            <p class="card-text">Positive: <%= game.count_positive %></p>
+            <!-- count of cards negative of the game -->
+            <p class="card-text">Negative: <%= game.count_negative %></p>
+              <!-- if game.status == "running" "play" button with link to games play page -->
+              <% if game.status == "running" %>
+                <%= link_to "Play", play_path, class: "btn btn-secondary" %>
+              <!-- if game.status == "finished" "Inspect" button with link to games show page -->
+              <% else %>
+                <%= link_to "Inspect", game_path(game), class: "btn btn-secondary" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+    </div>
+  </div>
+</div>

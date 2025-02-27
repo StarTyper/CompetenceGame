@@ -2,10 +2,6 @@ class GamesController < ApplicationController
   before_action :set_user
   before_action :set_game
 
-  def index
-    @games = Game.where(user: @user)
-  end
-
   def play
     if @game.nil?
       @game = Game.create(name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
@@ -125,7 +121,12 @@ class GamesController < ApplicationController
     redirect_to games_url
   end
 
+  def index
+    @games = Game.where(user: @user)
+  end
+
   def show
+    @game = Game.find(params[:id])
   end
 
   def new
