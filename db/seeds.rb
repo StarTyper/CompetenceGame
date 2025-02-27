@@ -54,6 +54,7 @@ User.find_or_create_by!(email: "Peter.Olgemoeller@vetter-pharma.com") do |user|
   user.password_confirmation = "password"
   user.role = "manager"
   user.client_id = ansbach.id
+  user.language = "german"
 end
 
 # create a seed for the user "employee"
@@ -64,6 +65,7 @@ User.find_or_create_by!(email: "knapp.sitte@gmail.com") do |user|
   user.password_confirmation = "password"
   user.role = "employee"
   user.client_id = ansbach.id
+  user.language = "german"
 end
 
 # --------------------------------------------
