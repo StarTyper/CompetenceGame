@@ -1,0 +1,23 @@
+<div class="card text-center rounded-5 shadow m-3" style="">
+  <div class="card-body d-flex flex-column">
+    <!-- Buttons Top -->
+    <div class="card-buttons-top d-flex justify-content-between">
+      <i class="bi bi-info-circle" style="font-size: 1rem;" data-bs-toggle="modal" data-bs-target="#game_card_<%= game_card.id %>"></i>
+      <% if game_card.card.positive == true %>
+        <i class="bi bi-plus-circle" style="font-size: 1rem;"></i>
+      <% else %>
+        <i class="bi bi-dash-circle" style="font-size: 1rem;"></i>
+      <% end %>
+    </div>
+    <!-- Trait -->
+    <div class="trait py-4 d-flex justify-content-center flex-fill">
+      <h5 class="card-title align-self-center lato-bold">
+        <% if @user.language == "german" %>
+          <%= game_card.card.namegerman %>
+        <% elsif @user.language == "english" %>
+          <%= game_card.card.nameenglish %>
+        <% end %>
+      </h5>
+    </div>
+  </div>
+</div>

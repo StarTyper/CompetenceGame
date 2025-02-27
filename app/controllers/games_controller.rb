@@ -127,6 +127,28 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    # function to assign all positive game cards on pile 1 from the categorygerman "methodisch" to @methodical_positive
+    @methodical_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "methodisch", positive: true })
+    # function to assign all negative game cards on pile 1 from the categorygerman "methodisch" to @methodical_negative
+    @methodical_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "methodisch", positive: false })
+    # function to assign all positive game cards on pile 1 from the categorygerman "sozial" to @social_positive
+    @social_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "sozial", positive: true })
+    # function to assign all negative game cards on pile 1 from the categorygerman "sozial" to @social_negative
+    @social_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "sozial", positive: false })
+    # function to assign all positive game cards on pile 1 from the categorygerman "fachlich" to @professional_positive
+    @professional_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "fachlich", positive: true })
+    # function to assign all negative game cards on pile 1 from the categorygerman "fachlich" to @professional_negative
+    @professional_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "fachlich", positive: false })
+    # function to assign all positive game cards on pile 1 from the categorygerman "intuitiv" to @intuitive_positive
+    @intuitive_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "intuitiv", positive: true })
+    # function to assign all negative game cards on pile 1 from the categorygerman "intuitiv" to @intuitive_negative
+    @intuitive_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "intuitiv", positive: false })
+    # function to assign all positive game cards on pile 1 from the categorygerman "persönlich" to @personal_positive
+    @personal_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "persönlich", positive: true })
+    # function to assign all negative game cards on pile 1 from the categorygerman "persönlich" to @personal_negative
+    @personal_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "persönlich", positive: false })
+    # function to assign all cards from this game on pile 1 to @choosen_cards
+    @choosen_cards = GameCard.where(game: @game, pile: 1)
   end
 
   def new
