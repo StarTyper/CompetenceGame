@@ -129,8 +129,11 @@ class GamesController < ApplicationController
 
   def finish
     @game = Game.find_by(id: params[:id])
-    @game.update(status: "finished")
-    redirect_to games_url
+    if @game.update(status: "finished")
+      redirect_to game_path(id: @game), notice: 'Game successfully finished.'
+    else
+      redirect_to games_path, alert: 'Failed to finish game.'
+    end
   end
 
   def index

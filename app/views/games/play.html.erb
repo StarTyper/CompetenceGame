@@ -28,9 +28,9 @@
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">
           <% if @user.language == "english" %>
-            Rules
+            How to Play
           <% elsif @user.language == "german" %>
-            Regeln
+            Ablauf
           <% end %>
         </h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -39,16 +39,16 @@
         <% if @user.language == "english" %>
             Content
           <% elsif @user.language == "german" %>
-            <h1>
-              CREA LEADERSHIP Kompetenzmodell®
-            </h1>
-            <h2>
-              Management-Tool
-              CREA LEADERSHIP Kompetenz Spiel®
-            </h2>
             <p>
-              Handlungskompetenzen sind die Grundvoraussetzungen für die Leistungsfähigkeit der einzelnen Teammitglieder bzw. des Teams. Die synergetische Kraft der einzelnen Kompetenzen entscheidet über den Erfolg der gemeinsamen Mission. Aufgrund dieser Besonderheit hat CREA LEADERSHIP® ein gezieltes Kompetenzmanagement entwickelt. Neben den klassischen Kompetenzarten, wird die intuitive Kompetenz als fünfte Kompetenzart integriert. Diese Integration der Intuition ist das Alleinstellungsmerkmal dieses Kompetenzmodells im Vergleich zu anderen Modellen. CREA LEADERSHIP erfordert einen ganzheitlichen Ausgleich der am systematischen Wertschöpfungsprozess beteiligten Kompetenzen. Nur wenn die gemeinschaftlichen Kompetenzfelder synergetisch ausgerichtet und an die jeweiligen Projektphasen angepasst werden, lassen sich wirklich innovative Produkte und Dienstleistungen erschaffen.
-              Das CREA LEADERSHIP Kompetenzmodell® greift die Leitgedanken von Carl Gustav Jung auf und differenziert die methodische Kompetenz (Empfinden), die intuitive Kompetenz (Intuieren), die soziale Kompetenz (Fühlen), die fachliche Kompetenz (Denken) und die persönliche Kompetenz (Handeln). Das Modell berücksichtigt die zentralen Kompetenzarten (fachliche, methodische, soziale, intuitive und persönliche Kompetenz). Die Intuition ist eine der zentralen Quellen unseres schöpferischen Handelns. Sie erschließt sich uns über unsere intuitive Wahrnehmung. Aus diesem Grunde ist es unerlässlich, die intuitive Kompetenz integrativ in das Kompetenzmodell einzubeziehen, um ein holistisches Kompetenzmanagement zu erreichen. Um die vor uns liegenden Aufgaben zu bewältigen, wird es nötig, eine Synthese aus Rationalität und Emotionalität zu erreichen. Wir brauchen ein „Sowohl-als-auch-Denken“, um unsere rationalen und emotionalen Fähigkeiten zu vereinen. Wir brauchen senso-motorische Fähigkeiten (Macher), ebenso wie analytische-logische (Analytiker), vitarativ-harmonische (Gestalter), phantasievoll-schöpferische (Entdecker) und holistisch-reflektierende Fähigkeiten (Meister). Im Zusammenspiel der Intelligenzen, Kreativitäten und Kompetenzen entfaltet sich der individuelle bzw. der kollektive innovative Handabdruck als unser verwirklichtes Innovationspotential.
+              Das Ziel ist es die angegebene Anzahl an positiven <i class="bi bi-plus-circle"></i> und negativen <i class="bi bi-dash-circle"></i> Karten zu finden.
+              <br><br>
+              Es werden immer 2-4 Karten mit ähnlichen Werten angezeigt.
+              <br><br>
+              Jede dieser Karten muss entweder als gewählt <i class="bi bi-check-circle"></i> oder abgelehnt <i class="bi bi-x-circle"></i> markiert werden.
+              <br><br>
+              Anschließend können über den Pfeil <i class="bi bi-arrow-right-circle"></i> die nächsten Karten aufgedeckt werden.
+              <br><br>
+              Sobald die exakte Anzahl an positiven und negativen Karten gefunden wurde, kann das Spiel mit <i class="bi bi-play-circle"></i> beendet werden.
             </p>
           <% end %>
       </div>

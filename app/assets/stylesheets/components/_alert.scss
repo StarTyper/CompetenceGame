@@ -3,4 +3,10 @@
   bottom: 16px;
   right: 16px;
   z-index: 1000;
+  // rounded-5 of bootstrap
+  border-radius: 16px;
+  // shadow-sm of bootstrap
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.15);
+  // bg-light of bootstrap
+  background-color: white;
 }
