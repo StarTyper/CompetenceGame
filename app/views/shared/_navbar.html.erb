@@ -15,9 +15,17 @@
           <!-- </li> -->
           <li class="nav-item row">
             <!-- link to games play -->
-            <%= link_to "Play", play_path, class: "nav-link col hover-purple", style: "font-size: 1.5rem;" %>
+            <%= link_to (if @user.language == "english"
+                  "Play"
+                elsif @user.language == "german"
+                  "Starten"
+                end), play_path, class: "nav-link col hover-purple", style: "font-size: 1.5rem;" %>
             <!-- link to games index -->
-            <%= link_to "Games", games_path, class: "nav-link col hover-purple", style: "font-size: 1.5rem;" %>
+            <%= link_to (if @user.language == "english"
+                  "Games"
+                elsif @user.language == "german"
+                  "Spiele"
+                end), games_path, class: "nav-link col hover-purple", style: "font-size: 1.5rem;" %>
           </li>
           <li class="nav-item dropdown">
             <a href="#" class="avatar ms-3 hover-purple" style="font-size: 3rem;" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

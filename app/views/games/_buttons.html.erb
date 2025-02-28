@@ -29,7 +29,7 @@
       </div>
     </div>
     <!-- Button Remaining -->
-    <%= link_to remaining_path, class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
+    <%= link_to remaining_path(id: @game), class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
       <i class="bi
         <% if @game.pile == 0 %>
           bi-question-circle-fill
@@ -48,7 +48,7 @@
       </i>
     <% end %>
     <!-- Button Choosen -->
-    <%= link_to choosen_path, class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
+    <%= link_to choosen_path(id: @game), class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
       <i class="bi
         <% if @game.pile == 1 %>
           bi-check-circle-fill
@@ -67,7 +67,7 @@
       </i>
     <% end %>
     <!-- Button Rejected -->
-    <%= link_to rejected_path, class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
+    <%= link_to rejected_path(id: @game), class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
       <i class="bi
         <% if @game.pile == 2 %>
           bi-x-circle-fill
@@ -86,7 +86,7 @@
       </i>
     <% end %>
     <!-- Button "+" -->
-    <%= link_to plus_path, class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+    <%= link_to plus_path(id: @game), class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
       <% if @game.positive == true %>
         <i class="bi bi-plus-circle-fill"></i>
       <% else %>
@@ -94,7 +94,7 @@
       <% end %>
     <% end %>
     <!-- Button "-" -->
-    <%= link_to minus_path, class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+    <%= link_to minus_path(id: @game), class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
       <% if @game.positive == true %>
         <i class="bi bi-dash-circle"></i>
       <% else %>
@@ -104,7 +104,7 @@
     <!-- Button Next -->
     <% if @game.pile == 0 %>
       <% if @next_group %> <!-- if there is a next group -->
-        <%= link_to next_group_path, class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+        <%= link_to next_group_path(id: @game), class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
           <i class="bi bi-arrow-right-circle text-success"></i>
         <% end %>
       <% else %> <!-- if no next group -->
@@ -115,7 +115,7 @@
     <% end %>
     <!-- Button Finish -->
     <% if @count_choosen_positive == @count_positive && @count_choosen_negative == @count_negative %> <!-- if all cards are choosen -->
-      <%= link_to finish_path, class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;" do %>
+      <%= link_to finish_path(id: @game), class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;" do %>
         <i class="bi bi-play-circle-fill text-success"></i>
       <% end %>
     <% else %> <!-- if not all cards are choosen -->

@@ -1,8 +1,9 @@
 class GamesController < ApplicationController
   before_action :set_user
-  before_action :set_game
+  # before_action :set_game, except: %i[new create update destroy index show]
 
   def play
+    @game = Game.find_by(id: params[:id])
     if @game.nil?
       @game = Game.create(name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
                           status: "running",
@@ -34,33 +35,37 @@ class GamesController < ApplicationController
   end
 
   def remaining
+    @game = Game.find_by(id: params[:id])
     # sets the pile to 0 "remaining"
     @game.update(pile: 0)
-    set_game_and_counts
+    set_game_and_counts(@game)
     load_remaining_cards
     set_buttons_and_board
   end
 
   def choosen
+    @game = Game.find_by(id: params[:id])
     # sets the pile to 1 "choosen"
     @game.update(pile: 1)
-    set_game_and_counts
+    set_game_and_counts(@game)
     set_all_cards
     set_buttons_and_board
   end
 
   def rejected
+    @game = Game.find_by(id: params[:id])
     # sets the pile to 2 "rejected"
     @game.update(pile: 2)
-    set_game_and_counts
+    set_game_and_counts(@game)
     set_all_cards
     set_buttons_and_board
   end
 
   def plus
+    @game = Game.find_by(id: params[:id])
     # sets the positive to true
     @game.update(positive: true)
-    set_game_and_counts
+    set_game_and_counts(@game)
     if @game.pile.zero?
       load_remaining_cards
     else
@@ -70,9 +75,10 @@ class GamesController < ApplicationController
   end
 
   def minus
+    @game = Game.find_by(id: params[:id])
     # sets the positive to false
     @game.update(positive: false)
-    set_game_and_counts
+    set_game_and_counts(@game)
     if @game.pile.zero?
       load_remaining_cards
     else
@@ -82,9 +88,11 @@ class GamesController < ApplicationController
   end
 
   def choose
+    @game = Game.find_by(id: params[:id])
     @game_card = GameCard.find(params[:game_card_id])
     @game_card.update(pile: 1)
-    set_game_and_counts
+    @game = @game_card.game
+    set_counts
     if @game.pile.zero?
       load_remaining_cards
     else
@@ -94,9 +102,11 @@ class GamesController < ApplicationController
   end
 
   def reject
+    @game = Game.find_by(id: params[:id])
     @game_card = GameCard.find(params[:game_card_id])
     @game_card.update(pile: 2)
-    set_game_and_counts
+    @game = @game_card.game
+    set_counts
     if @game.pile.zero?
       load_remaining_cards
     else
@@ -106,17 +116,19 @@ class GamesController < ApplicationController
   end
 
   def next_group
+    @game = Game.find_by(id: params[:id])
     if @game.positive
       @game.update(group_positive: @game.group_positive + 1)
     else
       @game.update(group_negative: @game.group_negative + 1)
     end
-    set_game_and_counts
+    set_game_and_counts(@game)
     load_remaining_cards
     set_buttons_and_board
   end
 
   def finish
+    @game = Game.find_by(id: params[:id])
     @game.update(status: "finished")
     redirect_to games_url
   end
@@ -157,8 +169,17 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.new(game_params)
+
+    # Set additional attributes
+    @game.user = @user
+    @game.client = @user.client
+    @game.status = "running"
+    @game.pile = 0
+    @game.positive = true
+
+    # Try to save the game and handle the response
     if @game.save
-      redirect_to @game, notice: 'Game was successfully created.'
+      redirect_to play_path(id: @game), notice: 'Game was successfully created.'
     else
       render :new
     end
@@ -176,6 +197,7 @@ class GamesController < ApplicationController
   end
 
   def destroy
+    @game = Game.find_by(id: params[:id])
     @game.destroy
     redirect_to games_url, notice: 'Game was successfully destroyed.'
   end
@@ -183,15 +205,17 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name, :status, :score, :client_id, :user_id)
+    params.require(:game).permit(:name, :count_positive, :count_negative)
   end
 
   def set_user
     @user = current_user
   end
 
-  def set_game
-    @game = Game.where(user: @user, status: "running").first
+  def set_game(game)
+    @game = game
+    # @game = Game.where(user: @user, status: "running").first
+    # @game = Game.find_by(id: params[:id]) || Game.find_by(user: @user, status: "running").first
   end
 
   def set_counts
@@ -206,8 +230,8 @@ class GamesController < ApplicationController
     @count_rejected_negative = @game_cards.where(pile: 2, cards: { positive: false }).count
   end
 
-  def set_game_and_counts
-    set_game
+  def set_game_and_counts(game)
+    set_game(game)
     set_counts
   end
 

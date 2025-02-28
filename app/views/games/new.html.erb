@@ -1,0 +1,47 @@
+<div class="new-user-form px-5 pt-5">
+  <h1>
+    <% if @user.language == "english" %>
+      Create a New Game
+    <% elsif @user.language == "german" %>
+      Neues Spiel erstellen
+    <% end %>
+  </h1>
+
+  <%= simple_form_for @game do |f| %>
+    <%= f.input :name, label: (if @user.language == "english"
+                  "Game Name"
+                elsif @user.language == "german"
+                  "Spielname"
+                end), required: true %>
+    <%# = f.input :status, label: 'Status', collection: ['active', 'completed', 'inactive'], include_blank: false %>
+    <%# = f.input :client_id, label: 'Client', collection: Client.all, as: :select, required: true %>
+    <%# = f.input :user_id, label: 'User', collection: User.all, as: :select, include_blank: true %>
+    <%# = f.input :score, label: 'Score', as: :text %>
+    <%= f.input :count_positive, label: (if @user.language == "english"
+                  "Count of positive Cards"
+                elsif @user.language == "german"
+                  "Anzahl positiver Karten"
+                end), input_html: { value: 10 } %>
+    <%= f.input :count_negative, label: (if @user.language == "english"
+                  "Count of negative Cards"
+                elsif @user.language == "german"
+                  "Anzahl negativer Karten"
+                end), input_html: { value: 5 } %>
+    <%# = f.input :pile, label: 'Pile', input_html: { value: 0 } %>
+    <%# = f.input :positive, label: 'Positive', as: :boolean %>
+    <%# = f.input :group_positive, label: 'Group Positive', input_html: { value: 0 } %>
+    <%# = f.input :group_negative, label: 'Group Negative', input_html: { value: 0 } %>
+
+    <%= f.button :submit, (if @user.language == "english"
+                  "Create Game"
+                elsif @user.language == "german"
+                  "Spiel erstellen"
+                end), class: 'btn btn-outline-dark' %>
+  <% end %>
+
+  <%= link_to (if @user.language == "english"
+                  "Back"
+                elsif @user.language == "german"
+                  "zurück"
+                end), games_path, class: 'btn btn-outline-secondary mt-2' %>
+</div>

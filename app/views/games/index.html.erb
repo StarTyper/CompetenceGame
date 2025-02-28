@@ -1,7 +1,7 @@
 <div class="container margin-top">
   <div class="games-page">
     <div class="heading-games mb-5">
-      <div class="top-row-play d-flex justify-content-between">
+      <div class="top-row-games d-flex justify-content-between">
         <div class="title-games">
           <% if @user.language == "english" %>
             <h1 class="lato-bold">My Games</h1>
@@ -10,16 +10,33 @@
           <% end %>
         </div>
       </div>
+      <div class="bottom-row-games">
+        <%= link_to (if @user.language == "english"
+                  "New Game"
+                elsif @user.language == "german"
+                  "Neues Spiel"
+                end), new_game_path, class: "btn btn-outline-dark rounded-4" %>
+      </div>
     </div>
     <div class="content-games">
       <div class="d-flex flex-column justify-content-center align-items-center">
         <% @games.each do |game| %>
-          <div class="card col-xl-6 col-lg-7 col-md-9 col-sm-12 m-3">
-            <h5 class="card-header"><%= game.name %></h5>
+          <div class="card col-xl-6 col-lg-7 col-md-9 col-sm-12 m-3 rounded-5">
+            <h5 class="card-header  rounded-top-5"><%= game.name %></h5>
             <div class="card-body">
-              <p class="card-date-time"><%= game.created_at.strftime("%d.%m.%Y") %> at <%= game.created_at.strftime("%H:%M") %>
+              <p class="card-date-time"><%= game.created_at.strftime("%d.%m.%Y") %>
+                <% if @user.language == "english" %>
+                  at
+                <% elsif @user.language == "german" %>
+                  um
+                <% end %>
+              <%= game.created_at.strftime("%H:%M") %>
                 <% if game.status == "finished" %>
-                  Duration:
+                  <% if @user.language == "english" %>
+                    Duration:
+                  <% elsif @user.language == "german" %>
+                    Dauer:
+                  <% end %>
                   <!-- add game duration by calculating the difference between created_at and updated_at in minutes, if below an hour and in hh:mm if above -->
                   <% if (game.updated_at - game.created_at).round / 60 < 60 %>
                     <%= (game.updated_at - game.created_at).round / 60 %> min
@@ -32,13 +49,30 @@
             <p class="card-text">Positive: <%= game.count_positive %></p>
             <!-- count of cards negative of the game -->
             <p class="card-text">Negative: <%= game.count_negative %></p>
+            <div class="buttons-games d-flex justify-content-between">
               <!-- if game.status == "running" "play" button with link to games play page -->
               <% if game.status == "running" %>
-                <%= link_to "Play", play_path, class: "btn btn-secondary" %>
+                <%= link_to (if @user.language == "english"
+                  "Play"
+                elsif @user.language == "german"
+                  "Spielen"
+                end),
+                play_path(id: game),
+                class: "btn  btn-outline-warning rounded-4" %>
               <!-- if game.status == "finished" "Inspect" button with link to games show page -->
               <% else %>
-                <%= link_to "Inspect", game_path(game), class: "btn btn-secondary" %>
+                <%= link_to (if @user.language == "english"
+                  "Results"
+                elsif @user.language == "german"
+                  "Auswertung"
+                end), game_path(game), class: "btn btn-outline-dark rounded-4" %>
               <% end %>
+              <%= link_to game_path(game), method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+                <div class="button ms-2 hover-purple" style="font-size: 1.5rem;">
+                    <i class="bi bi-trash3"></i>
+                </div>
+              <% end %>
+            </div>
             </div>
           </div>
         <% end %>
