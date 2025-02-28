@@ -4,6 +4,8 @@ class GamesController < ApplicationController
 
   def play
     @game = Game.find_by(id: params[:id])
+    @game = Game.where(user: @user, status: "running").first if @game.nil?
+
     if @game.nil?
       @game = Game.create(name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
                           status: "running",
