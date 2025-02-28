@@ -37,7 +37,17 @@
       </div>
       <div class="modal-body">
         <% if @user.language == "english" %>
-            Content
+            <p>
+              The goal is to find the specified number of positive <i class="bi bi-plus-circle"></i> and negative <i class="bi bi-dash-circle"></i> cards.
+              <br><br>
+              Always 2-4 cards with similar values will be displayed.
+              <br><br>
+              Each of these cards must be marked as either chosen <i class="bi bi-check-circle"></i> or rejected <i class="bi bi-x-circle"></i>.
+              <br><br>
+              Next, the following cards can be revealed using the arrow <i class="bi bi-arrow-right-circle"></i>.
+              <br><br>
+              Once the exact number of positive and negative cards has been found, the game can be ended with <i class="bi bi-play-circle"></i>.
+            </p>
           <% elsif @user.language == "german" %>
             <p>
               Das Ziel ist es die angegebene Anzahl an positiven <i class="bi bi-plus-circle"></i> und negativen <i class="bi bi-dash-circle"></i> Karten zu finden.
