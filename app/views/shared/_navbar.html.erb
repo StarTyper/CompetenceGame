@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- "CREA" link to home -->
     <%= link_to :home, class: "navbar-brand" do %>
-      <h1 class="lato-black">CREA</h1>
+      <h1 class="lato-black hover-purple">CREA</h1>
     <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,12 +15,12 @@
           <!-- </li> -->
           <li class="nav-item row">
             <!-- link to games play -->
-            <%= link_to "Play", play_path, class: "nav-link col", style: "font-size: 1.5rem; color: black;" %>
+            <%= link_to "Play", play_path, class: "nav-link col hover-purple", style: "font-size: 1.5rem;" %>
             <!-- link to games index -->
-            <%= link_to "Games", games_path, class: "nav-link col", style: "font-size: 1.5rem; color: black;" %>
+            <%= link_to "Games", games_path, class: "nav-link col hover-purple", style: "font-size: 1.5rem;" %>
           </li>
           <li class="nav-item dropdown">
-            <a href="#" class="avatar ms-3" style="font-size: 3rem; color: black;" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#" class="avatar ms-3 hover-purple" style="font-size: 3rem;" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <%# = image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
               <i class="bi bi-person-circle"></i>
             </a>
@@ -31,7 +31,7 @@
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "btn btn-primary lato-regular" %>
+            <%= link_to "Login", new_user_session_path, class: "btn btn-outline-dark lato-regular" %>
           </li>
         <% end %>
       </ul>
