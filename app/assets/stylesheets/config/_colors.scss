@@ -7,9 +7,73 @@ $yellow: #ecc56d;
 $orange: #E67E22;
 $green: #54A17A;
 $purple: #8b5a88;
-$gray: #0E0000;
-$light-gray: #F4F4F4;
+$gray: gray;
+$light-gray: #D3D3D3;
 $white: #FFFFFF;
 $moss-green: 	#9fbb80;
 $salmon: #ef926c;
 $sand: #f5f5dc;
+$black: #000000;
+
+// Create classes using these color variables
+.color-red {
+  color: $red;
+}
+
+.color-blue {
+  color: $blue;
+}
+
+.color-yellow {
+  color: $yellow;
+}
+
+.color-orange {
+  color: $orange;
+}
+
+.color-green {
+  color: $green;
+}
+
+.color-purple {
+  color: $purple;
+}
+
+.color-gray {
+  color: $gray;
+}
+
+.color-light-gray {
+  color: $light-gray;
+}
+
+.color-white {
+  color: $white;
+}
+
+.color-moss-green {
+  color: $moss-green;
+}
+
+.color-salmon {
+  color: $salmon;
+}
+
+.color-sand {
+  color: $sand;
+}
+
+.color-black {
+  color: $black;
+}
+
+// additional color classes
+
+.color-moss-green {
+  color: $moss-green;
+}
+
+.color-real-red {
+  color: red;
+}

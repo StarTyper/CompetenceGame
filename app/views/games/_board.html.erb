@@ -6,11 +6,11 @@
         <div class="card-body d-flex flex-column">
           <!-- Buttons Top -->
           <div class="card-buttons-top d-flex justify-content-between">
-            <i class="bi bi-info-circle" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#game_card_<%= game_card.id %>"></i>
+            <i class="bi bi-info-circle hover-gray" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#game_card_<%= game_card.id %>"></i>
             <% if game_card.card.positive == true %>
-              <i class="bi bi-plus-circle" style="font-size: 2rem;"></i>
+              <i class="bi bi-plus-circle color-gray" style="font-size: 2rem;"></i>
             <% else %>
-              <i class="bi bi-dash-circle" style="font-size: 2rem;"></i>
+              <i class="bi bi-dash-circle color-gray" style="font-size: 2rem;"></i>
             <% end %>
           </div>
           <!-- Trait -->
@@ -26,19 +26,19 @@
           <!-- Buttons Bottom -->
           <div class="card-buttons-bottom d-flex justify-content-between">
             <!-- Button Choose -->
-            <%= link_to choose_path(game_card_id: game_card.id), class: "link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
-              <% if game_card.pile == 1 %>
-                <i class="bi bi-check-circle-fill"></i>
-              <% else %>
-                <i class="bi bi-check-circle"></i>
+            <% if game_card.pile == 1 %>
+              <i class="bi bi-check-circle-fill", style="font-size: 2rem; color: black;"></i>
+            <% else %>
+              <%= link_to choose_path(game_card_id: game_card.id), class: "link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+                <i class="bi bi-check-circle hover-green"></i>
               <% end %>
             <% end %>
             <!-- Button Reject -->
-            <%= link_to reject_path(game_card_id: game_card.id), class: "link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
-              <% if game_card.pile == 2 %>
-                <i class="bi bi-x-circle-fill"></i>
-              <% else %>
-                <i class="bi bi-x-circle"></i>
+            <% if game_card.pile == 2 %>
+              <i class="bi bi-x-circle-fill", style="font-size: 2rem; color: black;"></i>
+            <% else %>
+              <%= link_to reject_path(game_card_id: game_card.id), class: "link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+                <i class="bi bi-x-circle hover-red"></i>
               <% end %>
             <% end %>
           </div>

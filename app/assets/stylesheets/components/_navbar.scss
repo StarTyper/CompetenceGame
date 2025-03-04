@@ -18,10 +18,3 @@
     rgba(239, 222, 206, 1)      // Top (solid)
   );
 }
-
-.hover-purple {
-  color: black; // Set the initial color of the text
-  &:hover {
-    color: #8b5a88; // Change text color on hover
-  }
-}

@@ -144,28 +144,41 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    # function to assign all positive game cards on pile 1 from the categorygerman "methodisch" to @methodical_positive
+
+    # Assign all positive and negative game cards for each category
     @methodical_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "methodisch", positive: true })
-    # function to assign all negative game cards on pile 1 from the categorygerman "methodisch" to @methodical_negative
     @methodical_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "methodisch", positive: false })
-    # function to assign all positive game cards on pile 1 from the categorygerman "sozial" to @social_positive
     @social_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "sozial", positive: true })
-    # function to assign all negative game cards on pile 1 from the categorygerman "sozial" to @social_negative
     @social_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "sozial", positive: false })
-    # function to assign all positive game cards on pile 1 from the categorygerman "fachlich" to @professional_positive
     @professional_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "fachlich", positive: true })
-    # function to assign all negative game cards on pile 1 from the categorygerman "fachlich" to @professional_negative
     @professional_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "fachlich", positive: false })
-    # function to assign all positive game cards on pile 1 from the categorygerman "intuitiv" to @intuitive_positive
     @intuitive_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "intuitiv", positive: true })
-    # function to assign all negative game cards on pile 1 from the categorygerman "intuitiv" to @intuitive_negative
     @intuitive_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "intuitiv", positive: false })
-    # function to assign all positive game cards on pile 1 from the categorygerman "persönlich" to @personal_positive
     @personal_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "persönlich", positive: true })
-    # function to assign all negative game cards on pile 1 from the categorygerman "persönlich" to @personal_negative
     @personal_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "persönlich", positive: false })
-    # function to assign all cards from this game on pile 1 to @choosen_cards
+
+    # Assign all cards from this game on pile 1 to @choosen_cards
     @choosen_cards = GameCard.where(game: @game, pile: 1)
+
+    # Calculate totals for positive and negative cards
+    total_positive = @methodical_positive.count + @social_positive.count + @professional_positive.count + @intuitive_positive.count + @personal_positive.count
+    total_negative = @methodical_negative.count + @social_negative.count + @professional_negative.count + @intuitive_negative.count + @personal_negative.count
+
+    # Calculate percentages for positive cards
+    @methodical_positive_percentage = total_positive.zero? ? 0 : (@methodical_positive.count / total_positive.to_f * 100).round(2)
+    @social_positive_percentage = total_positive.zero? ? 0 : (@social_positive.count / total_positive.to_f * 100).round(2)
+    @professional_positive_percentage = total_positive.zero? ? 0 : (@professional_positive.count / total_positive.to_f * 100).round(2)
+    @intuitive_positive_percentage = total_positive.zero? ? 0 : (@intuitive_positive.count / total_positive.to_f * 100).round(2)
+    @personal_positive_percentage = total_positive.zero? ? 0 : (@personal_positive.count / total_positive.to_f * 100).round(2)
+
+    # Calculate percentages for negative cards
+    @methodical_negative_percentage = total_negative.zero? ? 0 : (@methodical_negative.count / total_negative.to_f * 100).round(2)
+    @social_negative_percentage = total_negative.zero? ? 0 : (@social_negative.count / total_negative.to_f * 100).round(2)
+    @professional_negative_percentage = total_negative.zero? ? 0 : (@professional_negative.count / total_negative.to_f * 100).round(2)
+    @intuitive_negative_percentage = total_negative.zero? ? 0 : (@intuitive_negative.count / total_negative.to_f * 100).round(2)
+    @personal_negative_percentage = total_negative.zero? ? 0 : (@personal_negative.count / total_negative.to_f * 100).round(2)
+
+    # Optional: Render a view or handle the data as required
   end
 
   def new

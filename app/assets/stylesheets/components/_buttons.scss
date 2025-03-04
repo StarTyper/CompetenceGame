@@ -4,3 +4,59 @@
   font-weight: 600;
   font-style: normal;
 }
+
+.hover-purple {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $purple; // Change text color on hover
+  }
+}
+
+.hover-green {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $green; // Change text color on hover
+  }
+}
+
+.green-hover-green {
+  color: $green; // Set the initial color of the text
+  &:hover {
+    color: $moss-green; // Change text color on hover
+  }
+}
+
+.hover-moss-green {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $moss-green; // Change text color on hover
+  }
+}
+
+.hover-red {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $red; // Change text color on hover
+  }
+}
+
+.hover-yellow {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $yellow; // Change text color on hover
+  }
+}
+
+.hover-orange {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $orange; // Change text color on hover
+  }
+}
+
+.hover-gray {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $gray; // Change text color on hover
+  }
+}

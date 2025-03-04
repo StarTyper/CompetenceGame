@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="content-game">
-    <div class="game-board">
+    <div class="game-board mb-5">
       <!-- Board Cards -->
       <div class="container text-center">
         <!-- Positive Cards -->
@@ -153,9 +153,25 @@
         </div>
       </div>
     </div>
-    <div class="game-graphics d-flex">
-      <%= pie_chart [["methodical", @methodical_positive.count], ["social", @social_positive.count], ["professional", @professional_positive.count], ["intuitive", @intuitive_positive.count], ["personal", @personal_positive.count]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"] %>
-      <%= pie_chart [["methodical", @methodical_negative.count], ["social", @social_negative.count], ["professional", @professional_negative.count], ["intuitive", @intuitive_negative.count], ["personal", @personal_negative.count]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"] %>
+    <div class="game-graphics d-flex pt-5">
+      <div class="pie-chart-positive w-50">
+        <p class="text-center mb-3">
+          <% if @user.language == "german" %>
+            Gewichtung positiver Eigenschaften
+          <% elsif @user.language == "english" %>
+            Weighting positive traits
+          <% end %></p>
+        <%= pie_chart [["methodical", @methodical_positive_percentage], ["social", @social_positive_percentage], ["professional", @professional_positive_percentage], ["intuitive", @intuitive_positive_percentage], ["personal", @personal_positive_percentage]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: "%"  %>
+      </div>
+      <div class="pie-chart-negative w-50">
+        <p class="text-center mb-3">
+          <% if @user.language == "german" %>
+            Gewichtung negativer Eigenschaften
+          <% elsif @user.language == "english" %>
+            Weighting negative traits
+          <% end %></p>
+        <%= pie_chart [["methodical", @methodical_negative_percentage], ["social", @social_negative_percentage], ["professional", @professional_negative_percentage], ["intuitive", @intuitive_negative_percentage], ["personal", @personal_negative_percentage]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: "%"  %>
+      </div>
     </div>
   </div>
 </div>

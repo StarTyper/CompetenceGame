@@ -3,11 +3,11 @@
     <div class="count-play d-flex">
       <div class="count-plus d-flex me-3
         <% if @count_choosen_positive > @count_positive %>
-        red
+        color-real-red
         <% elsif @count_choosen_positive == @count_positive %>
-        moss-green
+        color-moss-green
         <% else %>
-        orange
+        color-orange
         <% end %>
       ">
         <h2 class="lato-bold"><%= @count_positive %></h2>
@@ -15,9 +15,9 @@
       </div>
       <div class="count-minus d-flex
         <% if @count_choosen_negative > @count_negative %>
-        red
+        color-real-red
         <% elsif @count_choosen_negative == @count_negative %>
-        moss-green
+        color-moss-green
         <% else %>
         orange
         <% end %>
@@ -31,7 +31,7 @@
     <div class="nav-buttons-play d-flex">
       <div class="plus-minus me-5">
         <!-- Button "+" -->
-        <%= link_to plus_path(id: @game), class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+        <%= link_to plus_path(id: @game), class: "me-3 link-underline link-underline-opacity-0 hover-gray", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
           <% if @game.positive == true %>
             <i class="bi bi-plus-circle-fill"></i>
           <% else %>
@@ -39,7 +39,7 @@
           <% end %>
         <% end %>
         <!-- Button "-" -->
-        <%= link_to minus_path(id: @game), class: "ms-3 me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
+        <%= link_to minus_path(id: @game), class: "ms-3 me-3 link-underline link-underline-opacity-0 hover-gray", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
           <% if @game.positive == true %>
             <i class="bi bi-dash-circle"></i>
           <% else %>
@@ -49,7 +49,7 @@
       </div>
       <div class="three-buttons me-auto">
         <!-- Button Remaining -->
-        <%= link_to remaining_path(id: @game), class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
+        <%= link_to remaining_path(id: @game), class: "link-underline link-underline-opacity-0 hover-gray", data: { turbo_method: :patch } do %>
           <i class="bi
             <% if @game.pile == 0 %>
               bi-question-circle-fill
@@ -68,7 +68,7 @@
           </i>
         <% end %>
         <!-- Button Choosen -->
-        <%= link_to choosen_path(id: @game), class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
+        <%= link_to choosen_path(id: @game), class: "link-underline link-underline-opacity-0 hover-green", data: { turbo_method: :patch } do %>
           <i class="bi
             <% if @game.pile == 1 %>
               bi-check-circle-fill
@@ -87,7 +87,7 @@
           </i>
         <% end %>
         <!-- Button Rejected -->
-        <%= link_to rejected_path(id: @game), class: "link-underline link-underline-opacity-0", data: { turbo_method: :patch } do %>
+        <%= link_to rejected_path(id: @game), class: "link-underline link-underline-opacity-0 hover-red", data: { turbo_method: :patch } do %>
           <i class="bi
             <% if @game.pile == 2 %>
               bi-x-circle-fill
@@ -111,21 +111,21 @@
         <% if @game.pile == 0 %>
           <% if @next_group %> <!-- if there is a next group -->
             <%= link_to next_group_path(id: @game), class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;", data: { turbo_method: :patch } do %>
-              <i class="bi bi-arrow-right-circle text-success"></i>
+              <i class="bi bi-arrow-right-circle green-hover-green"></i>
             <% end %>
           <% else %> <!-- if no next group -->
-            <span class="me-3 link-underline link-underline-opacity-0" style="font-size: 2rem; pointer-events: none; color: gray;">
+            <span class="me-3 link-underline link-underline-opacity-0 color-gray" style="font-size: 2rem; pointer-events: none;">
               <i class="bi bi-arrow-right-circle text-secondary"></i>
             </span>
           <% end %>
         <% end %>
         <!-- Button Finish -->
         <% if @count_choosen_positive == @count_positive && @count_choosen_negative == @count_negative %> <!-- if all cards are choosen -->
-          <%= link_to finish_path(id: @game), class: "me-3 link-underline link-underline-opacity-0", style: "font-size: 2rem;" do %>
-            <i class="bi bi-play-circle-fill text-success"></i>
+          <%= link_to finish_path(id: @game), class: "me-3 link-underline link-underline-opacity-0 color-gray", style: "font-size: 2rem;" do %>
+            <i class="bi bi-play-circle-fill green-hover-green"></i>
           <% end %>
         <% else %> <!-- if not all cards are choosen -->
-          <span class="me-3 link-underline link-underline-opacity-0" style="font-size: 2rem; pointer-events: none; color: gray;">
+          <span class="me-3 link-underline link-underline-opacity-0 color-gray" style="font-size: 2rem; pointer-events: none;">
             <i class="bi bi-play-circle"></i>
           </span>
         <% end %>
