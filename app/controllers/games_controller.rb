@@ -196,7 +196,7 @@ class GamesController < ApplicationController
   end
 
   def index
-    @games = @user.games
+    @games = @user.games.order(created_at: :desc) # Sort by created_at in descending order
   end
 
   def show
