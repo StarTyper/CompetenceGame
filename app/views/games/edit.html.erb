@@ -1,9 +1,9 @@
-<div class="new-game-form px-5 pt-5">
+<div class="edit-game-form px-5 pt-5">
   <h1>
     <% if @user.language == "english" %>
-      Create a New Game
+      Game Settings
     <% elsif @user.language == "german" %>
-      Neues Spiel erstellen
+      Spiel Einstellungen
     <% end %>
   </h1>
 
@@ -26,9 +26,9 @@
                 end), input_html: { value: 5 } %>
 
     <%= f.button :submit, (if @user.language == "english"
-                  "Create Game"
+                  "Edit Game"
                 elsif @user.language == "german"
-                  "Spiel erstellen"
+                  "Spiel anpassen"
                 end), class: 'btn btn-outline-dark' %>
   <% end %>
 
@@ -36,5 +36,5 @@
                   "Back"
                 elsif @user.language == "german"
                   "zurück"
-                end), games_path, class: 'btn btn-outline-secondary mt-2' %>
+                end), play_path(@game), class: 'btn btn-outline-secondary mt-2' %>
 </div>

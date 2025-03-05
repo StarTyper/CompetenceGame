@@ -1,0 +1,10 @@
+<%= line_chart  line_chart_data,
+                colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"],
+                legend: "bottom",
+                suffix: "",
+                download: {
+                            enabled: true,
+                            filename: "#{Date.today.strftime('%y%m%d')}_History of #{filename} traits by #{@user.first_name} #{@user.last_name}",
+                            background: "#ffffff"
+                          }
+%>

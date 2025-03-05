@@ -87,6 +87,7 @@
         </div>
       </div>
     </div>
+    <!-- Graphics -->
     <div class="game-graphics d-flex pt-5 mb-5">
       <!-- Positive Pie Chart -->
       <div class="pie-chart-positive w-475 bg-white rounded-5 py-3 shadow">
@@ -97,7 +98,7 @@
             Weighting positive traits
           <% end %>
         </p>
-        <%= render "games/pie-chart", pie_chart_data: @pie_chart_data_positive %>
+        <%= render "games/pie_chart", pie_chart_data: @pie_chart_data_positive %>
       </div>
       <div class="space-5 w-5"></div>
       <!-- Negative Pie Chart -->
@@ -109,7 +110,7 @@
             Weighting negative traits
           <% end %>
         </p>
-        <%= render "games/pie-chart", pie_chart_data: @pie_chart_data_negative %>
+        <%= render "games/pie_chart", pie_chart_data: @pie_chart_data_negative %>
       </div>
     </div>
   </div>

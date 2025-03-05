@@ -7,10 +7,15 @@
             <h1 class="lato-bold"><%= @game.name %></h1>
           <% end %>
         </div>
-        <!-- Button trigger modal Rulebook -->
-        <a href="#" style="font-size: 2rem;" class="text-decoration-none hover-gray" data-bs-toggle="modal" data-bs-target="#rules">
-            <i class="bi bi-book"></i>
-        </a>
+        <div class="buttons-play">
+          <%= link_to edit_game_path(@game), class: "me-3 link-underline link-underline-opacity-0 hover-gray", style: "font-size: 2rem;" do %>
+            <i class="bi bi-gear"></i>
+          <% end %>
+          <!-- Button trigger modal Rulebook -->
+          <a href="#" style="font-size: 2rem;" class="text-decoration-none hover-gray" data-bs-toggle="modal" data-bs-target="#rules">
+              <i class="bi bi-book"></i>
+          </a>
+        </div>
       </div>
       <!-- Button-Row -->
       <%= turbo_frame_tag :buttons_frame do%>

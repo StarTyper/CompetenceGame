@@ -132,7 +132,13 @@ class GamesController < ApplicationController
   def finish
     @game = Game.find_by(id: params[:id])
     if @game.update(status: "finished")
-      redirect_to game_path(id: @game), notice: 'Game successfully finished.'
+      redirect_to game_path(id: @game),
+                  notice: ( if @user.language == "english"
+                              'Game was successfully finished.'
+                            elsif @user.language == "german"
+                              'Spiel wurde erfolgreich beendet.'
+                            end
+                          )
     else
       redirect_to games_path, alert: 'Failed to finish game.'
     end
@@ -145,8 +151,8 @@ class GamesController < ApplicationController
     games_grouped_by_date = @finished_games.group_by { |game| game.created_at.strftime("%Y-%m-%d") }
 
     # Create a chart data array
-    @chart_data_positive = []
-    @chart_data_negative = []
+    @line_chart_data_positive = []
+    @line_chart_data_negative = []
 
     games_grouped_by_date.each do |date_str, games|
       games.each_with_index do |game, index|
@@ -165,11 +171,11 @@ class GamesController < ApplicationController
 
         # Add positive game types to chart data
         game_types_positive.each do |type|
-          series_hash = @chart_data_positive.find { |s| s[:name] == type[:name] }
+          series_hash = @line_chart_data_positive.find { |s| s[:name] == type[:name] }
           if series_hash
             series_hash[:data][game.name] = type[:count] # Using overridden name
           else
-            @chart_data_positive << { name: type[:name], data: { game.name => type[:count] } } # Using overridden name
+            @line_chart_data_positive << { name: type[:name], data: { game.name => type[:count] } } # Using overridden name
           end
         end
 
@@ -184,11 +190,11 @@ class GamesController < ApplicationController
 
         # Add negative game types to chart data
         game_types_negative.each do |type|
-          series_hash = @chart_data_negative.find { |s| s[:name] == type[:name] }
+          series_hash = @line_chart_data_negative.find { |s| s[:name] == type[:name] }
           if series_hash
             series_hash[:data][game.name] = type[:count] # Using overridden name
           else
-            @chart_data_negative << { name: type[:name], data: { game.name => type[:count] } } # Using overridden name
+            @line_chart_data_negative << { name: type[:name], data: { game.name => type[:count] } } # Using overridden name
           end
         end
       end
@@ -266,18 +272,32 @@ class GamesController < ApplicationController
 
     # Try to save the game and handle the response
     if @game.save
-      redirect_to play_path(id: @game), notice: 'Game was successfully created.'
+      redirect_to play_path(id: @game),
+                  notice: ( if @user.language == "english"
+                              'Game was successfully created.'
+                            elsif @user.language == "german"
+                              'Spiel wurde erfolgreich erstellt.'
+                            end
+                          )
     else
       render :new
     end
   end
 
   def edit
+    @game = Game.find(params[:id])
   end
 
   def update
+    @game = Game.find(params[:id])
     if @game.update(game_params)
-      redirect_to @game, notice: 'Game was successfully updated.'
+      redirect_to play_path(@game),
+                  notice: ( if @user.language == "english"
+                              'Game was successfully updated.'
+                            elsif @user.language == "german"
+                              'Spiel wurde erfolgreich aktualisiert.'
+                            end
+                          )
     else
       render :edit
     end
@@ -286,7 +306,13 @@ class GamesController < ApplicationController
   def destroy
     @game = Game.find_by(id: params[:id])
     @game.destroy
-    redirect_to games_url, notice: 'Game was successfully destroyed.'
+    redirect_to games_url,
+                notice: ( if @user.language == "english"
+                            'Game was successfully destroyed.'
+                          elsif @user.language == "german"
+                            'Spiel wurde erfolgreich gelöscht.'
+                          end
+                        )
   end
 
   private
