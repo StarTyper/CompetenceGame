@@ -26,7 +26,7 @@
     <div class="content-games">
       <div class="d-flex flex-column justify-content-center align-items-center">
         <% @games.each do |game| %>
-          <div class="card col-xl-6 col-lg-7 col-md-9 col-sm-12 m-3 rounded-5">
+          <div class="card col-xl-6 col-lg-7 col-md-9 col-sm-12 m-3 rounded-5 shadow">
             <h5 class="card-header  rounded-top-5"><%= game.name %></h5>
             <div class="card-body">
               <p class="card-date-time"><%= game.created_at.strftime("%d.%m.%Y") %>
