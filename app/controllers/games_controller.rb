@@ -202,40 +202,52 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
 
-    # Assign all positive and negative game cards for each category
-    @methodical_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "methodisch", positive: true })
-    @methodical_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "methodisch", positive: false })
-    @social_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "sozial", positive: true })
-    @social_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "sozial", positive: false })
-    @professional_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "fachlich", positive: true })
-    @professional_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "fachlich", positive: false })
-    @intuitive_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "intuitiv", positive: true })
-    @intuitive_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "intuitiv", positive: false })
-    @personal_positive = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "persönlich", positive: true })
-    @personal_negative = GameCard.joins(:card).where(game: @game, pile: 1, cards: { categorygerman: "persönlich", positive: false })
-
     # Assign all cards from this game on pile 1 to @choosen_cards
     @choosen_cards = GameCard.where(game: @game, pile: 1)
+
+    # Assign all positive and negative game cards for each category
+    @methodical_positive = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                       cards: { categorygerman: "methodisch", positive: true })
+    @methodical_negative = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                       cards: { categorygerman: "methodisch", positive: false })
+    @social_positive = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                   cards: { categorygerman: "sozial", positive: true })
+    @social_negative = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                   cards: { categorygerman: "sozial", positive: false })
+    @professional_positive = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                         cards: { categorygerman: "fachlich", positive: true })
+    @professional_negative = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                         cards: { categorygerman: "fachlich", positive: false })
+    @intuitive_positive = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                      cards: { categorygerman: "intuitiv", positive: true })
+    @intuitive_negative = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                      cards: { categorygerman: "intuitiv", positive: false })
+    @personal_positive = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                     cards: { categorygerman: "persönlich", positive: true })
+    @personal_negative = GameCard.joins(:card).where(game: @game, pile: 1,
+                                                     cards: { categorygerman: "persönlich", positive: false })
 
     # Calculate totals for positive and negative cards
     total_positive = @methodical_positive.count + @social_positive.count + @professional_positive.count + @intuitive_positive.count + @personal_positive.count
     total_negative = @methodical_negative.count + @social_negative.count + @professional_negative.count + @intuitive_negative.count + @personal_negative.count
 
-    # Calculate percentages for positive cards
-    @methodical_positive_percentage = total_positive.zero? ? 0 : (@methodical_positive.count / total_positive.to_f * 100).round(2)
-    @social_positive_percentage = total_positive.zero? ? 0 : (@social_positive.count / total_positive.to_f * 100).round(2)
-    @professional_positive_percentage = total_positive.zero? ? 0 : (@professional_positive.count / total_positive.to_f * 100).round(2)
-    @intuitive_positive_percentage = total_positive.zero? ? 0 : (@intuitive_positive.count / total_positive.to_f * 100).round(2)
-    @personal_positive_percentage = total_positive.zero? ? 0 : (@personal_positive.count / total_positive.to_f * 100).round(2)
+    # Create pie chart data for positive categories
+    @pie_chart_data_positive = [
+      ["methodical", total_positive.zero? ? 0 : (@methodical_positive.count / total_positive.to_f * 100).round(2)],
+      ["social", total_positive.zero? ? 0 : (@social_positive.count / total_positive.to_f * 100).round(2)],
+      ["professional", total_positive.zero? ? 0 : (@professional_positive.count / total_positive.to_f * 100).round(2)],
+      ["intuitive", total_positive.zero? ? 0 : (@intuitive_positive.count / total_positive.to_f * 100).round(2)],
+      ["personal", total_positive.zero? ? 0 : (@personal_positive.count / total_positive.to_f * 100).round(2)]
+    ]
 
-    # Calculate percentages for negative cards
-    @methodical_negative_percentage = total_negative.zero? ? 0 : (@methodical_negative.count / total_negative.to_f * 100).round(2)
-    @social_negative_percentage = total_negative.zero? ? 0 : (@social_negative.count / total_negative.to_f * 100).round(2)
-    @professional_negative_percentage = total_negative.zero? ? 0 : (@professional_negative.count / total_negative.to_f * 100).round(2)
-    @intuitive_negative_percentage = total_negative.zero? ? 0 : (@intuitive_negative.count / total_negative.to_f * 100).round(2)
-    @personal_negative_percentage = total_negative.zero? ? 0 : (@personal_negative.count / total_negative.to_f * 100).round(2)
-
-    # Optional: Render a view or handle the data as required
+    # Create pie chart data for negative categories
+    @pie_chart_data_negative = [
+      ["methodical", total_negative.zero? ? 0 : (@methodical_negative.count / total_negative.to_f * 100).round(2)],
+      ["social", total_negative.zero? ? 0 : (@social_negative.count / total_negative.to_f * 100).round(2)],
+      ["professional", total_negative.zero? ? 0 : (@professional_negative.count / total_negative.to_f * 100).round(2)],
+      ["intuitive", total_negative.zero? ? 0 : (@intuitive_negative.count / total_negative.to_f * 100).round(2)],
+      ["personal", total_negative.zero? ? 0 : (@personal_negative.count / total_negative.to_f * 100).round(2)]
+    ]
   end
 
   def new

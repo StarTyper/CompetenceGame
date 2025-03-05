@@ -27,134 +27,69 @@
       <div class="container text-center">
         <!-- Positive Cards -->
         <div class="positive-cards row align-items-end">
-          <!-- methodical -->
-          <div class="col">
-            <div class="positive-cards">
-              <% @methodical_positive.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
+          <% categories = {
+            methodical: @methodical_positive,
+            social: @social_positive,
+            professional: @professional_positive,
+            intuitive: @intuitive_positive,
+            personal: @personal_positive
+          } %>
+
+          <% categories.each do |key, game_cards| %>
+            <div class="col">
+              <div class="positive-cards">
+                <% game_cards.each do |game_card| %>
+                  <%= render "games/card", game_card: game_card %>
+                <% end %>
+              </div>
             </div>
-          </div>
-          <!-- social -->
-          <div class="col">
-            <div class="positive-cards">
-              <% @social_positive.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
-          <!-- professional -->
-          <div class="col">
-            <div class="positive-cards">
-              <% @professional_positive.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
-          <!-- intuitive -->
-          <div class="col">
-            <div class="positive-cards">
-              <% @intuitive_positive.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
-          <!-- personal -->
-          <div class="col">
-            <div class="positive-cards">
-              <% @personal_positive.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
+          <% end %>
         </div>
         <!-- Categories -->
         <div class="card-categories container text-center">
           <div class="row align-items-center">
-            <div class="category col">
-              <% if @user.language == "german" %>
-                methodisch
-              <% elsif @user.language == "english" %>
-                methodical
-              <% end %>
-            </div>
-            <div class="category col">
-              <% if @user.language == "german" %>
-                sozial
-              <% elsif @user.language == "english" %>
-                social
-              <% end %>
-            </div>
-            <div class="category col">
-              <% if @user.language == "german" %>
-                fachlich
-              <% elsif @user.language == "english" %>
-                professional
-              <% end %>
-            </div>
-            <div class="category col">
-              <% if @user.language == "german" %>
-                intuitiv
-              <% elsif @user.language == "english" %>
-                intuitive
-              <% end %>
-            </div>
-            <div class="category col">
-              <% if @user.language == "german" %>
-                persönlich
-              <% elsif @user.language == "english" %>
-                personal
-              <% end %>
-            </div>
+            <% categories = {
+                              "methodisch" => "methodical",
+                              "sozial" => "social",
+                              "fachlich" => "professional",
+                              "intuitiv" => "intuitive",
+                              "persönlich" => "personal"
+                            }
+            %>
+
+            <% categories.each do |german, english| %>
+              <div class="category col">
+                <%= @user.language == "german" ? german : english %>
+              </div>
+            <% end %>
           </div>
         </div>
         <!-- Negative Cards -->
         <div class="negative-cards row align-items-start">
-          <!-- methodical -->
-          <div class="col">
-            <div class="negative-cards">
-              <% @methodical_negative.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
+          <% categories = {
+                            methodical: @methodical_negative,
+                            social: @social_negative,
+                            professional: @professional_negative,
+                            intuitive: @intuitive_negative,
+                            personal: @personal_negative
+                          }
+          %>
+
+          <% categories.each do |key, game_cards| %>
+            <div class="col">
+              <div class="negative-cards">
+                <% game_cards.each do |game_card| %>
+                  <%= render "games/card", game_card: game_card %>
+                <% end %>
+              </div>
             </div>
-          </div>
-          <!-- social -->
-          <div class="col">
-            <div class="negative-cards">
-              <% @social_negative.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
-          <!-- professional -->
-          <div class="col">
-            <div class="negative-cards">
-              <% @professional_negative.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
-          <!-- intuitive -->
-          <div class="col">
-            <div class="negative-cards">
-              <% @intuitive_negative.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
-          <!-- personal -->
-          <div class="col">
-            <div class="negative-cards">
-              <% @personal_negative.each do |game_card| %>
-                <%= render "games/card", game_card: game_card %>
-              <% end %>
-            </div>
-          </div>
+          <% end %>
         </div>
       </div>
     </div>
     <div class="game-graphics d-flex pt-5 mb-5">
-      <div class="pie-chart-positive w-50">
+      <!-- Positive Pie Chart -->
+      <div class="pie-chart-positive w-475 bg-white rounded-5 py-3 shadow">
         <p class="text-center mb-3">
           <% if @user.language == "german" %>
             Gewichtung positiver Eigenschaften
@@ -162,17 +97,11 @@
             Weighting positive traits
           <% end %>
         </p>
-        <%= pie_chart [ ["methodical", @methodical_positive_percentage],
-                        ["social", @social_positive_percentage],
-                        ["professional", @professional_positive_percentage],
-                        ["intuitive", @intuitive_positive_percentage],
-                        ["personal", @personal_positive_percentage]],
-                        colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"],
-                        legend: "bottom",
-                        suffix: "%"
-        %>
+        <%= render "games/pie-chart", pie_chart_data: @pie_chart_data_positive %>
       </div>
-      <div class="pie-chart-negative w-50">
+      <div class="space-5 w-5"></div>
+      <!-- Negative Pie Chart -->
+      <div class="pie-chart-negative w-475 bg-white rounded-5 py-3 px-0 shadow">
         <p class="text-center mb-3">
           <% if @user.language == "german" %>
             Gewichtung negativer Eigenschaften
@@ -180,7 +109,7 @@
             Weighting negative traits
           <% end %>
         </p>
-        <%= pie_chart [["methodical", @methodical_negative_percentage], ["social", @social_negative_percentage], ["professional", @professional_negative_percentage], ["intuitive", @intuitive_negative_percentage], ["personal", @personal_negative_percentage]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: "%"  %>
+        <%= render "games/pie-chart", pie_chart_data: @pie_chart_data_negative %>
       </div>
     </div>
   </div>
@@ -208,9 +137,6 @@
               <%= game_card.card.explanationgerman %>
             <% end %>
         </div>
-        <!-- <div class="modal-footer"> -->
-          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-        <!-- </div> -->
       </div>
     </div>
   </div>
