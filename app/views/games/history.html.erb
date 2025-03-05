@@ -19,9 +19,9 @@
       </div>
     </div>
     <!-- Line Charts History -->
-    <div class="graph-games">
+    <div class="graph-games d-flex flex-column align-items-center">
       <!-- Positive Traits -->
-      <div class="positive-traits mb-5">
+      <div class="positive-traits mb-5 bg-white rounded-5 p-3 shadow col-xl-9 col-lg-10 col-md-11 col-sm-12">
         <h2 class="text-center mb-3 lato-regular">
             <% if @user.language == "german" %>
               Positive Eigenschaften
@@ -29,10 +29,19 @@
               Positive Traits
             <% end %>
           </h2>
-        <%= line_chart @chart_data_positive, colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: ""%>
+        <%= line_chart  @chart_data_positive,
+                        colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"],
+                        legend: "bottom",
+                        suffix: "",
+                        download: {
+                          enabled: true,
+                          filename: "#{Date.today.strftime('%y%m%d')}_History of positive traits by #{@user.first_name} #{@user.last_name}",
+                          background: "#ffffff"
+                        }
+        %>
       </div>
       <!-- Negative Traits -->
-      <div class="negative-traits">
+      <div class="negative-traits bg-white rounded-5 p-3 shadow col-xl-9 col-lg-10 col-md-11 col-sm-12">
         <h2 class="text-center mb-3 lato-regular">
             <% if @user.language == "german" %>
               Negative Eigenschaften
@@ -40,7 +49,16 @@
               Negative Traits
             <% end %>
           </h2>
-        <%= line_chart @chart_data_negative, colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: ""%>
+        <%= line_chart  @chart_data_negative,
+                        colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"],
+                        legend: "bottom",
+                        suffix: "",
+                        download: {
+                          enabled: true,
+                          filename: "#{Date.today.strftime('%y%m%d')}_History of positive traits by #{@user.first_name} #{@user.last_name}",
+                          background: "#ffffff"
+                        }
+        %>
       </div>
     </div>
   </div>
