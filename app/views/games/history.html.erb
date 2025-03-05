@@ -21,7 +21,7 @@
     <!-- Line Charts History -->
     <div class="graph-games d-flex flex-column align-items-center">
       <!-- Positive Traits -->
-      <div class="positive-traits mb-5 bg-white rounded-5 p-3 shadow col-xl-9 col-lg-10 col-md-11 col-sm-12">
+      <div class="positive-traits lato-regular mb-5 bg-white rounded-5 p-3 shadow col-xl-9 col-lg-10 col-md-11 col-sm-12">
         <h2 class="text-center mb-3 lato-regular">
             <% if @user.language == "german" %>
               Positive Eigenschaften
@@ -41,7 +41,7 @@
         %>
       </div>
       <!-- Negative Traits -->
-      <div class="negative-traits bg-white rounded-5 p-3 shadow col-xl-9 col-lg-10 col-md-11 col-sm-12">
+      <div class="negative-traits lato-regular bg-white rounded-5 p-3 shadow col-xl-9 col-lg-10 col-md-11 col-sm-12">
         <h2 class="text-center mb-3 lato-regular">
             <% if @user.language == "german" %>
               Negative Eigenschaften
@@ -55,7 +55,7 @@
                         suffix: "",
                         download: {
                           enabled: true,
-                          filename: "#{Date.today.strftime('%y%m%d')}_History of positive traits by #{@user.first_name} #{@user.last_name}",
+                          filename: "#{Date.today.strftime('%y%m%d')}_History of negative traits by #{@user.first_name} #{@user.last_name}",
                           background: "#ffffff"
                         }
         %>

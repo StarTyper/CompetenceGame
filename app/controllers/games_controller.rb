@@ -151,7 +151,7 @@ class GamesController < ApplicationController
     games_grouped_by_date.each do |date_str, games|
       games.each_with_index do |game, index|
         # Use index only when there are multiple games on the same date
-        game_name = games.size > 1 ? "#{date_str}_#{index + 1}" : date_str
+        game_name = games.size > 1 ? "#{date_str}##{index + 1}" : date_str
         game.define_singleton_method(:name) { game_name } # Override name method for this instance
 
         # Prepare data for positive chart
