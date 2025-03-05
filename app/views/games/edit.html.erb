@@ -18,12 +18,12 @@
                   "Count of positive Cards"
                 elsif @user.language == "german"
                   "Anzahl positiver Karten"
-                end), input_html: { value: 10 } %>
+                end), input_html: { value: @game.count_positive } %>
     <%= f.input :count_negative, label: (if @user.language == "english"
                   "Count of negative Cards"
                 elsif @user.language == "german"
                   "Anzahl negativer Karten"
-                end), input_html: { value: 5 } %>
+                end), input_html: { value: @game.count_negative } %>
 
     <%= f.button :submit, (if @user.language == "english"
                   "Edit Game"

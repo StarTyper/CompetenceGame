@@ -8,22 +8,39 @@
   </h1>
 
   <%= simple_form_for @game do |f| %>
-    <%= f.input :name, label: (if @user.language == "english"
-                  "Game Name"
-                elsif @user.language == "german"
-                  "Spielname"
-                end), required: true %>
+    <%= f.input :name,
+                label: (if @user.language == "english"
+                          "Game Name"
+                        elsif @user.language == "german"
+                          "Spielname"
+                        end),
+                required: true %>
 
-    <%= f.input :count_positive, label: (if @user.language == "english"
-                  "Count of positive Cards"
-                elsif @user.language == "german"
-                  "Anzahl positiver Karten"
-                end), input_html: { value: 10 } %>
-    <%= f.input :count_negative, label: (if @user.language == "english"
-                  "Count of negative Cards"
-                elsif @user.language == "german"
-                  "Anzahl negativer Karten"
-                end), input_html: { value: 5 } %>
+    <%= f.input :count_positive,
+                label: (if @user.language == "english"
+                          "Count of Positive Cards"
+                        elsif @user.language == "german"
+                          "Anzahl positiver Karten"
+                        end),
+                input_html: { value: 10 },
+                hint: (if @user.language == "english"
+                        "Please enter a natural number between 1 and 50."
+                      elsif @user.language == "german"
+                        "Bitte geben Sie eine natürliche Zahl zwischen 1 und 50 ein."
+                      end) %>
+
+    <%= f.input :count_negative,
+                label: (if @user.language == "english"
+                          "Count of Negative Cards"
+                        elsif @user.language == "german"
+                          "Anzahl negativer Karten"
+                        end),
+                input_html: { value: 5 },
+                hint: (if @user.language == "english"
+                          "Please enter a natural number between 1 and 50."
+                        elsif @user.language == "german"
+                          "Bitte geben Sie eine natürliche Zahl zwischen 1 und 50 ein."
+                        end) %>
 
     <%= f.button :submit, (if @user.language == "english"
                   "Create Game"

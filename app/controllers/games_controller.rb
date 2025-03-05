@@ -132,7 +132,7 @@ class GamesController < ApplicationController
   def finish
     @game = Game.find_by(id: params[:id])
     if @game.update(status: "finished")
-      redirect_to game_path(id: @game),
+      redirect_to game_path(@game),
                   notice: ( if @user.language == "english"
                               'Game was successfully finished.'
                             elsif @user.language == "german"
@@ -140,7 +140,13 @@ class GamesController < ApplicationController
                             end
                           )
     else
-      redirect_to games_path, alert: 'Failed to finish game.'
+      redirect_to games_path,
+                  notice: ( if @user.language == "english"
+                              'Game finishing failed.'
+                            elsif @user.language == "german"
+                              'Das Beenden des Spiels ist fehlgeschlagen.'
+                            end
+                          )
     end
   end
 
@@ -272,7 +278,7 @@ class GamesController < ApplicationController
 
     # Try to save the game and handle the response
     if @game.save
-      redirect_to play_path(id: @game),
+      redirect_to play_path(@game),
                   notice: ( if @user.language == "english"
                               'Game was successfully created.'
                             elsif @user.language == "german"
@@ -280,7 +286,12 @@ class GamesController < ApplicationController
                             end
                           )
     else
-      render :new
+      redirect_to new_game_path
+      flash[:notice] =  if @user.language == "english"
+                          'Game creation failed.'
+                        elsif @user.language == "german"
+                          'Die Erstellung des Spiels ist fehlgeschlagen.'
+                        end
     end
   end
 
@@ -299,7 +310,12 @@ class GamesController < ApplicationController
                             end
                           )
     else
-      render :edit
+      redirect_to edit_game_path(@game)
+      flash[:notice] =  if @user.language == "english"
+                          'Game update failed.'
+                        elsif @user.language == "german"
+                          'Die Aktualisierung des Spiels ist fehlgeschlagen.'
+                        end
     end
   end
 
@@ -308,7 +324,7 @@ class GamesController < ApplicationController
     @game.destroy
     redirect_to games_url,
                 notice: ( if @user.language == "english"
-                            'Game was successfully destroyed.'
+                           'Game was successfully destroyed.'
                           elsif @user.language == "german"
                             'Spiel wurde erfolgreich gelöscht.'
                           end
