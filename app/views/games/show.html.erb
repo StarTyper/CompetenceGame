@@ -160,8 +160,17 @@
             Gewichtung positiver Eigenschaften
           <% elsif @user.language == "english" %>
             Weighting positive traits
-          <% end %></p>
-        <%= pie_chart [["methodical", @methodical_positive_percentage], ["social", @social_positive_percentage], ["professional", @professional_positive_percentage], ["intuitive", @intuitive_positive_percentage], ["personal", @personal_positive_percentage]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: "%"  %>
+          <% end %>
+        </p>
+        <%= pie_chart [ ["methodical", @methodical_positive_percentage],
+                        ["social", @social_positive_percentage],
+                        ["professional", @professional_positive_percentage],
+                        ["intuitive", @intuitive_positive_percentage],
+                        ["personal", @personal_positive_percentage]],
+                        colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"],
+                        legend: "bottom",
+                        suffix: "%"
+        %>
       </div>
       <div class="pie-chart-negative w-50">
         <p class="text-center mb-3">
@@ -169,7 +178,8 @@
             Gewichtung negativer Eigenschaften
           <% elsif @user.language == "english" %>
             Weighting negative traits
-          <% end %></p>
+          <% end %>
+        </p>
         <%= pie_chart [["methodical", @methodical_negative_percentage], ["social", @social_negative_percentage], ["professional", @professional_negative_percentage], ["intuitive", @intuitive_negative_percentage], ["personal", @personal_negative_percentage]], colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: "%"  %>
       </div>
     </div>

@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   patch "next_group" => "games#next_group", as: :next_group
   # resource for game finish
   get "finish" => "games#finish", as: :finish
+  # resource for game history
+  get "history" => "games#history", as: :history
 
   # resource for pages rules
   get "rules" => "pages#rules", as: :rules

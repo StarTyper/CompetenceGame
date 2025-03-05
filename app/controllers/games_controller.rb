@@ -138,8 +138,65 @@ class GamesController < ApplicationController
     end
   end
 
+  def history
+    @finished_games = @user.games.where(status: 'finished').order(:created_at) # Sort by created_at
+
+    # Group games by the formatted created_at date
+    games_grouped_by_date = @finished_games.group_by { |game| game.created_at.strftime("%Y-%m-%d") }
+
+    # Create a chart data array
+    @chart_data_positive = []
+    @chart_data_negative = []
+
+    games_grouped_by_date.each do |date_str, games|
+      games.each_with_index do |game, index|
+        # Use index only when there are multiple games on the same date
+        game_name = games.size > 1 ? "#{date_str}_#{index + 1}" : date_str
+        game.define_singleton_method(:name) { game_name } # Override name method for this instance
+
+        # Prepare data for positive chart
+        game_types_positive = [
+          { name: "Methodical", count: game.cards_positive_methodical_count },
+          { name: "Social", count: game.cards_positive_social_count },
+          { name: "Professional", count: game.cards_positive_professional_count },
+          { name: "Intuitive", count: game.cards_positive_intuitive_count },
+          { name: "Personal", count: game.cards_positive_personal_count }
+        ]
+
+        # Add positive game types to chart data
+        game_types_positive.each do |type|
+          series_hash = @chart_data_positive.find { |s| s[:name] == type[:name] }
+          if series_hash
+            series_hash[:data][game.name] = type[:count] # Using overridden name
+          else
+            @chart_data_positive << { name: type[:name], data: { game.name => type[:count] } } # Using overridden name
+          end
+        end
+
+        # Prepare data for negative chart
+        game_types_negative = [
+          { name: "Methodical", count: game.cards_negative_methodical_count },
+          { name: "Social", count: game.cards_negative_social_count },
+          { name: "Professional", count: game.cards_negative_professional_count },
+          { name: "Intuitive", count: game.cards_negative_intuitive_count },
+          { name: "Personal", count: game.cards_negative_personal_count }
+        ]
+
+        # Add negative game types to chart data
+        game_types_negative.each do |type|
+          series_hash = @chart_data_negative.find { |s| s[:name] == type[:name] }
+          if series_hash
+            series_hash[:data][game.name] = type[:count] # Using overridden name
+          else
+            @chart_data_negative << { name: type[:name], data: { game.name => type[:count] } } # Using overridden name
+          end
+        end
+      end
+    end
+  end
+
   def index
-    @games = Game.where(user: @user)
+    @games = @user.games
   end
 
   def show

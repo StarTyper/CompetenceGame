@@ -1,0 +1,47 @@
+<div class="container margin-top">
+  <div class="games-page">
+    <div class="heading-games mb-5">
+      <div class="top-row-games d-flex justify-content-between">
+        <div class="title-games">
+          <% if @user.language == "english" %>
+            <h1 class="lato-bold">History</h1>
+          <% elsif @user.language == "german" %>
+            <h1 class="lato-bold">Verlauf</h1>
+          <% end %>
+        </div>
+      </div>
+      <div class="bottom-row-games">
+        <%= link_to (if @user.language == "english"
+                  "Back"
+                elsif @user.language == "german"
+                  "Zurück"
+                end), games_path, class: "btn btn-outline-dark rounded-4" %>
+      </div>
+    </div>
+    <!-- Line Charts History -->
+    <div class="graph-games">
+      <!-- Positive Traits -->
+      <div class="positive-traits mb-5">
+        <h2 class="text-center mb-3 lato-regular">
+            <% if @user.language == "german" %>
+              Positive Eigenschaften
+            <% elsif @user.language == "english" %>
+              Positive Traits
+            <% end %>
+          </h2>
+        <%= line_chart @chart_data_positive, colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: ""%>
+      </div>
+      <!-- Negative Traits -->
+      <div class="negative-traits">
+        <h2 class="text-center mb-3 lato-regular">
+            <% if @user.language == "german" %>
+              Negative Eigenschaften
+            <% elsif @user.language == "english" %>
+              Negative Traits
+            <% end %>
+          </h2>
+        <%= line_chart @chart_data_negative, colors: ["#cf6650", "#54A17A", "#2f9dce", "#ecc56d", "#8b5a88"], legend: "bottom", suffix: ""%>
+      </div>
+    </div>
+  </div>
+</div>

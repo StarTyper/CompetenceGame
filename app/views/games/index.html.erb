@@ -15,7 +15,12 @@
                   "New Game"
                 elsif @user.language == "german"
                   "Neues Spiel"
-                end), new_game_path, class: "btn btn-outline-dark rounded-4" %>
+                end), new_game_path, class: "btn btn-outline-dark rounded-4 me-1" %>
+        <%= link_to (if @user.language == "english"
+                  "History"
+                elsif @user.language == "german"
+                  "Verlauf"
+                end), history_path, class: "btn btn-outline-dark rounded-4" %>
       </div>
     </div>
     <div class="content-games">
