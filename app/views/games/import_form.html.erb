@@ -1,0 +1,36 @@
+<div class="share-game-form px-5 pt-5">
+  <h1>
+    <% if @user.language == "english" %>
+      Share Game
+    <% elsif @user.language == "german" %>
+      Spiel teilen
+    <% end %>
+  </h1>
+
+  <%= simple_form_for @game, url: import_game_path, method: :post do |f| %>
+    <div class="form-group">
+      <%= f.label :share_code, (if @user.language == "english"
+                                   "Enter Share Code"
+                                 elsif @user.language == "german"
+                                   "Teilen-Code eingeben"
+                                 end) %>
+      <%= text_field_tag :share_code, nil, required: true, placeholder: (if @user.language == "english"
+                                   "Enter Share Code"
+                                 elsif @user.language == "german"
+                                   "Teilen-Code eingeben"
+                                 end) %>
+    </div>
+
+    <%= f.button :submit, (if @user.language == "english"
+                              "Import Game"
+                            elsif @user.language == "german"
+                              "Spiel importieren"
+                            end), class: "btn btn-outline-dark rounded-4" %>
+  <% end %>
+
+  <%= link_to (if @user.language == "english"
+                  "Back"
+                elsif @user.language == "german"
+                  "zurück"
+                end), games_path, class: 'btn btn-outline-secondary mt-2 rounded-4' %>
+</div>

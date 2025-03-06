@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_27_095019) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_06_111712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,7 +61,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_27_095019) do
     t.boolean "positive", default: true, null: false
     t.integer "group_positive", default: 0, null: false
     t.integer "group_negative", default: 0, null: false
+    t.string "share_code"
+    t.integer "shared_from_user_id"
     t.index ["client_id"], name: "index_games_on_client_id"
+    t.index ["share_code"], name: "index_games_on_share_code", unique: true
     t.index ["user_id"], name: "index_games_on_user_id"
   end
 
@@ -77,7 +80,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_27_095019) do
     t.string "last_name"
     t.string "role", default: "guest"
     t.bigint "client_id"
-    t.string "language", default: "german", null: false
+    t.string "language", default: "english", null: false
     t.index ["client_id"], name: "index_users_on_client_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

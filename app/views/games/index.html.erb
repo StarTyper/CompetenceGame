@@ -20,7 +20,12 @@
                   "History"
                 elsif @user.language == "german"
                   "Verlauf"
-                end), history_path, class: "btn btn-outline-dark rounded-4" %>
+                end), history_path, class: "btn btn-outline-dark rounded-4 me-1" %>
+        <%= link_to (if @user.language == "english"
+                  "Import"
+                elsif @user.language == "german"
+                  "Importieren"
+                end), import_form_path, class: "btn btn-outline-dark rounded-4" %>
       </div>
     </div>
     <div class="content-games">
@@ -50,10 +55,29 @@
                   <% end %>
                 <% end %>
               </p>
-            <!-- count of cards positive of the game -->
-            <p class="card-text">Positive: <%= game.count_positive %></p>
-            <!-- count of cards negative of the game -->
-            <p class="card-text">Negative: <%= game.count_negative %></p>
+            <% if game.shared_from_user_id? %>
+              <p>
+                <% if @user.language == "english" %>
+                  Shared from <%= User.find(game.shared_from_user_id).first_name %> <%= User.find(game.shared_from_user_id).last_name %>
+                <% elsif @user.language == "german" %>
+                  Geteilt von <%= User.find(game.shared_from_user_id).first_name %> <%= User.find(game.shared_from_user_id).last_name %>
+                <% end %>
+              </p>
+            <% end %>
+            <div class="count-index-card d-flex">
+              <!-- count of cards positive of the game -->
+              <div class="count-plus d-flex me-3">
+                <h2 class="lato-bold"><%= game.count_positive %></h2>
+                <i class="bi bi-plus-circle"></i>
+              </div>
+              <!-- count of cards negative of the game -->
+              <div class="count-minus d-flex">
+                <h2 class="lato-bold"><%= game.count_negative %></h2>
+                <div class="minus-icon" style="font-size: 1rem;">
+                  <i class="bi bi-dash-circle"></i>
+                </div>
+              </div>
+            </div>
             <div class="buttons-games d-flex justify-content-between">
               <!-- if game.status == "running" "play" button with link to games play page -->
               <% if game.status == "running" %>
@@ -64,7 +88,7 @@
                 end),
                 play_path(id: game),
                 class: "btn  btn-outline-warning rounded-4" %>
-              <!-- if game.status == "finished" "Inspect" button with link to games show page -->
+              <!-- if game.status == "finished" "Results" button with link to games show page -->
               <% else %>
                 <%= link_to (if @user.language == "english"
                   "Results"

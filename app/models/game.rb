@@ -5,6 +5,9 @@ class Game < ApplicationRecord
   has_many :game_cards, dependent: :destroy
   has_many :cards, through: :game_cards
 
+  # Callbacks
+  before_create :generate_unique_share_code
+
   # Validations
   validates :name, presence: true, length: { maximum: 255 }
   validates :status, presence: true, inclusion: { in: %w[running finished] }
@@ -63,5 +66,19 @@ class Game < ApplicationRecord
 
   def cards_negative_professional_count
     count_cards('professional', positive: false)
+  end
+
+  # Method to generate a unique share code
+  def generate_unique_share_code
+    loop do
+      self.share_code = SecureRandom.hex(10) # Generate a random hex code
+      break unless Game.exists?(share_code:) # Ensure it's unique
+    end
+  end
+
+  # Method to regenerate the share code
+  def regenerate_share_code
+    generate_unique_share_code # Reuse the same method for unique code generation
+    save # Save the game to update the share code
   end
 end

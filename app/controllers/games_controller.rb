@@ -207,12 +207,99 @@ class GamesController < ApplicationController
     end
   end
 
+  def share_form
+    @game = Game.find(params[:id])
+  end
+
+  def share
+    @game = Game.find(params[:id])
+
+    # Check if the game status is "finished"
+    unless @game.status == "finished"
+      raise
+      redirect_to games_path, notice: (if @user.language == "english"
+                                         'Game must be finished to share.'
+                                       elsif @user.language == "german"
+                                         'Das Spiel muss beendet sein, um es zu teilen.'
+                                       end)
+      return
+    end
+
+    # Check if the game already has a share code
+    if @game.share_code.blank?
+      @game.regenerate_share_code # Generate a new share code if it doesn't exist
+    end
+
+    # Here you might want to send the share code via email
+    share_code = @game.share_code
+
+    # Assuming you have a recipient_email for demonstration purposes
+    recipient_email = params[:recipient_email]
+
+    # Sending the share email
+    UserMailer.share_game(@user, recipient_email, share_code).deliver_now
+
+    redirect_to game_path(@game), notice: (if @user.language == "english"
+                                             'Share code sent successfully.'
+                                           elsif @user.language == "german"
+                                             'Code zum Teilen erfolgreich gesendet.'
+                                           end)
+  end
+
+  def import_form
+    @game = Game.new
+  end
+
+  def import
+    @game = Game.find_by(share_code: params[:share_code]) # Find the game based on the share code
+    if @game
+      # Logic to add the game to the current user's records, e.g., duplicating the game
+      game_user_copy = @game.dup
+      game_user_copy.shared_from_user_id = @game.user.id # Set the original user id
+      game_user_copy.user = current_user # Associate the copied game with the current user
+      game_user_copy.share_code = nil # Clear the share code
+
+      if game_user_copy.save
+        # Iterate over each GameCard in the original game
+        @game.game_cards.each do |game_card|
+          # Duplicate each game card and associate it with the copied game
+          GameCard.create(game_id: game_user_copy.id, card_id: game_card.card_id, pile: game_card.pile)
+        end
+
+        redirect_to game_path(game_user_copy), notice: (if @user.language == "english"
+                                                          'Game was successfully imported.'
+                                                        elsif @user.language == "german"
+                                                          'Spiel wurde erfolgreich importiert.'
+                                                        end
+                                                       )
+      else
+        redirect_to games_path, alert: (if @user.language == "english"
+                                         'Game import failed.'
+                                       elsif @user.language == "german"
+                                         'Das Importieren des Spiels ist fehlgeschlagen.'
+                                        end
+                                      )
+      end
+    else
+      redirect_to games_path, alert: (if @user.language == "english"
+                                       'Game not found.'
+                                     elsif @user.language == "german"
+                                       'Spiel nicht gefunden.'
+                                      end
+                                    )
+    end
+  end
+
   def index
     @games = @user.games.order(created_at: :desc) # Sort by created_at in descending order
   end
 
   def show
     @game = Game.find(params[:id])
+
+    # Check if the game is shared
+    @is_shared = @game.shared_from_user_id?
+    @shared_from = @game.shared_from_user_id.present? ? User.find(@game.shared_from_user_id) : nil
 
     # Assign all cards from this game on pile 1 to @choosen_cards
     @choosen_cards = GameCard.where(game: @game, pile: 1)
@@ -334,7 +421,7 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name, :count_positive, :count_negative)
+    params.require(:game).permit(:name, :count_positive, :count_negative, :recipient_email)
   end
 
   def set_user

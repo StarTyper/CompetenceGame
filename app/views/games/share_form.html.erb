@@ -1,0 +1,32 @@
+<div class="share-game-form px-5 pt-5">
+  <h1>
+    <% if @user.language == "english" %>
+      Share Game
+    <% elsif @user.language == "german" %>
+      Spiel teilen
+    <% end %>
+  </h1>
+
+  <%= simple_form_for @game, url: share_game_path(@game), method: :post do |f| %>
+    <div class="form-group">
+      <%= f.label :recipient_email, (if @user.language == "english"
+                                        "Enter email to share with:"
+                                      elsif @user.language == "german"
+                                        "E-Mail für die Weitergabe eingeben:"
+                                      end) %>
+      <%= text_field_tag :recipient_email, nil, required: true, placeholder: 'example@example.com' %>
+    </div>
+
+    <%= f.button :submit, (if @user.language == "english"
+                              "Share Game"
+                            elsif @user.language == "german"
+                              "Spiel teilen"
+                            end), class: "btn btn-outline-dark rounded-4" %>
+  <% end %>
+
+  <%= link_to (if @user.language == "english"
+                  "Back"
+                elsif @user.language == "german"
+                  "zurück"
+                end), game_path(@game), class: 'btn btn-outline-secondary mt-2 rounded-4' %>
+</div>
