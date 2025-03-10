@@ -17,6 +17,11 @@
                   "Neues Spiel"
                 end), new_game_path, class: "btn btn-outline-dark rounded-4 me-1" %>
         <%= link_to (if @user.language == "english"
+                  "My Cards"
+                elsif @user.language == "german"
+                  "Meine Karten"
+                end), cards_path, class: "btn btn-outline-dark rounded-4 me-1" %>
+        <%= link_to (if @user.language == "english"
                   "History"
                 elsif @user.language == "german"
                   "Verlauf"

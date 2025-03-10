@@ -216,7 +216,6 @@ class GamesController < ApplicationController
 
     # Check if the game status is "finished"
     unless @game.status == "finished"
-      raise
       redirect_to games_path, notice: (if @user.language == "english"
                                          'Game must be finished to share.'
                                        elsif @user.language == "german"
@@ -243,6 +242,40 @@ class GamesController < ApplicationController
                                              'Share code sent successfully.'
                                            elsif @user.language == "german"
                                              'Code zum Teilen erfolgreich gesendet.'
+                                           end)
+  end
+
+  def challenge
+    @game = Game.find(params[:id])
+
+    # Check if the game status is "finished"
+    unless @game.status == "finished"
+      redirect_to games_path, notice: (if @user.language == "english"
+                                        'Game must be finished to challenge.'
+                                      elsif @user.language == "german"
+                                        'Das Spiel muss beendet sein, um es zu teilen.'
+                                       end)
+    return
+    end
+
+  # Check if the game already has a challenge code
+  if @game.challenge_code.blank?
+    @game.regenerate_challenge_code # Generate a new challenge code if it doesn't exist
+  end
+
+  # Here you might want to send the challenge code via email
+  challenge_code = @game.challenge_code
+
+  # Assuming you have a recipient_email for demonstration purposes
+  recipient_email = params[:recipient_email]
+
+    # Sending the challenge email
+    UserMailer.challenge_game(@user, recipient_email, challenge_code).deliver_now
+
+    redirect_to game_path(@game), notice: (if @user.language == "english"
+                                             'Challenge sent successfully.'
+                                           elsif @user.language == "german"
+                                             'Herausforderung erfolgreich gesendet.'
                                            end)
   end
 

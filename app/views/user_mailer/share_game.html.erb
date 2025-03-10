@@ -1,12 +1,15 @@
-<h1>Game Share Code</h1>
-<p>Hello!</p>
-<p>Your friend <%= @user.first_name %> <%= @user.last_name %> has played a game for you.</p>
-<p>Use this code to access the game: <strong><%= @share_code %></strong></p>
-<p>Visit the games page and enter your code to view the results!</p>
-<!-- <p> -->
-  <!-- To login to the site, just follow this link: -->
-  <%# = link_to "login", login_url %>
-<!-- </p> -->
-<p>Best regards</p>
-<p>Crea Leadership Game</p>
-<p>PS: This is an automatically generated email. Please do not reply to this email.</p>
+<div class="container">
+  <h1>Game Share Code</h1>
+  <p>Hello!</p>
+  <p><%= @user.first_name %> <%= @user.last_name %> has played a game for you.</p>
+  <p>Use this code to import the game into your collection: <strong class="share-code"><%= @share_code %></strong></p>
+  <p>Visit the import page and enter your code to view the results!</p>
+  <p>
+    <a href="<%= import_game_url(@share_code) %>">Import Game</a>
+  </p>
+  <p>Best regards,</p>
+  <p>Crea Leadership Game</p>
+  <div class="footer">
+    <p>PS: This is an automatically generated email. Please do not reply to this email.</p>
+  </div>
+</div>

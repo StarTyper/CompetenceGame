@@ -7,6 +7,7 @@ class Game < ApplicationRecord
 
   # Callbacks
   before_create :generate_unique_share_code
+  before_create :generate_unique_challenge_code
 
   # Validations
   validates :name, presence: true, length: { maximum: 255 }
@@ -21,6 +22,7 @@ class Game < ApplicationRecord
                                               less_than_or_equal_to: 50 }
   validates :pile, presence: true, inclusion: { in: [0, 1, 2] }
 
+  # Methods to count positive and negative cards
   def count_cards(category, positive: true)
     game_cards.joins(:card)
               .where(pile: 1, cards: { positive:, categoryenglish: category })
@@ -80,5 +82,19 @@ class Game < ApplicationRecord
   def regenerate_share_code
     generate_unique_share_code # Reuse the same method for unique code generation
     save # Save the game to update the share code
+  end
+
+  # Method to generate a unique challenge code
+  def generate_unique_challenge_code
+    loop do
+      self.challenge_code = SecureRandom.hex(10) # Generate a random hex code
+      break unless Game.exists?(challenge_code:) # Ensure it's unique
+    end
+  end
+
+  # Method to regenerate the challenge code
+  def regenerate_challenge_code
+    generate_unique_challenge_code # Reuse the same method for unique code generation
+    save # Save the game to update the challenge code
   end
 end

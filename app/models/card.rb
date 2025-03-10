@@ -4,8 +4,8 @@ class Card < ApplicationRecord
   has_many :game_cards, dependent: :destroy
 
   # Validations
-  validates :categorygerman, presence: true
-  validates :categoryenglish, presence: true
+  validates :categorygerman, presence: true, inclusion: { in: %w[methodisch sozial fachlich intuitiv persönlich] }
+  validates :categoryenglish, presence: true, inclusion: { in: %w[methodical social professional intuitive personal] }
   validates :positive, inclusion: { in: [true, false] }
   validates :namegerman, presence: true, length: { maximum: 255 }
   validates :nameenglish, length: { maximum: 255 }, allow_blank: true

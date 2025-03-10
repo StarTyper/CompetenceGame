@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_06_111712) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_07_090726) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,7 +28,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_06_111712) do
     t.string "groupgerman", null: false
     t.string "groupenglish", null: false
     t.string "categoryenglish", null: false
+    t.bigint "user_id"
     t.index ["client_id"], name: "index_cards_on_client_id"
+    t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -63,6 +65,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_06_111712) do
     t.integer "group_negative", default: 0, null: false
     t.string "share_code"
     t.integer "shared_from_user_id"
+    t.string "challenge_code"
+    t.integer "shared_state", default: 0, null: false
+    t.index ["challenge_code"], name: "index_games_on_challenge_code", unique: true
     t.index ["client_id"], name: "index_games_on_client_id"
     t.index ["share_code"], name: "index_games_on_share_code", unique: true
     t.index ["user_id"], name: "index_games_on_user_id"
@@ -87,6 +92,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_06_111712) do
   end
 
   add_foreign_key "cards", "clients"
+  add_foreign_key "cards", "users"
   add_foreign_key "game_cards", "cards"
   add_foreign_key "game_cards", "games"
   add_foreign_key "games", "clients"

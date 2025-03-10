@@ -27,25 +27,33 @@ Rails.application.routes.draw do
   patch "choose" => "games#choose", as: :choose
   # resource for game cards reject
   patch "reject" => "games#reject", as: :reject
+
   # resource for game next group
   patch "next_group" => "games#next_group", as: :next_group
   # resource for game finish
   get "finish" => "games#finish", as: :finish
+
   # resource for game history
   get "history" => "games#history", as: :history
-  # resource for import_form action
-  get "import_form" => "games#import_form", as: :import_form
-  # resource for game import share code
-  # post 'import_game/:share_code', to: 'games#import', as: :import_game
-  post "import", to: 'games#import', as: :import_game
+
   # post share for game
   post 'games/:id/share' => 'games#share', as: :share_game
   # route for game share form
   get 'games/:id/share_form' => 'games#share_form', as: :share_form
 
+  # resource for import_form action
+  get "import_form" => "games#import_form", as: :import_form
+  # resource for game import share code
+  post "import", to: 'games#import', as: :import_game
+
+  # post challenge for game
+  post 'games/:id/challenge' => 'games#challenge', as: :challenge_game
+
   # resource for pages rules
   get "rules" => "pages#rules", as: :rules
 
+  # resources for cards
+  resources :cards
   # Defines the root path route ("/")
   # root "posts#index"
 end

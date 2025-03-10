@@ -1,0 +1,99 @@
+<div class="container margin-top">
+  <div class="index-cards-page">
+    <div class="heading-index-cards mb-5">
+      <div class="top-row-index-cards d-flex justify-content-between">
+        <div class="title-index-cards">
+          <h1 class="lato-bold">
+            <% if @user.language == "english" %>
+              My Cards
+            <% elsif @user.language == "german" %>
+              Meine Karten
+            <% end %>
+          </h1>
+        </div>
+        <div class="buttons-index-cards">
+        </div>
+      </div>
+      <!-- Button-Row -->
+      <!-- Game Card Target Counter -->
+    <div class="count-play d-flex">
+      <div class="count-minus d-flex">
+      </div>
+    </div>
+    <div class="nav-buttons-index-cards d-flex">
+      <%= link_to (if @user.language == "english"
+                  "New Card"
+                elsif @user.language == "german"
+                  "Neue Karte"
+                end), new_card_path, class: "btn btn-outline-dark rounded-4 me-1" %>
+    </div>
+    </div>
+    <!-- Board Cards -->
+  <div class="card-container row">
+    <% if @cards.empty? %>
+      <div class="no-cards">
+        <h5 class="lato-bold">
+          <% if @user.language == "english" %>
+            You have no individual cards yet.
+          <% elsif @user.language == "german" %>
+            Du hast noch keine eigenen Karten.
+          <% end %>
+        </h5>
+      </div>
+    <% end %>
+    <% @cards.each do |card| %>
+      <div class="card text-center rounded-5 shadow m-3" style="width: 18rem;">
+        <div class="card-body d-flex flex-column">
+          <!-- Buttons Top -->
+          <div class="card-buttons-top d-flex justify-content-between">
+            <i class="bi bi-info-circle hover-gray" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#card_<%= card.id %>"></i>
+            <% if card.positive == true %>
+              <i class="bi bi-plus-circle color-gray" style="font-size: 2rem;"></i>
+            <% else %>
+              <i class="bi bi-dash-circle color-gray" style="font-size: 2rem;"></i>
+            <% end %>
+          </div>
+          <!-- Trait -->
+          <div class="trait py-4 d-flex justify-content-center flex-fill">
+            <h5 class="card-title align-self-center lato-bold">
+              <% if @user.language == "german" %>
+                <%= card.namegerman %>
+              <% elsif @user.language == "english" %>
+                <%= card.nameenglish %>
+              <% end %>
+            </h5>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  </div>
+</div>
+
+<!-- Modals -->
+<% @cards.each do |card| %>
+  <div class="modal" id="card_<%= card.id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-5">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            <% if @user.language == "english" %>
+              <%= card.nameenglish %>
+            <% elsif @user.language == "german" %>
+              <%= card.namegerman %>
+            <% end %>
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <% if @user.language == "english" %>
+              <%= card.explanationenglish %>
+            <% elsif @user.language == "german" %>
+              <%= card.explanationgerman %>
+            <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
