@@ -2,11 +2,12 @@
   <h1>Game Share Code</h1>
   <p>Hello!</p>
   <p><%= @user.first_name %> <%= @user.last_name %> has played a game for you.</p>
-  <p>Use this code to import the game into your collection: <strong class="share-code"><%= @share_code %></strong></p>
-  <p>Click the link below to verify and import the game directly:</p>
+  <p>Click the link below to import the game directly:</p>
   <p>
     <%= link_to "Import Game", verify_import_url(@share_code) %>
   </p>
+  <!-- if this shouldnt work for some reason, you can enter the code manually though the button "import" on the games page -->
+  <p>Use this code to import the game into your collection: <strong class="share-code"><%= @share_code %></strong></p>
   <p>Best regards,</p>
   <p>Crea Leadership Game</p>
   <div class="footer">

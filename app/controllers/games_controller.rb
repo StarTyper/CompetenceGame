@@ -255,19 +255,19 @@ class GamesController < ApplicationController
                                       elsif @user.language == "german"
                                         'Das Spiel muss beendet sein, um es zu teilen.'
                                        end)
-    return
+      return
     end
 
-  # Check if the game already has a challenge code
-  if @game.challenge_code.blank?
-    @game.regenerate_challenge_code # Generate a new challenge code if it doesn't exist
-  end
+    # Check if the game already has a challenge code
+    if @game.challenge_code.blank?
+      @game.regenerate_challenge_code # Generate a new challenge code if it doesn't exist
+    end
 
-  # Here you might want to send the challenge code via email
-  challenge_code = @game.challenge_code
+    # Here you might want to send the challenge code via email
+    challenge_code = @game.challenge_code
 
-  # Assuming you have a recipient_email for demonstration purposes
-  recipient_email = params[:recipient_email]
+    # Assuming you have a recipient_email for demonstration purposes
+    recipient_email = params[:recipient_email]
 
     # Sending the challenge email
     UserMailer.challenge_game(@user, recipient_email, challenge_code).deliver_now
@@ -279,19 +279,21 @@ class GamesController < ApplicationController
                                            end)
   end
 
+  # import form for manual import of games
   def import_form
-    # @share_code = "sharecode"
     @game = Game.new
   end
 
+  # necessary for direct POST request to import game
+  # used only from the link in the share email
   def verify_import
     @game = Game.find_by(share_code: params[:share_code])
     if @game
       # Redirect to POST action
       redirect_post(import_game_path, # URL
-      params: {
-        share_code: @game.share_code
-      }, options: {authenticity_token: :auto})
+                    params: {
+                      share_code: @game.share_code
+                    }, options: {authenticity_token: :auto})
       # redirect_to import_game_path(@game.share_code)
     else
       redirect_to games_path, alert: 'Invalid share code.'
@@ -299,8 +301,6 @@ class GamesController < ApplicationController
   end
 
   def import
-    # if share_code nil share_code == ""
-    @share_code = params[:share_code]
     @game = Game.find_by(share_code: params[:share_code]) # Find the game based on the share code
     if @game
       # Logic to add the game to the current user's records, e.g., duplicating the game
@@ -428,7 +428,7 @@ class GamesController < ApplicationController
                           'Game creation failed.'
                         elsif @user.language == "german"
                           'Die Erstellung des Spiels ist fehlgeschlagen.'
-                        end
+                       end
     end
   end
 
@@ -452,7 +452,7 @@ class GamesController < ApplicationController
                           'Game update failed.'
                         elsif @user.language == "german"
                           'Die Aktualisierung des Spiels ist fehlgeschlagen.'
-                        end
+                       end
     end
   end
 
