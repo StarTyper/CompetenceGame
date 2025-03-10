@@ -1,7 +1,9 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.action_mailer.default_url_options = { host: "http://localhost:3000" }
+  host = 'http://localhost:3000' #replace with your own url
+  config.action_mailer.default_url_options = { host: host }
+  # config.action_mailer.default_url_options = { host: "http://localhost:3000" }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -76,8 +78,6 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   config.action_mailer.delivery_method = :smtp
-  host = 'gmail.com' #replace with your own url
-  config.action_mailer.default_url_options = { host: host }
 
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',

@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   get "import_form" => "games#import_form", as: :import_form
   # resource for game import share code
   post "import", to: 'games#import', as: :import_game
+  get 'verify_import/:share_code', to: 'games#verify_import', as: :verify_import
+  # post 'import_game/:share_code', to: 'games#import', as: :import_game
 
   # post challenge for game
   post 'games/:id/challenge' => 'games#challenge', as: :challenge_game

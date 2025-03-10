@@ -280,10 +280,27 @@ class GamesController < ApplicationController
   end
 
   def import_form
+    # @share_code = "sharecode"
     @game = Game.new
   end
 
+  def verify_import
+    @game = Game.find_by(share_code: params[:share_code])
+    if @game
+      # Redirect to POST action
+      redirect_post(import_game_path, # URL
+      params: {
+        share_code: @game.share_code
+      }, options: {authenticity_token: :auto})
+      # redirect_to import_game_path(@game.share_code)
+    else
+      redirect_to games_path, alert: 'Invalid share code.'
+    end
+  end
+
   def import
+    # if share_code nil share_code == ""
+    @share_code = params[:share_code]
     @game = Game.find_by(share_code: params[:share_code]) # Find the game based on the share code
     if @game
       # Logic to add the game to the current user's records, e.g., duplicating the game
@@ -407,7 +424,7 @@ class GamesController < ApplicationController
                           )
     else
       redirect_to new_game_path
-      flash[:notice] =  if @user.language == "english"
+      flash[:notice] = if @user.language == "english"
                           'Game creation failed.'
                         elsif @user.language == "german"
                           'Die Erstellung des Spiels ist fehlgeschlagen.'
@@ -431,7 +448,7 @@ class GamesController < ApplicationController
                           )
     else
       redirect_to edit_game_path(@game)
-      flash[:notice] =  if @user.language == "english"
+      flash[:notice] = if @user.language == "english"
                           'Game update failed.'
                         elsif @user.language == "german"
                           'Die Aktualisierung des Spiels ist fehlgeschlagen.'

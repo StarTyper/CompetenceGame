@@ -26,7 +26,11 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# Chartkick for beautiful JavaScript charts
 gem "chartkick"
+
+# Repost for redirecting with post method
+gem 'repost'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
