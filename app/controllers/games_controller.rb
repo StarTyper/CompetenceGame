@@ -309,6 +309,10 @@ class GamesController < ApplicationController
       game_user_copy.user = current_user # Associate the copied game with the current user
       game_user_copy.share_code = nil # Clear the share code
 
+      # Set the timestamps to match the original game
+      game_user_copy.created_at = @game.created_at
+      game_user_copy.updated_at = @game.updated_at
+
       if game_user_copy.save
         # Iterate over each GameCard in the original game
         @game.game_cards.each do |game_card|
