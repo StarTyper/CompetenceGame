@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_07_090726) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_11_085458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cards", force: :cascade do |t|
-    t.string "categorygerman", null: false
     t.boolean "positive", null: false
-    t.string "namegerman", null: false
+    t.string "namegerman"
     t.string "nameenglish"
     t.text "explanationgerman"
     t.text "explanationenglish"
@@ -25,9 +24,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_07_090726) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "client_id", null: false
-    t.string "groupgerman", null: false
-    t.string "groupenglish", null: false
-    t.string "categoryenglish", null: false
+    t.string "groupgerman"
+    t.string "groupenglish"
+    t.string "category", null: false
     t.bigint "user_id"
     t.index ["client_id"], name: "index_cards_on_client_id"
     t.index ["user_id"], name: "index_cards_on_user_id"

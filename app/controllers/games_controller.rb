@@ -5,27 +5,10 @@ class GamesController < ApplicationController
   def play
     @game = Game.find_by(id: params[:id])
     @game = Game.where(user: @user, status: "running").first if @game.nil?
-
-    if @game.nil?
-      @game = Game.create(name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
-                          status: "running",
-                          user: @user,
-                          client: @user.client,
-                          count_positive: 10,
-                          count_negative: 5,
-                          pile: 0,
-                          positive: true)
-      @game.save
-    end
+    create_game if @game.nil?
 
     @game_cards = GameCard.where(game: @game)
-
-    if @game_cards.empty?
-      @cards = Card.where(client: @user.client).or(Card.where(client: Client.find_by(name: "default")))
-      @cards.each do |card|
-        GameCard.create(game: @game, card:, pile: 0)
-      end
-    end
+    create_game_cards if @game_cards.empty?
 
     set_counts
 
@@ -360,25 +343,25 @@ class GamesController < ApplicationController
 
     # Assign all positive and negative game cards for each category
     @methodical_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                       cards: { categorygerman: "methodisch", positive: true })
+                                                       cards: { category: "methodical", positive: true })
     @methodical_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                       cards: { categorygerman: "methodisch", positive: false })
+                                                       cards: { category: "methodical", positive: false })
     @social_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                   cards: { categorygerman: "sozial", positive: true })
+                                                   cards: { category: "social", positive: true })
     @social_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                   cards: { categorygerman: "sozial", positive: false })
+                                                   cards: { category: "social", positive: false })
     @professional_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                         cards: { categorygerman: "fachlich", positive: true })
+                                                         cards: { category: "professional", positive: true })
     @professional_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                         cards: { categorygerman: "fachlich", positive: false })
+                                                         cards: { category: "professional", positive: false })
     @intuitive_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                      cards: { categorygerman: "intuitiv", positive: true })
+                                                      cards: { category: "intuitive", positive: true })
     @intuitive_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                      cards: { categorygerman: "intuitiv", positive: false })
+                                                      cards: { category: "intuitive", positive: false })
     @personal_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                     cards: { categorygerman: "persönlich", positive: true })
+                                                     cards: { category: "personal", positive: true })
     @personal_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                     cards: { categorygerman: "persönlich", positive: false })
+                                                     cards: { category: "personal", positive: false })
 
     # Calculate totals for positive and negative cards
     total_positive = @methodical_positive.count + @social_positive.count + @professional_positive.count + @intuitive_positive.count + @personal_positive.count
@@ -486,6 +469,25 @@ class GamesController < ApplicationController
     @game = game
     # @game = Game.where(user: @user, status: "running").first
     # @game = Game.find_by(id: params[:id]) || Game.find_by(user: @user, status: "running").first
+  end
+
+  def create_game
+    @game = Game.create(name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
+                        status: "running",
+                        user: @user,
+                        client: @user.client,
+                        count_positive: 10,
+                        count_negative: 5,
+                        pile: 0,
+                        positive: true)
+    @game.save
+  end
+
+  def create_game_cards
+    @cards = Card.where(user: @user).or(Card.where(user_id: nil))
+    @cards.each do |card|
+      GameCard.create(game: @game, card:, pile: 0)
+    end
   end
 
   def set_counts

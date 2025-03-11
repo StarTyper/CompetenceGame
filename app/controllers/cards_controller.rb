@@ -8,11 +8,24 @@ class CardsController < ApplicationController
 
   def create
     @card = Card.new(card_params)
-    raise
+    @card.user_id = @user.id
+    @card.client = @user.client
+    @card.group = "own cards"
     if @card.save
-      redirect_to cards_path
+      redirect_to cards_path,
+                  notice: ( if @user.language == "english"
+                              'Card was successfully created.'
+                            elsif @user.language == "german"
+                              'Karte wurde erfolgreich erstellt.'
+                            end
+                          )
     else
       render :new
+      flash[:notice] = if @user.language == "english"
+                         'Creation of card failed.'
+                       elsif @user.language == "german"
+                         'Erstellung der Karte fehlgeschlagen.'
+                       end
     end
   end
 
@@ -51,7 +64,7 @@ class CardsController < ApplicationController
   end
 
   def card_params
-    params.require(:card).permit(:categorygerman, :positive, :namegerman, :nameenglish, :explanationgerman,
-                                 :explanationenglish, :image, :groupgerman, :groupenglish, :categoryenglish)
+    params.require(:card).permit(:positive, :namegerman, :nameenglish, :explanationgerman,
+                                 :explanationenglish, :image, :groupgerman, :groupenglish, :category)
   end
 end

@@ -25,7 +25,7 @@ class Game < ApplicationRecord
   # Methods to count positive and negative cards
   def count_cards(category, positive: true)
     game_cards.joins(:card)
-              .where(pile: 1, cards: { positive:, categoryenglish: category })
+              .where(pile: 1, cards: { positive:, category: category })
               .count
   end
 

@@ -8,35 +8,33 @@
   </h1>
 
   <%= simple_form_for @card do |f| %>
-    <%= f.input :namegerman,
-                label: (if @user.language == "english"
-                          "Name (German)"
-                        elsif @user.language == "german"
-                          "Name (Deutsch)"
-                        end),
-                required: true %>
+    <% if @user.language == 'german' %>
 
-    <%= f.input :nameenglish,
-                label: (if @user.language == "english"
-                          "Name (English)"
-                        elsif @user.language == "german"
-                          "Name (Englisch)"
-                        end),
-                required: true %>
+      <%= f.input :namegerman,
+                  label: "Name",
+                  required: true %>
 
-    <% if @user.language == "english" %>
-      <%= f.input :categoryenglish,
-                label: "Category",
-                collection: %w[methodical social professional intuitive personal],
-                prompt: "Select Category",
-                required: true %>
-    <% elsif @user.language == "german" %>
-      <%= f.input :categorygerman,
-                  label: "Katgeorie",
-                  collection: %w[methodisch sozial fachlich intuitiv persönlich],
-                  prompt: "Kategorie auswählen",
+    <% elsif @user.language == 'english' %>
+
+      <%= f.input :nameenglish,
+                  label: "Name",
                   required: true %>
     <% end %>
+
+
+    <%= f.input :category,
+              label: (if @user.language == "english"
+                          "Category"
+                        elsif @user.language == "german"
+                          "Kategorie"
+                        end),
+              collection: %w[methodical social professional intuitive personal],
+              prompt: (if @user.language == "english"
+                          "Select a Category"
+                        elsif @user.language == "german"
+                          "Kategorie auswählen"
+                        end),
+              required: true %>
 
     <%= f.input :positive,
                 label: (if @user.language == "english"
@@ -45,30 +43,19 @@
                           "Positiv / Negativ"
                         end),
                 collection: [['+', true], ['-', false]],
-                prompt: (if @user.language == "english"
-                          "+ / -"
-                        elsif @user.language == "german"
-                          "+ / -"
-                        end),
+                prompt: "+ / -",
                 required: true %>
 
-    <%= f.input :explanationgerman,
-                label: (if @user.language == "english"
-                          "Explanation (German)"
-                        elsif @user.language == "german"
-                          "Erklärung (Deutsch)"
-                        end),
-                required: true,
-                input_html: { rows: 5 } %>
+    <% if @user.language == 'german' %>
+      <%= f.input :explanationgerman,
+                  label: "Erklärung",
+                  input_html: { rows: 5 } %>
 
-    <%= f.input :explanationenglish,
-                label: (if @user.language == "english"
-                          "Explanation (English)"
-                        elsif @user.language == "german"
-                          "Erklärung (Englisch)"
-                        end),
-                required: true,
-                input_html: { rows: 5 } %>
+    <% elsif @user.language == 'english' %>
+      <%= f.input :explanationenglish,
+                  label: "Explanation",
+                  input_html: { rows: 5 } %>
+    <% end %>
 
     <%# = f.input :image,
                 <!-- label: (if @user.language == "english" -->
@@ -76,20 +63,14 @@
                         <!-- elsif @user.language == "german" -->
                           <!-- "Bild-URL" -->
                         <!-- end) %>
+    <% if @user.language == 'german' %>
+      <%= f.input :groupgerman,
+                  label: "Gruppe" %>
 
-    <%= f.input :groupgerman,
-                label: (if @user.language == "english"
-                          "Group (German)"
-                        elsif @user.language == "german"
-                          "Gruppe (Deutsch)"
-                        end) %>
-
-    <%= f.input :groupenglish,
-                label: (if @user.language == "english"
-                          "Group (English)"
-                        elsif @user.language == "german"
-                          "Gruppe (Englisch)"
-                        end) %>
+    <% elsif @user.language == 'english' %>
+      <%= f.input :groupenglish,
+                  label: "Group" %>
+    <% end %>
 
     <%= f.button :submit, (if @user.language == "english"
                              "Create Card"

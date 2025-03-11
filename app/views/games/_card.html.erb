@@ -1,11 +1,11 @@
 <div class="card text-center rounded-5 shadow m-3
-<% if game_card.card.categorygerman == "methodisch" %>
+<% if game_card.card.category == "methodical" %>
 text-danger
-<% elsif game_card.card.categorygerman == "sozial" %>
+<% elsif game_card.card.category == "social" %>
 text-success
-<% elsif game_card.card.categorygerman == "fachlich" %>
+<% elsif game_card.card.category == "professional" %>
 text-primary
-<% elsif game_card.card.categorygerman == "intuitiv" %>
+<% elsif game_card.card.category == "intuitive" %>
 text-info
 <% else %>
 text-warning
