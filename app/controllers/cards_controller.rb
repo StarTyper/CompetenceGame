@@ -19,7 +19,7 @@ class CardsController < ApplicationController
                             end
                           )
     else
-      render :new
+      redirect_to new_card_path
       flash[:notice] = if @user.language == "english"
                          'Creation of card failed.'
                        elsif @user.language == "german"
@@ -41,15 +41,41 @@ class CardsController < ApplicationController
 
   def update
     if @card.update(card_params)
-      redirect_to cards_path
+      redirect_to cards_path,
+                  notice: ( if @user.language == "english"
+                              'Card was successfully updated.'
+                            elsif @user.language == "german"
+                              'Karte wurde erfolgreich aktualisiert.'
+                            end
+                          )
     else
       render :edit
+      flash[:notice] = if @user.language == "english"
+                         'Card update failed.'
+                       elsif @user.language == "german"
+                         'Kartenaktualisierung fehlgeschlagen.'
+                       end
     end
   end
 
   def destroy
-    @card.destroy
-    redirect_to cards_path
+    if @card.destroy
+      redirect_to cards_path,
+                  notice: ( if @user.language == "english"
+                              'Card was successfully deleted.'
+                            elsif @user.language == "german"
+                              'Karte wurde erfolgreich gelöscht.'
+                            end
+                          )
+    else
+      redirect_to cards_path,
+                  notice: ( if @user.language == "english"
+                              'Card deletion failed.'
+                            elsif @user.language == "german"
+                              'Kartelöschung fehlgeschlagen.'
+                            end
+                          )
+    end
   end
 
   private

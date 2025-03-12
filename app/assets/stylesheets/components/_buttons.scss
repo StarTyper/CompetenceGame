@@ -12,10 +12,24 @@
   }
 }
 
+.personal-btn {
+  color: $purple; // Set the initial color of the text
+  &:hover {
+    color: $gray; // Change text color on hover
+  }
+}
+
 .hover-green {
   color: black; // Set the initial color of the text
   &:hover {
     color: $green; // Change text color on hover
+  }
+}
+
+.social-btn {
+  color: $green; // Set the initial color of the text
+  &:hover {
+    color: $gray; // Change text color on hover
   }
 }
 
@@ -40,6 +54,13 @@
   }
 }
 
+.methodical-btn {
+  color: $red; // Set the initial color of the text
+  &:hover {
+    color: $gray; // Change text color on hover
+  }
+}
+
 .hover-yellow {
   color: black; // Set the initial color of the text
   &:hover {
@@ -47,10 +68,38 @@
   }
 }
 
+.intuitive-btn {
+  color: $yellow; // Set the initial color of the text
+  &:hover {
+    color: $gray; // Change text color on hover
+  }
+}
+
 .hover-orange {
   color: black; // Set the initial color of the text
   &:hover {
     color: $orange; // Change text color on hover
+  }
+}
+
+.orange-hover-gray {
+  color: $orange; // Set the initial color of the text
+  &:hover {
+    color: $gray; // Change text color on hover
+  }
+}
+
+.hover-blue {
+  color: black; // Set the initial color of the text
+  &:hover {
+    color: $blue; // Change text color on hover
+  }
+}
+
+.professional-btn {
+  color: $blue; // Set the initial color of the text
+  &:hover {
+    color: $gray; // Change text color on hover
   }
 }
 

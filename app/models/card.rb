@@ -1,6 +1,6 @@
 class Card < ApplicationRecord
   # Associations
-  belongs_to :client
+  belongs_to :client, optional: true
   belongs_to :user, optional: true
   has_many :game_cards, dependent: :destroy
 
