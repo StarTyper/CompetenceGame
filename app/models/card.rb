@@ -7,9 +7,9 @@ class Card < ApplicationRecord
   # Validations
   validates :category, presence: true, inclusion: { in: %w[methodical social professional intuitive personal] }
   validates :positive, inclusion: { in: [true, false] }
-  validates :namegerman, length: { maximum: 255 }, allow_blank: true
-  validates :nameenglish, length: { maximum: 255 }, allow_blank: true
-  validates :explanationgerman, length: { maximum: 1000 }, allow_blank: true
-  validates :explanationenglish, length: { maximum: 1000 }, allow_blank: true
+  validates :name_german, length: { maximum: 255 }, allow_blank: true
+  validates :name_english, length: { maximum: 255 }, allow_blank: true
+  validates :explanation_german, length: { maximum: 1000 }, allow_blank: true
+  validates :explanation_english, length: { maximum: 1000 }, allow_blank: true
   validates :image, length: { maximum: 255 }, allow_blank: true
 end

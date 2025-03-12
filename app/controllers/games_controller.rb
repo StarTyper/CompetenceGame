@@ -540,9 +540,9 @@ class GamesController < ApplicationController
 
   def load_remaining_cards
     set_counts
-    @groups = Card.where(positive: @game.positive).pluck(:groupgerman).uniq.sort
+    @groups = Card.where(positive: @game.positive).pluck(:group).uniq.sort
     @group = @groups[@game.public_send(@game.positive ? 'group_positive' : 'group_negative')]
-    @game_cards = GameCard.joins(:card).where(cards: { groupgerman: @group }).where(game_id: @game.id).order(:id)
+    @game_cards = GameCard.joins(:card).where(cards: { group: @group }).where(game_id: @game.id).order(:id)
     @cards_empty = @game.public_send(@game.positive ? 'group_positive' : 'group_negative') >= @groups.count
     if none_on_pile_zero?(@game_cards) && !@cards_empty
       @next_group = true
