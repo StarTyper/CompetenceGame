@@ -17,9 +17,9 @@
           <div class="trait py-4 d-flex justify-content-center flex-fill">
             <h5 class="card-title align-self-center lato-bold">
               <% if @user.language == "german" %>
-                <%= game_card.card.namegerman %>
+                <%= game_card.card.name_german %>
               <% elsif @user.language == "english" %>
-                <%= game_card.card.nameenglish %>
+                <%= game_card.card.name_english %>
               <% end %>
             </h5>
           </div>
@@ -54,18 +54,18 @@
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="staticBackdropLabel">
               <% if @user.language == "english" %>
-                <%= game_card.card.nameenglish %>
+                <%= game_card.card.name_english %>
               <% elsif @user.language == "german" %>
-                <%= game_card.card.namegerman %>
+                <%= game_card.card.name_german %>
               <% end %>
             </h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
               <% if @user.language == "english" %>
-                <%= game_card.card.explanationenglish %>
+                <%= game_card.card.explanation_english %>
               <% elsif @user.language == "german" %>
-                <%= game_card.card.explanationgerman %>
+                <%= game_card.card.explanation_german %>
               <% end %>
           </div>
           <!-- <div class="modal-footer"> -->

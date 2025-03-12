@@ -9,7 +9,6 @@ class CardsController < ApplicationController
   def create
     @card = Card.new(card_params)
     @card.user_id = @user.id
-    @card.client = @user.client
     @card.group = "own cards"
     if @card.save
       redirect_to cards_path,
@@ -64,7 +63,7 @@ class CardsController < ApplicationController
   end
 
   def card_params
-    params.require(:card).permit(:positive, :namegerman, :nameenglish, :explanationgerman,
-                                 :explanationenglish, :image, :groupgerman, :groupenglish, :category)
+    params.require(:card).permit(:positive, :name_german, :name_english, :explanation_german,
+                                 :explanation_english, :image, :group, :category)
   end
 end

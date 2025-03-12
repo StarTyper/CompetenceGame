@@ -8,15 +8,14 @@
   </h1>
 
   <%= simple_form_for @card do |f| %>
-    <% if @user.language == 'german' %>
 
-      <%= f.input :namegerman,
+    <% if @user.language == 'german' %>
+      <%= f.input :name_german,
                   label: "Name",
                   required: true %>
 
     <% elsif @user.language == 'english' %>
-
-      <%= f.input :nameenglish,
+      <%= f.input :name_english,
                   label: "Name",
                   required: true %>
     <% end %>
@@ -47,12 +46,11 @@
                 required: true %>
 
     <% if @user.language == 'german' %>
-      <%= f.input :explanationgerman,
+      <%= f.input :explanation_german,
                   label: "Erklärung",
                   input_html: { rows: 5 } %>
-
     <% elsif @user.language == 'english' %>
-      <%= f.input :explanationenglish,
+      <%= f.input :explanation_english,
                   label: "Explanation",
                   input_html: { rows: 5 } %>
     <% end %>
@@ -63,14 +61,6 @@
                         <!-- elsif @user.language == "german" -->
                           <!-- "Bild-URL" -->
                         <!-- end) %>
-    <% if @user.language == 'german' %>
-      <%= f.input :groupgerman,
-                  label: "Gruppe" %>
-
-    <% elsif @user.language == 'english' %>
-      <%= f.input :groupenglish,
-                  label: "Group" %>
-    <% end %>
 
     <%= f.button :submit, (if @user.language == "english"
                              "Create Card"

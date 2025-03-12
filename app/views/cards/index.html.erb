@@ -57,9 +57,9 @@
           <div class="trait py-4 d-flex justify-content-center flex-fill">
             <h5 class="card-title align-self-center lato-bold">
               <% if @user.language == "german" %>
-                <%= card.namegerman %>
+                <%= card.name_german %>
               <% elsif @user.language == "english" %>
-                <%= card.nameenglish %>
+                <%= card.name_english %>
               <% end %>
             </h5>
           </div>
@@ -79,18 +79,18 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">
             <% if @user.language == "english" %>
-              <%= card.nameenglish %>
+              <%= card.name_english %>
             <% elsif @user.language == "german" %>
-              <%= card.namegerman %>
+              <%= card.name_german %>
             <% end %>
           </h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <% if @user.language == "english" %>
-              <%= card.explanationenglish %>
+              <%= card.explanation_english %>
             <% elsif @user.language == "german" %>
-              <%= card.explanationgerman %>
+              <%= card.explanation_german %>
             <% end %>
         </div>
       </div>

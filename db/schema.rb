@@ -10,22 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_11_085458) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_12_091052) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cards", force: :cascade do |t|
     t.boolean "positive", null: false
-    t.string "namegerman"
-    t.string "nameenglish"
-    t.text "explanationgerman"
-    t.text "explanationenglish"
+    t.string "name_german"
+    t.string "name_english"
+    t.text "explanation_german"
+    t.text "explanation_english"
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "client_id", null: false
-    t.string "groupgerman"
-    t.string "groupenglish"
+    t.bigint "client_id"
+    t.string "group"
     t.string "category", null: false
     t.bigint "user_id"
     t.index ["client_id"], name: "index_cards_on_client_id"
