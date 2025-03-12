@@ -42,15 +42,27 @@
       </div>
     <% end %>
     <% @cards.each do |card| %>
-      <div class="card text-center rounded-5 shadow m-3" style="width: 18rem;">
+      <div class="card text-center rounded-5 shadow m-3
+                  <% if card.category == "methodical" %>
+                  text-danger
+                  <% elsif card.category == "social" %>
+                  text-success
+                  <% elsif card.category == "professional" %>
+                  text-primary
+                  <% elsif card.category == "intuitive" %>
+                  text-info
+                  <% else %>
+                  text-warning
+                  <% end %>
+                  " style="width: 18rem;">
         <div class="card-body d-flex flex-column">
           <!-- Buttons Top -->
           <div class="card-buttons-top d-flex justify-content-between">
-            <i class="bi bi-info-circle hover-gray" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#card_<%= card.id %>"></i>
+            <i class="bi bi-info-circle <%= card.category %>-btn" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#card_<%= card.id %>"></i>
             <% if card.positive == true %>
-              <i class="bi bi-plus-circle color-gray" style="font-size: 2rem;"></i>
+              <i class="bi bi-plus-circle" style="font-size: 2rem;"></i>
             <% else %>
-              <i class="bi bi-dash-circle color-gray" style="font-size: 2rem;"></i>
+              <i class="bi bi-dash-circle" style="font-size: 2rem;"></i>
             <% end %>
           </div>
           <!-- Trait -->
@@ -62,6 +74,19 @@
                 <%= card.name_english %>
               <% end %>
             </h5>
+          </div>
+          <!-- Buttons Bottom -->
+          <div class="card-buttons-bottom d-flex justify-content-between align-items-center">
+            <!-- Card Edit -->
+            <%= link_to edit_card_path(card), class: "me-3 link-underline link-underline-opacity-0  #{card.category}-btn", style: "font-size: 2rem;" do %>
+              <i class="bi bi-gear"></i>
+            <% end %>
+            <!-- Card Destroy -->
+            <%= link_to card_path(card), class: "#{card.category}-btn", method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure to delete this card? This action is irreversible!" } do %>
+              <div class="button ms-2" style="font-size: 1.7rem;">
+                  <i class="bi bi-trash3"></i>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

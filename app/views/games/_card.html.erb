@@ -1,16 +1,16 @@
 <div class="card text-center rounded-5 shadow m-3
-<% if game_card.card.category == "methodical" %>
-text-danger
-<% elsif game_card.card.category == "social" %>
-text-success
-<% elsif game_card.card.category == "professional" %>
-text-primary
-<% elsif game_card.card.category == "intuitive" %>
-text-info
-<% else %>
-text-warning
-<% end %>
-" style="">
+            <% if game_card.card.category == "methodical" %>
+            text-danger
+            <% elsif game_card.card.category == "social" %>
+            text-success
+            <% elsif game_card.card.category == "professional" %>
+            text-primary
+            <% elsif game_card.card.category == "intuitive" %>
+            text-info
+            <% else %>
+            text-warning
+            <% end %>
+            " style="">
   <div class="card-body d-flex flex-column">
     <!-- Buttons Top -->
     <div class="card-buttons-top d-flex justify-content-between">

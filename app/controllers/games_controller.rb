@@ -445,14 +445,23 @@ class GamesController < ApplicationController
 
   def destroy
     @game = Game.find_by(id: params[:id])
-    @game.destroy
-    redirect_to games_url,
-                notice: ( if @user.language == "english"
-                           'Game was successfully destroyed.'
-                          elsif @user.language == "german"
-                            'Spiel wurde erfolgreich gelöscht.'
-                          end
-                        )
+    if @game.destroy
+      redirect_to games_url,
+                  notice: ( if @user.language == "english"
+                            'Game was successfully destroyed.'
+                            elsif @user.language == "german"
+                              'Spiel wurde erfolgreich gelöscht.'
+                            end
+                          )
+    else
+      redirect_to games_url,
+                  notice: ( if @user.language == "english"
+                            'Game destruction failed.'
+                            elsif @user.language == "german"
+                              'Das Löschen des Spiels ist fehlgeschlagen.'
+                            end
+                          )
+    end
   end
 
   private
