@@ -333,57 +333,20 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-
-    # Check if the game is shared
-    @is_shared = @game.shared_from_user_id?
-    @shared_from = @game.shared_from_user_id.present? ? User.find(@game.shared_from_user_id) : nil
-
-    # Assign all cards from this game on pile 1 to @choosen_cards
+    check_shared_game
     @choosen_cards = GameCard.where(game: @game, pile: 1)
 
-    # Assign all positive and negative game cards for each category
-    @methodical_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                       cards: { category: "methodical", positive: true })
-    @methodical_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                       cards: { category: "methodical", positive: false })
-    @social_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                   cards: { category: "social", positive: true })
-    @social_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                   cards: { category: "social", positive: false })
-    @professional_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                         cards: { category: "professional", positive: true })
-    @professional_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                         cards: { category: "professional", positive: false })
-    @intuitive_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                      cards: { category: "intuitive", positive: true })
-    @intuitive_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                      cards: { category: "intuitive", positive: false })
-    @personal_positive = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                     cards: { category: "personal", positive: true })
-    @personal_negative = GameCard.joins(:card).where(game: @game, pile: 1,
-                                                     cards: { category: "personal", positive: false })
+    @categories = %w[methodical social professional intuitive personal]
+    @game_cards = fetch_game_cards(@categories)
 
-    # Calculate totals for positive and negative cards
-    total_positive = @methodical_positive.count + @social_positive.count + @professional_positive.count + @intuitive_positive.count + @personal_positive.count
-    total_negative = @methodical_negative.count + @social_negative.count + @professional_negative.count + @intuitive_negative.count + @personal_negative.count
+    total_positive = total_card_counts(@categories, :positive)
+    total_negative = total_card_counts(@categories, :negative)
 
-    # Create pie chart data for positive categories
-    @pie_chart_data_positive = [
-      ["methodical", total_positive.zero? ? 0 : (@methodical_positive.count / total_positive.to_f * 100).round(2)],
-      ["social", total_positive.zero? ? 0 : (@social_positive.count / total_positive.to_f * 100).round(2)],
-      ["professional", total_positive.zero? ? 0 : (@professional_positive.count / total_positive.to_f * 100).round(2)],
-      ["intuitive", total_positive.zero? ? 0 : (@intuitive_positive.count / total_positive.to_f * 100).round(2)],
-      ["personal", total_positive.zero? ? 0 : (@personal_positive.count / total_positive.to_f * 100).round(2)]
-    ]
+    @pie_chart_data_positive = pie_chart_data(@categories, total_positive, :positive)
+    @pie_chart_data_negative = pie_chart_data(@categories, total_negative, :negative)
 
-    # Create pie chart data for negative categories
-    @pie_chart_data_negative = [
-      ["methodical", total_negative.zero? ? 0 : (@methodical_negative.count / total_negative.to_f * 100).round(2)],
-      ["social", total_negative.zero? ? 0 : (@social_negative.count / total_negative.to_f * 100).round(2)],
-      ["professional", total_negative.zero? ? 0 : (@professional_negative.count / total_negative.to_f * 100).round(2)],
-      ["intuitive", total_negative.zero? ? 0 : (@intuitive_negative.count / total_negative.to_f * 100).round(2)],
-      ["personal", total_negative.zero? ? 0 : (@personal_negative.count / total_negative.to_f * 100).round(2)]
-    ]
+    @categories_positive = prepare_card_hashes(@game_cards, :positive)
+    @categories_negative = prepare_card_hashes(@game_cards, :negative)
   end
 
   def new
@@ -394,11 +357,9 @@ class GamesController < ApplicationController
     @game = Game.new(game_params)
 
     # Set additional attributes
-    @game.user = @user
-    @game.client = @user.client
-    @game.status = "running"
-    @game.pile = 0
-    @game.positive = true
+    @game.assign_attributes(user: @user, status: "running", pile: 0, positive: true)
+    # if @user.client not nil
+    @game.client = @user.client if @user&.client
 
     # Try to save the game and handle the response
     if @game.save
@@ -476,8 +437,6 @@ class GamesController < ApplicationController
 
   def set_game(game)
     @game = game
-    # @game = Game.where(user: @user, status: "running").first
-    # @game = Game.find_by(id: params[:id]) || Game.find_by(user: @user, status: "running").first
   end
 
   def create_game
@@ -562,5 +521,44 @@ class GamesController < ApplicationController
 
   def none_on_pile_zero?(game_cards)
     game_cards.none? { |game_card| game_card.pile.zero? }
+  end
+
+  # for SHOW action
+  def check_shared_game
+    @is_shared = @game.shared_from_user_id?
+    @shared_from = @is_shared ? User.find(@game.shared_from_user_id) : nil
+  end
+
+  def fetch_game_cards(categories)
+    game_cards = {}
+    categories.each do |category|
+      game_cards["#{category}_positive"] = GameCard.joins(:card).where(game: @game, pile: 1, cards: { category: category, positive: true })
+      game_cards["#{category}_negative"] = GameCard.joins(:card).where(game: @game, pile: 1, cards: { category: category, positive: false })
+    end
+    game_cards
+  end
+
+  def total_card_counts(categories, positivity)
+    categories.sum do |category|
+      @game_cards["#{category}_#{positivity}"].count
+    end
+  end
+
+  def pie_chart_data(categories, total, positivity)
+    categories.map do |category|
+      count = @game_cards["#{category}_#{positivity}"].count
+      percentage = total.zero? ? 0 : (count / total.to_f * 100).round(2)
+      [category, percentage]
+    end
+  end
+
+  def prepare_card_hashes(game_cards, positivity)
+    {
+      methodical: game_cards["methodical_#{positivity}"],
+      social: game_cards["social_#{positivity}"],
+      professional: game_cards["professional_#{positivity}"],
+      intuitive: game_cards["intuitive_#{positivity}"],
+      personal: game_cards["personal_#{positivity}"]
+    }
   end
 end

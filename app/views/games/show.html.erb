@@ -56,15 +56,8 @@
       <div class="container text-center">
         <!-- Positive Cards -->
         <div class="positive-cards row align-items-end">
-          <% categories = {
-            methodical: @methodical_positive,
-            social: @social_positive,
-            professional: @professional_positive,
-            intuitive: @intuitive_positive,
-            personal: @personal_positive
-          } %>
 
-          <% categories.each do |key, game_cards| %>
+          <% @categories_positive.each do |key, game_cards| %>
             <div class="col">
               <div class="positive-cards">
                 <% game_cards.each do |game_card| %>
@@ -77,16 +70,16 @@
         <!-- Categories -->
         <div class="card-categories container text-center">
           <div class="row align-items-center">
-            <% categories = {
-                              "methodisch" => "methodical",
-                              "sozial" => "social",
-                              "fachlich" => "professional",
-                              "intuitiv" => "intuitive",
-                              "persönlich" => "personal"
-                            }
-            %>
+            <%#  categories = {
+                              <!-- "methodisch" => "methodical", -->
+                              <!-- "sozial" => "social", -->
+                              <!-- "fachlich" => "professional", -->
+                              <!-- "intuitiv" => "intuitive", -->
+                              <!-- "persönlich" => "personal" -->
+                            <!-- } -->
+            <!-- %>
 
-            <% categories.each do |german, english| %>
+            <% @categories.each do |german, english| %>
               <div class="category col">
                 <%= @user.language == "german" ? german : english %>
               </div>
@@ -95,16 +88,8 @@
         </div>
         <!-- Negative Cards -->
         <div class="negative-cards row align-items-start">
-          <% categories = {
-                            methodical: @methodical_negative,
-                            social: @social_negative,
-                            professional: @professional_negative,
-                            intuitive: @intuitive_negative,
-                            personal: @personal_negative
-                          }
-          %>
 
-          <% categories.each do |key, game_cards| %>
+          <% @categories_negative.each do |key, game_cards| %>
             <div class="col">
               <div class="negative-cards">
                 <% game_cards.each do |game_card| %>
