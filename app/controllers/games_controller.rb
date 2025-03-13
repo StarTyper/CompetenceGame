@@ -440,14 +440,18 @@ class GamesController < ApplicationController
   end
 
   def create_game
-    @game = Game.create(name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
-                        status: "running",
-                        user: @user,
-                        client: @user.client,
-                        count_positive: 10,
-                        count_negative: 5,
-                        pile: 0,
-                        positive: true)
+    client = @user.client if @user.client
+
+    @game = Game.create(
+      name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
+      status: "running",
+      user: @user,
+      client: client,  # This will be nil if @user.client is not present
+      count_positive: 10,
+      count_negative: 5,
+      pile: 0,
+      positive: true
+    )
     @game.save
   end
 
