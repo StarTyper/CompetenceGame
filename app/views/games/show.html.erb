@@ -70,16 +70,16 @@
         <!-- Categories -->
         <div class="card-categories container text-center">
           <div class="row align-items-center">
-            <%#  categories = {
-                              <!-- "methodisch" => "methodical", -->
-                              <!-- "sozial" => "social", -->
-                              <!-- "fachlich" => "professional", -->
-                              <!-- "intuitiv" => "intuitive", -->
-                              <!-- "persönlich" => "personal" -->
-                            <!-- } -->
-            <!-- %>
+            <%categories = {
+                              "methodisch" => "methodical",
+                              "sozial" => "social",
+                              "fachlich" => "professional",
+                              "intuitiv" => "intuitive",
+                              "persönlich" => "personal"
+                            }
+            <!-- <!-- %> -->
 
-            <% @categories.each do |german, english| %>
+            <% categories.each do |german, english| %>
               <div class="category col">
                 <%= @user.language == "german" ? german : english %>
               </div>
