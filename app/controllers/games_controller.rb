@@ -219,7 +219,8 @@ class GamesController < ApplicationController
     recipient_email = params[:recipient_email]
 
     # Sending the share email
-    UserMailer.share_game(@user, recipient_email, share_code).deliver_now
+    # UserMailer.share_game(@user, recipient_email, share_code).deliver_now
+    ShareGameJob.perform_later(@user, recipient_email, share_code)
 
     redirect_to game_path(@game), notice: (if @user.language == "english"
                                              'Share code sent successfully.'
