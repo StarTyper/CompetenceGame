@@ -20,8 +20,22 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: competence_game_development
+  # primary:
+  #   <<: *default
+  #   database: competence_game_development
+  primary: &primary_development
+    <<: *default
+    database: competence_game_development
+    # username: competence_game
+    # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+  cable:
+    <<: *default
+    database: competence_game_development
+    migrations_paths: db/cable_migrate
+  queue:
+    <<: *primary_development
+    database: competence_game_development_queue
+    migrations_paths: db/queue_migrate
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -77,8 +91,19 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+# production:
+#   <<: *default
+#   database: competence_game_production
+#   username: competence_game
+#   password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+
 production:
-  <<: *default
-  database: competence_game_production
-  username: competence_game
-  password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+  primary: &primary_production
+    <<: *default
+    database: competence_game_production
+    username: competence_game
+    password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+  queue:
+    <<: *primary_production
+    database: competence_game_production_queue
+    migrations_paths: db/queue_migrate

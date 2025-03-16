@@ -32,6 +32,9 @@ gem "chartkick"
 # Repost for redirecting with post method
 gem 'repost'
 
+# SolidQueue for background jobs
+gem 'solid_queue'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
