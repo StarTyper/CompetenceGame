@@ -1,6 +1,8 @@
 class GamesController < ApplicationController
   before_action :set_user
   # before_action :set_game, except: %i[new create update destroy index show]
+  # Export all games as JSON
+  require 'json'
 
   def play
     @game = Game.find_by(id: params[:id])
@@ -426,6 +428,93 @@ class GamesController < ApplicationController
     end
   end
 
+  def import_export_all_games
+  end
+
+  def export_all_games
+    games = Game.includes(user: {}, game_cards: :card).all
+    export_data = games.map do |game|
+      {
+        id: game.id,
+        user_email: game.user.email,
+        name: game.name,
+        status: game.status,
+        score: game.score,
+        created_at: game.created_at,
+        updated_at: game.updated_at,
+        game_cards: game.game_cards.map do |game_card|
+          {
+            card_name: game_card.card.name_english, # Include card's name_english
+            pile: game_card.pile
+          }
+        end
+      }
+    end
+
+    send_data JSON.pretty_generate(export_data),
+              filename: "games_export_#{Time.now.strftime('%Y%m%d_%H%M%S')}.json",
+              type: "application/json"
+  end
+
+  def import_all_games
+    if params[:file].nil?
+      flash[:error] = "No file selected."
+      redirect_to import_games_url and return
+    end
+
+    file = params[:file]
+
+    begin
+      games_data = JSON.parse(file.read)
+
+      games_data.each do |game_data|
+        user = User.find_by(email: game_data["user_email"])
+
+        if user
+          game = Game.create!(
+            user_id: user.id,
+            client_id: user.client.id,  # Add this line to set the client_id
+            name: game_data["name"],
+            status: game_data["status"],
+            score: game_data["score"],
+            created_at: game_data["created_at"],
+            updated_at: game_data["updated_at"]
+          )
+
+          # Create associated game_cards
+          game_data["game_cards"].each do |game_card_data|
+            card = Card.find_by(name_english: game_card_data["card_name"]) # Find card by name_english
+
+            if card
+              GameCard.create!(
+                game_id: game.id,
+                card_id: card.id,  # Use the found card's ID
+                pile: game_card_data["pile"]
+              )
+            else
+              flash[:warning] = "Card with name #{game_card_data['card_name']} not found. Game card not imported."
+            end
+          end
+        else
+          flash[:warning] = "User with email #{game_data['user_email']} not found. Game not imported."
+        end
+      end
+
+      flash[:success] = "Import finished successfully."
+    rescue JSON::ParserError => e
+      flash[:error] = "Invalid JSON file format: #{e.message}"
+      puts "JSON parsing error: #{e.message}"
+    rescue ActiveRecord::RecordInvalid => e
+      flash[:error] = "Import failed due to validation error: #{e.message}"
+      puts "ActiveRecord error: #{e.message}"
+    rescue StandardError => e
+      flash[:error] = "Import failed: #{e.message}"
+      puts "General error: #{e.message}"
+    end
+
+    redirect_to import_export_all_games_url
+  end
+
   private
 
   def game_params
@@ -447,7 +536,7 @@ class GamesController < ApplicationController
       name: "FreePlay #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}",
       status: "running",
       user: @user,
-      client: client,  # This will be nil if @user.client is not present
+      client:, # This will be nil if @user.client is not present
       count_positive: 10,
       count_negative: 5,
       pile: 0,
@@ -537,8 +626,8 @@ class GamesController < ApplicationController
   def fetch_game_cards(categories)
     game_cards = {}
     categories.each do |category|
-      game_cards["#{category}_positive"] = GameCard.joins(:card).where(game: @game, pile: 1, cards: { category: category, positive: true })
-      game_cards["#{category}_negative"] = GameCard.joins(:card).where(game: @game, pile: 1, cards: { category: category, positive: false })
+      game_cards["#{category}_positive"] = GameCard.joins(:card).where(game: @game, pile: 1, cards: { category:, positive: true })
+      game_cards["#{category}_negative"] = GameCard.joins(:card).where(game: @game, pile: 1, cards: { category:, positive: false })
     end
     game_cards
   end

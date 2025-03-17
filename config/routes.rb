@@ -11,6 +11,11 @@ Rails.application.routes.draw do
   # get home as home
   get "home" => "pages#home", as: :home
 
+  # Custom routes for games import/export
+  get 'games/import_export_all_games' => 'games#import_export_all_games', as: :import_export_all_games
+  get 'games/export_all_games' => 'games#export_all_games', as: :export_all_games
+  post 'games/import_all_games' => 'games#import_all_games', as: :import_all_games
+
   # Add routes for games
   resources :games
   # resource for game play
