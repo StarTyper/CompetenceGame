@@ -1,9 +1,20 @@
-<%= link_to 'Download Games JSON', export_all_games_path, class: 'btn btn-primary' %>
+<div class="new-game-form d-flex flex-column align-items-center px-5 pt-5 container">
+  <h1 class="mb-4 lato-bold col-xl-8 col-sm-12 text-center">
+    Import & Export all Games from all Users
+  </h1>
 
-<%= form_with(url: import_all_games_path, method: :post, local: true, html: { multipart: true }) do |form| %>
-  <div class="form-group">
-    <%= form.label :file, "Choose JSON file to import" %>
-    <%= form.file_field :file, accept: '.json', required: true %>
+  <div class="download-all-games-card d-flex flex-column align-items-center card p-3 mb-3 rounded-5 col-xl-6 col-sm-12 col-12">
+    <h2 class="lato-bold">Export all Games</h2>
+    <%= link_to export_all_games_path, class: 'btn btn-outline-success rounded-pill' do %>
+      <i class="bi bi-file-earmark-arrow-down"></i> Download
+    <% end %>
   </div>
-  <%= form.submit "Import Games", class: 'btn btn-primary' %>
-<% end %>
+
+  <%= simple_form_for :game, url: import_all_games_path, html: { multipart: true, class: 'd-flex flex-column align-items-center p-3 bg-white border rounded-5 col-xl-6 col-sm-12 col-12' } do |f| %>
+    <h2 class="lato-bold">Import all Games</h2>
+    <div class="mb-3">
+      <%= f.input :file, as: :file, label: "Choose JSON file to import", input_html: { accept: '.json', required: true } %>
+    </div>
+    <%= f.button :submit, "Import Games", class: 'btn btn-outline-danger rounded-pill' %>
+  <% end %>
+</div>

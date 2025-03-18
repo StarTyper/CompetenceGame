@@ -1,5 +1,8 @@
 class GamesController < ApplicationController
   before_action :set_user
+  # before action, check, if user.role == 'admin'
+  before_action :check_admin, only: %i[import_export_all_games import_all_games export_all_games]
+
   # before_action :set_game, except: %i[new create update destroy index show]
   # Export all games as JSON
   require 'json'
@@ -516,6 +519,13 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def check_admin
+    return if @user.role == 'admin'
+
+    redirect_to games_path, alert: 'You are not
+        authorized to perform this action.'
+  end
 
   def game_params
     params.require(:game).permit(:name, :count_positive, :count_negative, :recipient_email)
