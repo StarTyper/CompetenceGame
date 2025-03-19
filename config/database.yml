@@ -101,8 +101,8 @@ production:
   primary: &primary_production
     <<: *default
     database: competence_game_production
-    username: competence_game
-    password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+    # username: competence_game
+    # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
   queue:
     <<: *primary_production
     database: competence_game_production_queue
