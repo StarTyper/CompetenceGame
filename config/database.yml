@@ -108,11 +108,23 @@ test:
 #     database: competence_game_production_queue
 #     migrations_paths: db/queue_migrate
 
+# chatGPT #1
+# production:
+#   primary:
+#     <<: *default
+#     url: <%= ENV.fetch("DATABASE_URL") %>
+#   queue:
+#     <<: *primary
+#     database: competence_game_production_queue
+#     migrations_paths: db/queue_migrate
+
+# chatGPT #2
 production:
-  primary:
+  primary: &primary_production
     <<: *default
     url: <%= ENV.fetch("DATABASE_URL") %>
+
   queue:
-    <<: *primary
+    <<: *primary_production
     database: competence_game_production_queue
     migrations_paths: db/queue_migrate
