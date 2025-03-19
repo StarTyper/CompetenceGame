@@ -97,25 +97,12 @@ test:
 #   username: competence_game
 #   password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
 
-# production:
-#   primary: &primary_production
-#     <<: *default
-#     database: competence_game_production
-#     # username: competence_game
-#     # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
-#   queue:
-#     <<: *primary_production
-#     database: competence_game_production_queue
-#     migrations_paths: db/queue_migrate
-
-# chatGPT #2
 production:
   primary: &primary_production
     <<: *default
-    # url: <%= ENV["COMPETENCE_GAME_DATABASE_URL"] %>
     database: competence_game_production
-    username: <%= ENV["COMPETENCE_GAME_DATABASE_USERNAME"] %>
-    password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+    username: <%= ENV["COMPETENCE_GAME_DATABASE_USERNAME_HEROKU"] %>
+    password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD_HEROKU"] %>
 
   queue:
     <<: *primary_production
