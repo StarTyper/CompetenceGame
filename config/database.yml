@@ -97,13 +97,22 @@ test:
 #   username: competence_game
 #   password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
 
+# production:
+#   primary: &primary_production
+#     <<: *default
+#     database: competence_game_production
+#     # username: competence_game
+#     # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+#   queue:
+#     <<: *primary_production
+#     database: competence_game_production_queue
+#     migrations_paths: db/queue_migrate
+
 production:
-  primary: &primary_production
+  primary:
     <<: *default
-    database: competence_game_production
-    # username: competence_game
-    # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+    url: <%= ENV.fetch("DATABASE_URL") %>
   queue:
-    <<: *primary_production
+    <<: *primary
     database: competence_game_production_queue
     migrations_paths: db/queue_migrate
