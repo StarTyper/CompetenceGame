@@ -1,4 +1,5 @@
 .alert {
+  color: black;
   position: fixed;
   bottom: 16px;
   right: 16px;
@@ -9,4 +10,31 @@
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.15);
   // bg-light of bootstrap
   background-color: white;
+  // border of bootstrap
+  border-radius: 16px; /* Optional: rounded corners */
+}
+
+.alert-notice {
+  border: 1px solid $gray; /* Slightly colored border (gray for notice) */
+  box-shadow: 0px 4px 10px rgba(158, 158, 158, 0.3); /* Gray shadow for depth */
+}
+
+.alert-alert {
+  border: 1px solid $yellow; /* Slightly colored border (yellow for notice) */
+  box-shadow: 0px 4px 10px rgba(255, 235, 59, 0.3); /* Yellow shadow for depth */
+}
+
+.alert-error {
+  border: 1px solid $red; /* Slightly colored border (red for error) */
+  box-shadow: 0px 4px 10px rgba(244, 67, 54, 0.3); /* Red shadow for depth */
+}
+
+.alert-success {
+  border: 1px solid $green; /* Slightly colored border (green for success) */
+  box-shadow: 0px 4px 10px rgba(76, 175, 80, 0.3); /* Green shadow for depth */
+}
+
+.alert-info {
+  border: 1px solid $blue; /* Slightly colored border (light blue for info) */
+  box-shadow: 0px 4px 10px rgba(92, 184, 255, 0.3); /* Light blue shadow for depth */
 }

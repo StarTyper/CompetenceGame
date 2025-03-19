@@ -16,7 +16,7 @@ class User < ApplicationRecord
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }, # rubocop:disable Layout/LineLength
                     uniqueness: true, length: { maximum: 255 }
   validates :role, presence: true, inclusion: { in: %w[admin manager employee guest] }
-  validates :client, presence: true
+  # validates :client, presence: true
   validates :language, presence: true, inclusion: { in: %w[german english] }
 
   # Set default role to guest and default client to "default"
