@@ -26,8 +26,8 @@ development:
   primary: &primary_development
     <<: *default
     database: competence_game_development
-    # username: competence_game
-    # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
+    username: <%= ENV["COMPETENCE_GAME_DATABASE_USERNAME"] %>
+    password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
   cable:
     <<: *default
     database: competence_game_development
@@ -108,21 +108,14 @@ test:
 #     database: competence_game_production_queue
 #     migrations_paths: db/queue_migrate
 
-# chatGPT #1
-# production:
-#   primary:
-#     <<: *default
-#     url: <%= ENV.fetch("DATABASE_URL") %>
-#   queue:
-#     <<: *primary
-#     database: competence_game_production_queue
-#     migrations_paths: db/queue_migrate
-
 # chatGPT #2
 production:
   primary: &primary_production
     <<: *default
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV["COMPETENCE_GAME_DATABASE_URL"] %>
+    # database: competence_game_production
+    # username: <%= ENV["COMPETENCE_GAME_DATABASE_USERNAME"] %>
+    # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD"] %>
 
   queue:
     <<: *primary_production
