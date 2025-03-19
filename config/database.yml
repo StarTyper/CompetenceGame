@@ -100,9 +100,10 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: competence_game_production
-    username: <%= ENV["COMPETENCE_GAME_DATABASE_USERNAME_HEROKU"] %>
-    password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD_HEROKU"] %>
+    url: <%= ENV["DATABASE_URL"] %>
+    # database: competence_game_production
+    # username: <%= ENV["COMPETENCE_GAME_DATABASE_USERNAME_HEROKU"] %>
+    # password: <%= ENV["COMPETENCE_GAME_DATABASE_PASSWORD_HEROKU"] %>
 
   queue:
     <<: *primary_production
