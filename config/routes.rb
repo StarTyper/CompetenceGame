@@ -11,6 +11,12 @@ Rails.application.routes.draw do
   # get home as home
   get "home" => "pages#home", as: :home
 
+  post 'pages/alert_notice', to: 'pages#alert_notice', as: 'alert_notice'
+  post 'pages/alert_alert' => 'pages#alert_alert', as: :alert_alert
+  post 'pages/alert_error', to: 'pages#alert_error', as: 'alert_error'
+  post 'pages/alert_success', to: 'pages#alert_success', as: 'alert_success'
+  post 'pages/alert_info', to: 'pages#alert_info', as: 'alert_info'
+
   # Custom routes for games import/export
   get 'games/import_export_all_games' => 'games#import_export_all_games', as: :import_export_all_games
   get 'games/export_all_games' => 'games#export_all_games', as: :export_all_games

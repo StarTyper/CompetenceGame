@@ -3,18 +3,30 @@
     Import & Export all Games from all Users
   </h1>
 
-  <div class="download-all-games-card d-flex flex-column align-items-center card p-3 mb-3 rounded-5 col-xl-6 col-sm-12 col-12">
+  <div class="download-all-games-card d-flex flex-column align-items-center card p-3 mb-3 rounded-5 col-xl-6 col-sm-12 col-12 shadow">
     <h2 class="lato-bold">Export all Games</h2>
     <%= link_to export_all_games_path, class: 'btn btn-outline-success rounded-pill' do %>
       <i class="bi bi-file-earmark-arrow-down"></i> Download
     <% end %>
   </div>
 
-  <%= simple_form_for :game, url: import_all_games_path, html: { multipart: true, class: 'd-flex flex-column align-items-center p-3 bg-white border rounded-5 col-xl-6 col-sm-12 col-12' } do |f| %>
+  <%= simple_form_for :file, url: import_all_games_path, method: :post, html: { multipart: true, class: 'd-flex flex-column align-items-center p-3 bg-white border rounded-5 col-xl-6 col-sm-12 col-12 shadow' } do |f| %>
     <h2 class="lato-bold">Import all Games</h2>
     <div class="mb-3">
-      <%= f.input :file, as: :file, label: "Choose JSON file to import", input_html: { accept: '.json', required: true } %>
+      <%= f.input :file, as: :file, label: "Choose JSON file to import", input_html: { name: 'file', accept: '.json', required: true } %>
     </div>
-    <%= f.button :submit, "Import Games", class: 'btn btn-outline-danger rounded-pill' %>
+
+    <%= button_tag type: 'submit', class: 'btn btn-outline-danger rounded-pill', data: { turbo_confirm: 'Are you sure to import all games of all users?' } do %>
+      <i class="bi bi-file-earmark-arrow-up"></i>
+      Import
+    <% end %>
   <% end %>
+
+  <!-- <div class="test-alerts-buttons"> -->
+    <%# = button_to "Trigger Notice Alert", alert_notice_path, method: :post, class: 'btn btn-outline-success rounded-pill me-2' %>
+    <%# = button_to "Trigger Alert Alert", alert_alert_path, method: :post, class: 'btn btn-outline-success rounded-pill me-2' %>
+    <%# = button_to "Trigger Error Alert", alert_error_path, method: :post, class: 'btn btn-outline-danger rounded-pill me-2' %>
+    <%# = button_to "Trigger Success Alert", alert_success_path, method: :post, class: 'btn btn-outline-danger rounded-pill me-2' %>
+    <%# = button_to "Trigger Info Alert", alert_info_path, method: :post, class: 'btn btn-outline-primary rounded-pill' %>
+  <!-- </div> -->
 </div>

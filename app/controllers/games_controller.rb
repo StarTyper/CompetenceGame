@@ -462,7 +462,7 @@ class GamesController < ApplicationController
   def import_all_games
     if params[:file].nil?
       flash[:error] = "No file selected."
-      redirect_to import_games_url and return
+      redirect_to import_export_all_games_url and return
     end
 
     file = params[:file]
@@ -474,29 +474,37 @@ class GamesController < ApplicationController
         user = User.find_by(email: game_data["user_email"])
 
         if user
-          game = Game.create!(
-            user_id: user.id,
-            client_id: user.client.id,  # Add this line to set the client_id
-            name: game_data["name"],
-            status: game_data["status"],
-            score: game_data["score"],
-            created_at: game_data["created_at"],
-            updated_at: game_data["updated_at"]
-          )
+          @existing_game = Game.find_by(name: game_data["name"], created_at: game_data["created_at"])
+          puts "inside if user"
+          if @existing_game.nil?
+            puts "No existing game found. Proceeding to create a new game."
+            game = Game.create!(
+              user_id: user.id,
+              client_id: user.client.id, # Set the client_id
+              name: game_data["name"],
+              status: game_data["status"],
+              score: game_data["score"],
+              created_at: game_data["created_at"],
+              updated_at: game_data["updated_at"]
+            )
 
-          # Create associated game_cards
-          game_data["game_cards"].each do |game_card_data|
-            card = Card.find_by(name_english: game_card_data["card_name"]) # Find card by name_english
+            # Create associated game_cards
+            game_data["game_cards"].each do |game_card_data|
+              card = Card.find_by(name_english: game_card_data["card_name"]) # Find card by name_english
 
-            if card
-              GameCard.create!(
-                game_id: game.id,
-                card_id: card.id,  # Use the found card's ID
-                pile: game_card_data["pile"]
-              )
-            else
-              flash[:warning] = "Card with name #{game_card_data['card_name']} not found. Game card not imported."
+              if card
+                GameCard.create!(
+                  game_id: game.id,
+                  card_id: card.id, # Use the found card's ID
+                  pile: game_card_data["pile"]
+                )
+              else
+                flash[:warning] = "Card with name #{game_card_data['card_name']} not found. Game card not imported."
+              end
             end
+          else
+            puts "Existing game found. Not importing."
+            flash[:info] = "Game with name '#{game_data['name']}' already exists."
           end
         else
           flash[:warning] = "User with email #{game_data['user_email']} not found. Game not imported."
@@ -515,7 +523,7 @@ class GamesController < ApplicationController
       puts "General error: #{e.message}"
     end
 
-    redirect_to import_export_all_games_url
+    redirect_to games_url
   end
 
   private
