@@ -369,7 +369,7 @@ class GamesController < ApplicationController
 
     # Try to save the game and handle the response
     if @game.save
-      redirect_to play_path(@game),
+      redirect_to play_path(id: @game.id),
                   notice: ( if @user.language == "english"
                               'Game was successfully created.'
                             elsif @user.language == "german"
