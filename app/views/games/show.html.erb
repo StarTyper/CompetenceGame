@@ -22,7 +22,7 @@
       <div class="share-button">
         <% if @game.shared_from_user_id == nil %>
           <%= link_to share_form_path(@game), class: "me-3 link-underline link-underline-opacity-0 hover-gray", style: "font-size: 2rem;" do %>
-            <i class="bi bi-cloud-upload"></i>
+            <i class="bi bi-upload"></i>
           <% end %>
         <% end %>
       </div>

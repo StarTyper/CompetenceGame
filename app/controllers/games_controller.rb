@@ -201,14 +201,17 @@ class GamesController < ApplicationController
 
   def share
     @game = Game.find(params[:id])
+    recipient_email = params[:recipient_email]
+
+    # Check if the email is present and valid
+    unless recipient_email.present? && valid_email?(recipient_email)
+      redirect_to game_path(@game), alert: email_error_message
+      return
+    end
 
     # Check if the game status is "finished"
     unless @game.status == "finished"
-      redirect_to games_path, notice: (if @user.language == "english"
-                                         'Game must be finished to share.'
-                                       elsif @user.language == "german"
-                                         'Das Spiel muss beendet sein, um es zu teilen.'
-                                       end)
+      redirect_to games_path, notice: game_not_finished_message
       return
     end
 
@@ -220,18 +223,10 @@ class GamesController < ApplicationController
     # Here you might want to send the share code via email
     share_code = @game.share_code
 
-    # Assuming you have a recipient_email for demonstration purposes
-    recipient_email = params[:recipient_email]
-
     # Sending the share email
-    # UserMailer.share_game(@user, recipient_email, share_code).deliver_now
     ShareGameJob.perform_later(@user, recipient_email, share_code)
 
-    redirect_to game_path(@game), notice: (if @user.language == "english"
-                                             'Share code sent successfully.'
-                                           elsif @user.language == "german"
-                                             'Code zum Teilen erfolgreich gesendet.'
-                                           end)
+    redirect_to game_path(@game), notice: share_success_message
   end
 
   def challenge
@@ -672,5 +667,21 @@ class GamesController < ApplicationController
       intuitive: game_cards["intuitive_#{positivity}"],
       personal: game_cards["personal_#{positivity}"]
     }
+  end
+
+  def valid_email?(email)
+    email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+  end
+
+  def email_error_message
+    @user.language == "english" ? 'Please enter a valid email address.' : 'Bitte geben Sie eine gültige E-Mail-Adresse ein.'
+  end
+
+  def game_not_finished_message
+    @user.language == "english" ? 'Game must be finished to share.' : 'Das Spiel muss beendet sein, um es zu teilen.'
+  end
+
+  def share_success_message
+    @user.language == "english" ? 'Share code sent successfully.' : 'Code zum Teilen erfolgreich gesendet.'
   end
 end

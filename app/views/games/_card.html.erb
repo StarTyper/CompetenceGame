@@ -23,7 +23,7 @@
     </div>
     <!-- Trait -->
     <div class="trait pb-1 d-flex justify-content-center flex-fill">
-      <h5 class="card-title align-self-center lato-bold">
+      <h5 id="card-title-<%= game_card.id %>" class="card-title align-self-center lato-bold word-break">
         <% if @user.language == "german" %>
           <%= game_card.card.name_german %>
         <% elsif @user.language == "english" %>
