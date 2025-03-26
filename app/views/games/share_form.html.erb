@@ -1,64 +1,25 @@
 <div class="share-game-form px-5 pt-5">
   <h1>
-    <% if @user.language == "english" %>
-      Share Game
-    <% elsif @user.language == "german" %>
-      Spiel teilen
-    <% end %>
+    <%= @user.language == "english" ? "Share Game" : "Spiel teilen" %>
   </h1>
 
-  <%= simple_form_for @game, url: share_game_path(@game), method: :post do |f| %>
-    <div class="form-group">
-      <%= f.label :recipient_email, (if @user.language == "english"
-                                        "Enter email to share with:"
-                                      elsif @user.language == "german"
-                                        "E-Mail für die Weitergabe eingeben:"
-                                      end) %>
-      <%= text_field_tag :recipient_email, nil, required: true, placeholder: 'example@example.com' %>
+  <%= form_with(model: @game, url: share_game_path(@game), method: :post, local: true, html: { id: 'share-game-form' }) do |f| %>
+    <div class="form-group mb-2">
+      <%= f.label :recipient_email, (@user.language == "english" ? "Enter email to share with:" : "E-Mail für die Weitergabe eingeben:") %>
+      <%= text_field_tag :recipient_email, nil, required: true, class: 'form-control', placeholder: 'example@example.com' %>
+      <div id="email-error" class="invalid-feedback" style="display: none;">
+        <%= @user.language == "english" ? "Please enter a valid email address." : "Bitte geben Sie eine gültige E-Mail-Adresse ein." %>
+      </div>
     </div>
 
-    <%= f.button :submit, (if @user.language == "english"
-                              "Share Game"
-                            elsif @user.language == "german"
-                              "Spiel teilen"
-                            end), class: "btn btn-outline-dark rounded-4" %>
+    <%= button_tag type: 'submit', class: 'btn btn-outline-dark', id: 'share-submit-btn' do %>
+      <i class="bi bi-send me-1"></i>
+      <%= @user.language == "english" ? "Share Game" : "Spiel teilen"%>
+    <% end %>
   <% end %>
 
-  <%= link_to (if @user.language == "english"
-                  "Back"
-                elsif @user.language == "german"
-                  "zurück"
-                end), game_path(@game), class: 'btn btn-outline-secondary mt-2 rounded-4' %>
+  <%= link_to game_path(@game), class: 'btn btn-outline-secondary mt-2' do %>
+    <i class="bi bi-arrow-90deg-left me-1"></i>
+    <%= @user.language == "english" ? "Back" : "Zurück" %>
+  <% end %>
 </div>
-<!-- <div class="challenge-game-form px-5 pt-5"> -->
-  <!-- <h1> -->
-    <%#  if @user.language == "english" %>
-      <!-- Challenge -->
-    <%#  elsif @user.language == "german" %>
-      <!-- Herausforderung -->
-    <%#  end %>
-  <!-- </h1> -->
-<!--  -->
-  <%# = simple_form_for @game, url: challenge_game_path(@game), method: :post do |f| %>
-    <!-- <div class="form-group"> -->
-      <%# = f.label :recipient_email, (if @user.language == "english"
-                                        <!-- "Enter email to share with:" -->
-                                      <!-- elsif @user.language == "german" -->
-                                        <!-- "E-Mail für die Weitergabe eingeben:" -->
-                                      <!-- end) %>
-      <%# = text_field_tag :recipient_email, nil, required: true, placeholder: 'example@example.com' %>
-    <!-- </div> -->
-<!--  -->
-    <%# = f.button :submit, (if @user.language == "english"
-                              <!-- "Send" -->
-                            <!-- elsif @user.language == "german" -->
-                              <!-- "Senden" -->
-                            <!-- end), class: "btn btn-outline-dark rounded-4" %>
-  <%#  end %>
-<!--  -->
-  <%# = link_to (if @user.language == "english"
-                  <!-- "Back" -->
-                <!-- elsif @user.language == "german" -->
-                  <!-- "zurück" -->
-                <!-- end), game_path(@game), class: 'btn btn-outline-secondary mt-2 rounded-4' %>
-<!-- </div> -->

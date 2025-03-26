@@ -1,14 +1,23 @@
 class CardsController < ApplicationController
   before_action :find_card, only: %i[show edit update destroy]
   before_action :find_user
+  before_action :translate_category_param, only: [:create, :update]
+
+  CATEGORY_MAPPING = {
+    1 => "methodical",
+    2 => "social",
+    3 => "professional",
+    4 => "intuitive",
+    5 => "personal"
+  }
 
   def new
     @card = Card.new
   end
 
   def create
-    @card = Card.new(card_params)
     assign_card_name_if_empty
+    @card = Card.new(card_params)
     @card.user_id = @user.id
     @card.group = "own cards"
     if @card.save
@@ -51,7 +60,7 @@ class CardsController < ApplicationController
                             end
                           )
     else
-      render :edit
+      redirect_to edit_card_path(@card)
       flash[:notice] = if @user.language == "english"
                          'Card update failed.'
                        elsif @user.language == "german"
@@ -92,25 +101,56 @@ class CardsController < ApplicationController
 
   def card_params
     params.require(:card).permit(:positive, :name_german, :name_english, :explanation_german,
-    :explanation_english, :category).delete_if { |_, v| v.empty? }
+    :explanation_english, :category)
+  end
+
+  def translate_category_param
+    return unless params[:card] && params[:card][:category]
+
+    integer_value = params[:card][:category].to_i
+    params[:card][:category] = CATEGORY_MAPPING[integer_value]
   end
 
   def assign_card_name_if_empty
-    # if card.name_english is nil or empty, set it to "no name"
-    if @card.name_english.nil? || @card.name_english.empty?
-      @card.name_english = "no name"
+    card_params = params[:card]
+
+    if !card_params.key?(:name_english)
+      card_params[:name_english] = @card.name_english.presence || "no name"
     end
-    # if card.explanation_english is empty, set it to "no explanation"
-    if @card.explanation_english.nil? || @card.explanation_english.empty?
-      @card.explanation_english = "no explanation - add a name and an explanation in the card settings"
+    # Set name_english to the existing value in @card or the default if not provided
+    card_params[:name_english] = if card_params[:name_english].blank?
+                                    "no name"
+                                  else
+                                    card_params[:name_english]
+                                 end
+
+    if !card_params.key?(:explanation_english)
+      card_params[:explanation_english] = @card.explanation_english.presence || "no explanation - add a name and an explanation in the card settings"
     end
-    # if card.name_german is empty, set it to name_english
-    if @card.name_german.nil? || @card.name_german.empty?
-      @card.name_german = @card.name_english
+    # Set explanation_english to the existing value in @card or the default if not provided
+    card_params[:explanation_english] = if card_params[:explanation_english].blank?
+                                           "no explanation - add a name and an explanation in the card settings"
+                                         else
+                                           card_params[:explanation_english]
+                                        end
+
+    if card_params.key?(:name_german)
+      # Handle name_german, checking for empty string and fallback logic
+      card_params[:name_german] = if card_params[:name_german].blank?  # checks for empty string or nil
+                                    @card.name_english.presence || "no name"
+                                  else
+                                    card_params[:name_german]
+                                  end
     end
-    # if card.explanation_german is empty, set it to explanation_english
-    if @card.explanation_german.nil? || @card.explanation_german.empty?
-      @card.explanation_german = @card.explanation_english
-    end
+
+    return unless card_params.key?(:explanation_german)
+
+      # Handle explanation_german, checking for empty string and fallback logic
+    card_params[:explanation_german] = if card_params[:explanation_german].blank?
+                                          @card.explanation_english.presence || "no explanation - add a name and an explanation in the card settings"
+                                        else
+                                          card_params[:explanation_german]
+                                       end
+
   end
 end

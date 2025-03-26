@@ -11,26 +11,41 @@
         </div>
       </div>
       <div class="bottom-row-games">
-        <%= link_to (if @user.language == "english"
-                  "New Game"
-                elsif @user.language == "german"
-                  "Neues Spiel"
-                end), new_game_path, class: "btn btn-outline-dark rounded-4 me-1" %>
-        <%= link_to (if @user.language == "english"
-                  "My Cards"
-                elsif @user.language == "german"
-                  "Meine Karten"
-                end), cards_path, class: "btn btn-outline-dark rounded-4 me-1" %>
-        <%= link_to (if @user.language == "english"
-                  "History"
-                elsif @user.language == "german"
-                  "Verlauf"
-                end), history_path, class: "btn btn-outline-dark rounded-4 me-1" %>
-        <%= link_to (if @user.language == "english"
-                  "Import"
-                elsif @user.language == "german"
-                  "Importieren"
-                end), import_form_path, class: "btn btn-outline-dark rounded-4" %>
+        <%= link_to new_game_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+          <i class="bi bi-window-plus me-1"></i>
+          <% if @user.language == "english" %>
+            New Game
+          <% elsif @user.language == "german" %>
+            Neues Spiel
+          <% end %>
+        <% end %>
+
+        <%= link_to cards_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+          <i class="bi bi-suit-club me-1"></i>
+          <% if @user.language == "english" %>
+            My Cards
+          <% elsif @user.language == "german" %>
+            Meine Karten
+          <% end %>
+        <% end %>
+
+        <%= link_to history_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+          <i class="bi bi-graph-up me-1"></i>
+          <% if @user.language == "english" %>
+            History
+          <% elsif @user.language == "german" %>
+            Verlauf
+          <% end %>
+        <% end %>
+
+        <%= link_to import_form_path, class: "btn btn-outline-dark rounded-4" do %>
+          <i class="bi bi-cloud-upload me-1"></i>
+          <% if @user.language == "english" %>
+            Import
+          <% elsif @user.language == "german" %>
+            Importieren
+          <% end %>
+        <% end %>
       </div>
     </div>
     <div class="content-games">
@@ -86,20 +101,23 @@
             <div class="buttons-games d-flex justify-content-between">
               <!-- if game.status == "running" "play" button with link to games play page -->
               <% if game.status == "running" %>
-                <%= link_to (if @user.language == "english"
-                  "Play"
-                elsif @user.language == "german"
-                  "Spielen"
-                end),
-                play_path(id: game),
-                class: "btn  btn-outline-warning rounded-4" %>
-              <!-- if game.status == "finished" "Results" button with link to games show page -->
+                <%= link_to play_path(id: game), class: "btn btn-outline-warning rounded-4" do %>
+                  <i class="bi bi-controller me-1"></i>
+                  <% if @user.language == "english" %>
+                    Play
+                  <% elsif @user.language == "german" %>
+                    Spielen
+                  <% end %>
+                <% end %>
               <% else %>
-                <%= link_to (if @user.language == "english"
-                  "Results"
-                elsif @user.language == "german"
-                  "Auswertung"
-                end), game_path(game), class: "btn btn-outline-dark rounded-4" %>
+                <%= link_to game_path(game), class: "btn btn-outline-dark rounded-4" do %>
+                  <i class="bi bi-pie-chart me-1"></i>
+                  <% if @user.language == "english" %>
+                    Results
+                  <% elsif @user.language == "german" %>
+                    Auswertung
+                  <% end %>
+                <% end %>
               <% end %>
               <%= link_to game_path(game), method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
                 <div class="button ms-2 hover-gray" style="font-size: 1.5rem;">

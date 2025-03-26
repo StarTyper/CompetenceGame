@@ -1,77 +1,52 @@
 <div class="edit-card-form px-5 pt-5">
   <h1>
-    <% if @user.language == "english" %>
-      Edit Card
-    <% elsif @user.language == "german" %>
-      Karte bearbeiten
-    <% end %>
+    <%= @user.language == "english" ? "Edit Card" : "Karte bearbeiten" %>
   </h1>
 
   <%= simple_form_for @card do |f| %>
+    <%= f.input @user.language == 'german' ? :name_german : :name_english,
+                label: "Name",
+                required: true %>
 
-    <% if @user.language == 'german' %>
-      <%= f.input :name_german,
-                  label: "Name",
-                  required: true %>
+    <% category_mapping = {
+        english: {
+          "methodical" => 1,
+          "social" => 2,
+          "professional" => 3,
+          "intuitive" => 4,
+          "personal" => 5
+        },
+        german: {
+          "methodisch" => 1,
+          "sozial" => 2,
+          "fachlich" => 3,
+          "intuitiv" => 4,
+          "persönlich" => 5
+        }
+      } %>
 
-    <% elsif @user.language == 'english' %>
-      <%= f.input :name_english,
-                  label: "Name",
-                  required: true %>
-    <% end %>
-
+    <% current_language = @user.language == "german" ? :german : :english %>
+    <% collection = category_mapping[current_language].map { |key, value| [key.capitalize, value] } %>
 
     <%= f.input :category,
-              label: (if @user.language == "english"
-                          "Category"
-                        elsif @user.language == "german"
-                          "Kategorie"
-                        end),
-              collection: %w[methodical social professional intuitive personal],
-              prompt: (if @user.language == "english"
-                          "Select a Category"
-                        elsif @user.language == "german"
-                          "Kategorie auswählen"
-                        end),
-              required: true %>
+                label: (@user.language == "english" ? "Category" : "Kategorie"),
+                collection: collection,
+                selected: category_mapping[:english][@card.category],
+                prompt: (@user.language == "english" ? "Select a Category" : "Kategorie auswählen"),
+                required: true %>
 
     <%= f.input :positive,
-                label: (if @user.language == "english"
-                          "Positive / Negative"
-                        elsif @user.language == "german"
-                          "Positiv / Negativ"
-                        end),
+                label: (@user.language == "english" ? "Positive / Negative" : "Positiv / Negativ"),
                 collection: [['+', true], ['-', false]],
                 prompt: "+ / -",
                 required: true %>
 
-    <% if @user.language == 'german' %>
-      <%= f.input :explanation_german,
-                  label: "Erklärung",
-                  input_html: { rows: 5 } %>
-    <% elsif @user.language == 'english' %>
-      <%= f.input :explanation_english,
-                  label: "Explanation",
-                  input_html: { rows: 5 } %>
-    <% end %>
+    <%= f.input @user.language == 'german' ? :explanation_german : :explanation_english,
+                label: (@user.language == 'german' ? "Erklärung" : "Explanation"),
+                input_html: { rows: 5 } %>
 
-    <%# = f.input :image,
-                <!-- label: (if @user.language == "english" -->
-                          <!-- "Image URL" -->
-                        <!-- elsif @user.language == "german" -->
-                          <!-- "Bild-URL" -->
-                        <!-- end) %>
-
-    <%= f.button :submit, (if @user.language == "english"
-                             "Update Card"
-                           elsif @user.language == "german"
-                             "Karte aktualisieren"
-                           end), class: 'btn btn-outline-dark' %>
+    <%= f.button :submit, @user.language == "english" ? "Update Card" : "Karte aktualisieren", class: 'btn btn-outline-dark' %>
   <% end %>
 
-  <%= link_to (if @user.language == "english"
-                  "Back"
-                elsif @user.language == "german"
-                  "Zurück"
-                end), cards_path, class: 'btn btn-outline-secondary mt-2' %>
+  <%= link_to @user.language == "english" ? "Back" : "Zurück", cards_path, class: 'btn btn-outline-secondary mt-2' %>
 </div>

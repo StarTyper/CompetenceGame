@@ -27,7 +27,13 @@
                         elsif @user.language == "german"
                           "Kategorie"
                         end),
-              collection: %w[methodical social professional intuitive personal],
+              collection: [
+              ["Methodical", 1],
+              ["Social", 2],
+              ["Professional", 3],
+              ["Intuitive", 4],
+              ["Personal", 5]
+                          ],
               prompt: (if @user.language == "english"
                           "Select a Category"
                         elsif @user.language == "german"
@@ -54,13 +60,6 @@
                   label: "Explanation",
                   input_html: { rows: 5 } %>
     <% end %>
-
-    <%# = f.input :image,
-                <!-- label: (if @user.language == "english" -->
-                          <!-- "Image URL" -->
-                        <!-- elsif @user.language == "german" -->
-                          <!-- "Bild-URL" -->
-                        <!-- end) %>
 
     <%= f.button :submit, (if @user.language == "english"
                              "Create Card"

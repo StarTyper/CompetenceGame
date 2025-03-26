@@ -21,11 +21,23 @@
       </div>
     </div>
     <div class="nav-buttons-index-cards d-flex">
-      <%= link_to (if @user.language == "english"
-                  "New Card"
-                elsif @user.language == "german"
-                  "Neue Karte"
-                end), new_card_path, class: "btn btn-outline-dark rounded-4 me-1" %>
+      <%= link_to games_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+        <i class="bi bi-arrow-90deg-left me-1"></i>
+        <% if @user.language == "english" %>
+          Back
+        <% elsif @user.language == "german" %>
+          Zurück
+        <% end %>
+      <% end %>
+
+      <%= link_to new_card_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+        <i class="bi bi-file-plus me-1"></i>
+        <% if @user.language == "english" %>
+          New Card
+        <% elsif @user.language == "german" %>
+          Neue Karte
+        <% end %>
+      <% end %>
     </div>
     </div>
     <!-- Board Cards -->
