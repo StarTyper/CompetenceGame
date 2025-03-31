@@ -11,10 +11,11 @@
   width: 40px;
 }
 
-.bg-sand {
-  background: linear-gradient(
-    to top,
-    rgba(239, 222, 206, 0),  // Bottom (100% opacity)
-    rgba(239, 222, 206, 1)      // Top (solid)
-  );
+.bg-sand-fade {
+  // background: linear-gradient(
+  //   to top,
+  //   rgba(239, 222, 206, 0),  // Bottom (100% opacity)
+  //   rgba(239, 222, 206, 1)      // Top (solid)
+  // );
+  background: #efdece;
 }

@@ -1,7 +1,7 @@
-<div class="container margin-top">
-  <div class="games-page">
-    <div class="heading-games mb-5">
-      <div class="top-row-games d-flex justify-content-between">
+<div class="container games-index">
+  <div class="games-page d-flex flex-column align-items-center">
+    <div id="heading-games" class="d-flex flex-grow-1 flex-column px-3 align-items-center position-fixed z-3 bg-white rounded-5 shadow p-1">
+      <div class="top-row-games d-flex justify-content-center">
         <div class="title-games">
           <% if @user.language == "english" %>
             <h1 class="lato-bold">My Games</h1>
@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="bottom-row-games">
-        <%= link_to new_game_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+        <%= link_to new_game_path, class: "btn btn-outline-dark rounded-4 me-1 mb-1" do %>
           <i class="bi bi-window-plus me-1"></i>
           <% if @user.language == "english" %>
             New Game
@@ -20,7 +20,7 @@
           <% end %>
         <% end %>
 
-        <%= link_to cards_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+        <%= link_to cards_path, class: "btn btn-outline-dark rounded-4 me-1 mb-1" do %>
           <i class="bi bi-suit-club me-1"></i>
           <% if @user.language == "english" %>
             My Cards
@@ -29,7 +29,7 @@
           <% end %>
         <% end %>
 
-        <%= link_to history_path, class: "btn btn-outline-dark rounded-4 me-1" do %>
+        <%= link_to history_path, class: "btn btn-outline-dark rounded-4 me-1 mb-1" do %>
           <i class="bi bi-graph-up me-1"></i>
           <% if @user.language == "english" %>
             History
@@ -38,7 +38,7 @@
           <% end %>
         <% end %>
 
-        <%= link_to import_form_path, class: "btn btn-outline-dark rounded-4" do %>
+        <%= link_to import_form_path, class: "btn btn-outline-dark rounded-4 mb-1" do %>
           <i class="bi bi-cloud-upload me-1"></i>
           <% if @user.language == "english" %>
             Import
@@ -47,9 +47,10 @@
           <% end %>
         <% end %>
       </div>
+      <div id="games-index-fade" class="py-1 bg-sand-fade position-relative"></div>
     </div>
-    <div class="content-games">
-      <div class="d-flex flex-column justify-content-center align-items-center">
+    <div id="games-content" class="w-100 mt-5">
+      <div id="games-cards" class="d-flex flex-column justify-content-center align-items-center mt-5">
         <% @games.each do |game| %>
           <div class="card col-xl-6 col-lg-7 col-md-9 col-sm-12 m-3 rounded-5 shadow">
             <h5 class="card-header  rounded-top-5"><%= game.name %></h5>

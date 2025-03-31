@@ -9,9 +9,15 @@
 @import "font-awesome";
 
 // Your CSS partials
+// components
 @import "components/index";
+
+// pages
 @import "pages/index";
 @import "pages/word_break";
+
+// games
+@import "games/index";
 
 body {
   font-family: 'Lato', serif;
