@@ -1,22 +1,28 @@
-<div class="new-session-form px-5 pt-5">
-  <h2>Log in</h2>
+<div class="container users-sign_in d-flex justify-content-center">
+  <div class="new-session-form bg-white rounded-5 px-5 py-5 mb-5 shadow responsive-form">
+    <h2>Log in</h2>
 
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="form-inputs">
-      <%= f.input :email,
-                  required: false,
-                  autofocus: true,
-                  input_html: { autocomplete: "email" } %>
-      <%= f.input :password,
-                  required: false,
-                  input_html: { autocomplete: "current-password" } %>
-      <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="form-inputs">
+        <%= f.input :email,
+                    required: false,
+                    autofocus: true,
+                    input_html: { autocomplete: "email" } %>
+        <%= f.input :password,
+                    required: false,
+                    input_html: { autocomplete: "current-password" } %>
+        <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit, "Log in", class: "btn btn-outline-dark" %>
+      </div>
+    <% end %>
+
+    <div class="divider pt-3">
+      <hr class="solid">
     </div>
 
-    <div class="form-actions">
-      <%= f.button :submit, "Log in", class: "btn btn-outline-dark" %>
-    </div>
-  <% end %>
-
-  <%= render "devise/shared/links" %>
+    <%= render "devise/shared/links" %>
+  </div>
 </div>
