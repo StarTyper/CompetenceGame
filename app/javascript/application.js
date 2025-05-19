@@ -7,4 +7,4 @@ import "chartkick"
 import "Chart.bundle"
 
 // custom js
-import "./custom/email_validation"
+import "custom/email_validation"
