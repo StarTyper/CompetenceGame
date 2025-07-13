@@ -1,9 +1,9 @@
 <div class="margin-top container">
   <div id="games-show-content" class="d-flex flex-column align-items-center">
     <!-- Heading Game -->
-    <div id="heading-game" class="d-flex flex-column align-items-center position-fixed z-3 bg-white rounded-5 shadow p-2 responsive-header">
-      <div class="top-row-play d-flex justify-content-between">
-        <div class="count-index-card d-flex pe-3">
+    <div id="heading-game" class="d-flex flex-column position-fixed z-3 bg-white rounded-5 shadow p-2 responsive-header">
+      <div id="top-row-play" class="d-flex justify-content-between">
+        <div class="count-index-card d-flex">
                 <!-- count of cards positive of the game -->
                 <div class="count-plus d-flex me-3">
                   <h2 class="lato-bold"><%= @game.count_positive %></h2>
@@ -17,7 +17,7 @@
                   </div>
                 </div>
               </div>
-        <div class="title-game pe-3">
+        <div class="title-game">
           <h1 class="lato-bold"><%= @game.name %></h1>
         </div>
         <div class="share-button">
@@ -28,7 +28,7 @@
           <% end %>
         </div>
       </div>
-      <div class="game-stats d-flex">
+      <div class="game-stats d-flex justify-content-center">
         <p class="card-date-time me-3"><%= @game.created_at.strftime("%d.%m.%Y") %> at <%= @game.created_at.strftime("%H:%M") %>
           Duration:
           <!-- add game duration by calculating the difference between created_at and updated_at in minutes, if below an hour and in hh:mm if above -->
