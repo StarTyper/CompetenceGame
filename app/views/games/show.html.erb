@@ -1,130 +1,133 @@
 <div class="margin-top container">
-  <!-- Heading Game -->
-  <div class="heading-game">
-    <div class="top-row-play d-flex justify-content-between">
-      <div class="count-index-card d-flex">
-              <!-- count of cards positive of the game -->
-              <div class="count-plus d-flex me-3">
-                <h2 class="lato-bold"><%= @game.count_positive %></h2>
-                <i class="bi bi-plus-circle"></i>
-              </div>
-              <!-- count of cards negative of the game -->
-              <div class="count-minus d-flex">
-                <h2 class="lato-bold"><%= @game.count_negative %></h2>
-                <div class="minus-icon" style="font-size: 1rem;">
-                  <i class="bi bi-dash-circle"></i>
+  <div id="games-show-content" class="d-flex flex-column align-items-center">
+    <!-- Heading Game -->
+    <div id="heading-game" class="d-flex flex-column align-items-center position-fixed z-3 bg-white rounded-5 shadow p-2 responsive-header">
+      <div class="top-row-play d-flex justify-content-between">
+        <div class="count-index-card d-flex pe-3">
+                <!-- count of cards positive of the game -->
+                <div class="count-plus d-flex me-3">
+                  <h2 class="lato-bold"><%= @game.count_positive %></h2>
+                  <i class="bi bi-plus-circle"></i>
+                </div>
+                <!-- count of cards negative of the game -->
+                <div class="count-minus d-flex">
+                  <h2 class="lato-bold"><%= @game.count_negative %></h2>
+                  <div class="minus-icon" style="font-size: 1rem;">
+                    <i class="bi bi-dash-circle"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-      <div class="title-game">
-        <h1 class="lato-bold"><%= @game.name %></h1>
-      </div>
-      <div class="share-button">
-        <% if @game.shared_from_user_id == nil %>
-          <%= link_to share_form_path(@game), class: "me-3 link-underline link-underline-opacity-0 hover-gray", style: "font-size: 2rem;" do %>
-            <i class="bi bi-upload"></i>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-    <div class="game-stats d-flex">
-      <p class="card-date-time me-3"><%= @game.created_at.strftime("%d.%m.%Y") %> at <%= @game.created_at.strftime("%H:%M") %>
-        Duration:
-        <!-- add game duration by calculating the difference between created_at and updated_at in minutes, if below an hour and in hh:mm if above -->
-          <% if ((@game.updated_at - @game.created_at) / 60).round < 60 %>
-          <%= ((@game.updated_at - @game.created_at) / 60).round %> min
-        <% else %>
-          <%= ((@game.updated_at - @game.created_at) / 60).divmod(60).map { |t| t.to_i.to_s.rjust(2, '0') }.join(':') %>
-        <% end %>
-      </p>
-      <% if @game.shared_from_user_id? %>
-        <p>
-          <% if @user.language == "english" %>
-            Shared from <%= User.find(@game.shared_from_user_id).first_name %> <%= User.find(@game.shared_from_user_id).last_name %>
-          <% elsif @user.language == "german" %>
-            Geteilt von <%= User.find(@game.shared_from_user_id).first_name %> <%= User.find(@game.shared_from_user_id).last_name %>
-          <% end %>
-        </p>
-      <% end %>
-    </div>
-  </div>
-
-  <!-- Game Content -->
-  <div class="content-game">
-    <div class="game-board mb-5">
-      <!-- Board Cards -->
-      <div class="container text-center">
-        <!-- Positive Cards -->
-        <div class="positive-cards row align-items-end">
-
-          <% @categories_positive.each do |key, game_cards| %>
-            <div class="col">
-              <div class="positive-cards">
-                <% game_cards.each do |game_card| %>
-                  <%= render "games/card", game_card: game_card %>
-                <% end %>
-              </div>
-            </div>
+        <div class="title-game pe-3">
+          <h1 class="lato-bold"><%= @game.name %></h1>
+        </div>
+        <div class="share-button">
+          <% if @game.shared_from_user_id == nil %>
+            <%= link_to share_form_path(@game), class: "me-3 link-underline link-underline-opacity-0 hover-gray", style: "font-size: 2rem;" do %>
+              <i class="bi bi-upload"></i>
+            <% end %>
           <% end %>
         </div>
-        <!-- Categories -->
-        <div class="card-categories container text-center">
-          <div class="row align-items-center">
-            <%categories = {
-                              "methodisch" => "methodical",
-                              "sozial" => "social",
-                              "fachlich" => "professional",
-                              "intuitiv" => "intuitive",
-                              "persönlich" => "personal"
-                            }
-            %>
+      </div>
+      <div class="game-stats d-flex">
+        <p class="card-date-time me-3"><%= @game.created_at.strftime("%d.%m.%Y") %> at <%= @game.created_at.strftime("%H:%M") %>
+          Duration:
+          <!-- add game duration by calculating the difference between created_at and updated_at in minutes, if below an hour and in hh:mm if above -->
+            <% if ((@game.updated_at - @game.created_at) / 60).round < 60 %>
+            <%= ((@game.updated_at - @game.created_at) / 60).round %> min
+          <% else %>
+            <%= ((@game.updated_at - @game.created_at) / 60).divmod(60).map { |t| t.to_i.to_s.rjust(2, '0') }.join(':') %>
+          <% end %>
+        </p>
+        <% if @game.shared_from_user_id? %>
+          <p>
+            <% if @user.language == "english" %>
+              Shared from <%= User.find(@game.shared_from_user_id).first_name %> <%= User.find(@game.shared_from_user_id).last_name %>
+            <% elsif @user.language == "german" %>
+              Geteilt von <%= User.find(@game.shared_from_user_id).first_name %> <%= User.find(@game.shared_from_user_id).last_name %>
+            <% end %>
+          </p>
+        <% end %>
+      </div>
+    </div>
 
-            <% categories.each do |german, english| %>
-              <div class="category col">
-                <%= @user.language == "german" ? german : english %>
+    <!-- Game Content -->
+    <div id="content-game" class="pt-5 mt-5 w-100">
+      <div class="padding-top-5 pt-5"></div>
+      <div class="game-board mb-5">
+        <!-- Board Cards -->
+        <div class="container text-center">
+          <!-- Positive Cards -->
+          <div class="positive-cards row align-items-end">
+
+            <% @categories_positive.each do |key, game_cards| %>
+              <div class="col">
+                <div class="positive-cards">
+                  <% game_cards.each do |game_card| %>
+                    <%= render "games/card", game_card: game_card %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <!-- Categories -->
+          <div class="card-categories container text-center">
+            <div class="row align-items-center">
+              <%categories = {
+                                "methodisch" => "methodical",
+                                "sozial" => "social",
+                                "fachlich" => "professional",
+                                "intuitiv" => "intuitive",
+                                "persönlich" => "personal"
+                              }
+              %>
+
+              <% categories.each do |german, english| %>
+                <div class="category col">
+                  <%= @user.language == "german" ? german : english %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <!-- Negative Cards -->
+          <div class="negative-cards row align-items-start">
+
+            <% @categories_negative.each do |key, game_cards| %>
+              <div class="col">
+                <div class="negative-cards">
+                  <% game_cards.each do |game_card| %>
+                    <%= render "games/card", game_card: game_card %>
+                  <% end %>
+                </div>
               </div>
             <% end %>
           </div>
         </div>
-        <!-- Negative Cards -->
-        <div class="negative-cards row align-items-start">
-
-          <% @categories_negative.each do |key, game_cards| %>
-            <div class="col">
-              <div class="negative-cards">
-                <% game_cards.each do |game_card| %>
-                  <%= render "games/card", game_card: game_card %>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
+      </div>
+      <!-- Graphics -->
+      <div class="game-graphics d-flex pt-5 mb-5">
+        <!-- Positive Pie Chart -->
+        <div class="pie-chart-positive w-475 bg-white rounded-5 py-3 shadow">
+          <p class="text-center mb-3">
+            <% if @user.language == "german" %>
+              Gewichtung positiver Eigenschaften
+            <% elsif @user.language == "english" %>
+              Weighting positive traits
+            <% end %>
+          </p>
+          <%= render "games/pie_chart", pie_chart_data: @pie_chart_data_positive %>
         </div>
-      </div>
-    </div>
-    <!-- Graphics -->
-    <div class="game-graphics d-flex pt-5 mb-5">
-      <!-- Positive Pie Chart -->
-      <div class="pie-chart-positive w-475 bg-white rounded-5 py-3 shadow">
-        <p class="text-center mb-3">
-          <% if @user.language == "german" %>
-            Gewichtung positiver Eigenschaften
-          <% elsif @user.language == "english" %>
-            Weighting positive traits
-          <% end %>
-        </p>
-        <%= render "games/pie_chart", pie_chart_data: @pie_chart_data_positive %>
-      </div>
-      <div class="space-5 w-5"></div>
-      <!-- Negative Pie Chart -->
-      <div class="pie-chart-negative w-475 bg-white rounded-5 py-3 px-0 shadow">
-        <p class="text-center mb-3">
-          <% if @user.language == "german" %>
-            Gewichtung negativer Eigenschaften
-          <% elsif @user.language == "english" %>
-            Weighting negative traits
-          <% end %>
-        </p>
-        <%= render "games/pie_chart", pie_chart_data: @pie_chart_data_negative %>
+        <div class="space-5 w-5"></div>
+        <!-- Negative Pie Chart -->
+        <div class="pie-chart-negative w-475 bg-white rounded-5 py-3 px-0 shadow">
+          <p class="text-center mb-3">
+            <% if @user.language == "german" %>
+              Gewichtung negativer Eigenschaften
+            <% elsif @user.language == "english" %>
+              Weighting negative traits
+            <% end %>
+          </p>
+          <%= render "games/pie_chart", pie_chart_data: @pie_chart_data_negative %>
+        </div>
       </div>
     </div>
   </div>
